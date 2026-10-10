@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../../lib/store';
 import { Sparkles, Calendar, CalendarPlus, MapPin, ArrowRight, Check, UserPlus, Building, Clock, ChevronRight, X, Star, Users, BarChart2, Map } from 'lucide-react';
 
@@ -36,6 +36,42 @@ export const DelegateHome: React.FC = () => {
   .filter((a) => a.id !== currentUser.id && (a.relevanceScore || 0) >= 80 && a.name.toLowerCase() !== 'sai kumar')
   .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
   .slice(0, 15);
+
+ const [activeSlide, setActiveSlide] = useState(0);
+ const totalSlides = 4;
+
+ useEffect(() => {
+  const timer = setInterval(() => {
+   setActiveSlide((prev) => (prev + 1) % totalSlides);
+  }, 4000);
+  return () => clearInterval(timer);
+ }, []);
+
+ const [touchStart, setTouchStart] = useState<number | null>(null);
+ const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+ const onTouchStart = (e: React.TouchEvent) => {
+  setTouchEnd(null);
+  setTouchStart(e.targetTouches[0].clientX);
+ };
+
+ const onTouchMove = (e: React.TouchEvent) => {
+  setTouchEnd(e.targetTouches[0].clientX);
+ };
+
+ const onTouchEnd = () => {
+  if (!touchStart || !touchEnd) return;
+  const distance = touchStart - touchEnd;
+  const minSwipeDistance = 50;
+  
+  if (distance > minSwipeDistance) {
+   // swipe left (next)
+   setActiveSlide((prev) => (prev + 1) % totalSlides);
+  } else if (distance < -minSwipeDistance) {
+   // swipe right (prev)
+   setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }
+ };
 
  const handleConnect = (personId: string, e: React.MouseEvent) => {
   e.stopPropagation();
@@ -81,58 +117,129 @@ export const DelegateHome: React.FC = () => {
 
     <button
      onClick={() => setActiveDelegateTab('profile')}
-     className="relative group focus:outline-none z-10 flex-shrink-0"
+     className="relative group focus:outline-none z-10 flex-shrink-0 ml-2"
      aria-label="View Profile"
     >
      {currentUser.avatar ? (
-      <img src={currentUser.avatar} alt={currentUser.name} className="w-[42px] h-[42px] rounded-full border-[2.5px] border-white object-cover shadow-sm" />
+      <img src={currentUser.avatar} alt={currentUser.name} className="w-[52px] h-[52px] rounded-full border-[3px] border-white object-cover shadow-sm" />
      ) : (
-      <div className="w-[42px] h-[42px] rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-lg border-[2.5px] border-white shadow-sm">
+      <div className="w-[52px] h-[52px] rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-lg border-[3px] border-white shadow-sm">
        {currentUser.name.split(' ').map(n => n[0]).join('')}
       </div>
      )}
-     <span className="absolute bottom-0 -right-0.5 w-4 h-4 bg-[#10B981] border-[2.5px] border-white rounded-full" />
+     <span className="absolute bottom-0 -right-0.5 w-[20px] h-[20px] bg-[#10B981] border-[2.5px] border-white rounded-full" />
     </button>
    </div>
 
-   {/* Event Card: ITS26, LIVE, Bengaluru */}
-   <div className="bg-[#18181B] rounded-[16px] p-3 shadow-sm relative overflow-hidden">
-    <div className="flex items-center justify-between mb-1">
-     <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">
-      {event.id}
-     </span>
-     <div className="flex items-center gap-1.5 bg-[#B51F32] px-1.5 py-0.5 rounded-full">
-      <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-      <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-       LIVE
-      </span>
+   {/* Carousel Posters */}
+   <div 
+    className="relative rounded-[16px] shadow-sm overflow-hidden bg-[#18181B] pb-5"
+    onTouchStart={onTouchStart}
+    onTouchMove={onTouchMove}
+    onTouchEnd={onTouchEnd}
+   >
+    <div 
+     className="flex transition-transform duration-500 ease-in-out" 
+     style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+    >
+     {/* Poster 1: ITS26 LIVE */}
+     <div className="w-full flex-shrink-0 p-3 relative h-[140px]">
+      <div className="flex items-center justify-between mb-1">
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">
+        {event.id}
+       </span>
+       <div className="flex items-center gap-1.5 bg-[#B51F32] px-1.5 py-0.5 rounded-full">
+        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+        <span className="text-[10px] font-bold text-white uppercase tracking-wider">
+         LIVE
+        </span>
+       </div>
+      </div>
+      <h2 className="text-[13.5px] font-bold text-white tracking-tight">
+       {event.name}
+      </h2>
+      <div className="mt-1.5 text-[11px] text-[#A1A1AA] space-y-1">
+       <div className="flex items-center gap-1.5">
+        <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+        <span className="truncate">{event.venue}, {event.city}</span>
+       </div>
+       <div className="pl-[20px]">
+        <span>{event.dates}</span>
+       </div>
+      </div>
+      <div className="mt-1.5 flex items-center gap-1.5 text-[11px] sm:text-[12px] whitespace-nowrap overflow-x-auto no-scrollbar pb-1">
+       <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
+        <strong>{event.totalRegistered || attendees.length}</strong> attendees
+       </span>
+       <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
+        <strong>{event.totalSpeakers || attendees.filter(a => a.role === 'speaker').length}</strong> speakers
+       </span>
+       <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
+        <strong>{event.totalExhibitors || exhibitors.length}</strong> exhibitors
+       </span>
+      </div>
+     </div>
+
+     {/* Poster 2: Keynote */}
+     <div className="w-full flex-shrink-0 p-3 relative h-[140px] bg-gradient-to-br from-[#18181B] to-[#B51F32]/40">
+      <div className="flex items-center justify-between mb-1">
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">FEATURED</span>
+       <div className="flex items-center gap-1 bg-[#B51F32] px-1.5 py-0.5 rounded-full">
+        <span className="text-[10px] font-bold text-white uppercase tracking-wider">UPCOMING</span>
+       </div>
+      </div>
+      <h2 className="text-[13.5px] font-bold text-white tracking-tight">The Future of AI & Cloud</h2>
+      <div className="mt-1.5 text-[11px] text-[#A1A1AA] flex items-center gap-1.5">
+        <Clock className="w-3.5 h-3.5" />
+        Main Auditorium • 2:00 PM
+      </div>
+      <div className="mt-3 flex items-center gap-2 bg-[#27272A]/50 w-fit pr-3 rounded-full border border-white/10">
+        <img src="https://i.pravatar.cc/150?img=11" className="w-7 h-7 rounded-full border border-white/20" alt="Speaker" />
+        <span className="text-[11px] font-semibold text-white">Sriharsha Majety</span>
+      </div>
+     </div>
+
+     {/* Poster 3: Networking Mixer */}
+     <div className="w-full flex-shrink-0 p-3 relative h-[140px] bg-gradient-to-br from-[#18181B] to-[#10B981]/20">
+      <div className="flex items-center justify-between mb-1">
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">NETWORKING</span>
+      </div>
+      <h2 className="text-[13.5px] font-bold text-white tracking-tight mt-1">Tech Founders Mixer</h2>
+      <div className="mt-1.5 text-[11px] text-[#A1A1AA] flex items-center gap-1.5">
+        <MapPin className="w-3.5 h-3.5" />
+        VIP Lounge • 6:00 PM
+      </div>
+      <div className="mt-2.5 text-[11px] text-[#E5E5E5] leading-snug">
+        Join 50+ founders and investors for an exclusive evening of high-impact networking and drinks.
+      </div>
+     </div>
+
+     {/* Poster 4: Contest */}
+     <div className="w-full flex-shrink-0 p-3 relative h-[140px] bg-gradient-to-br from-[#18181B] to-[#3B82F6]/30">
+      <div className="flex items-center justify-between mb-1">
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#B51F32] px-1.5 py-0.5 rounded-md">CONTEST</span>
+      </div>
+      <h2 className="text-[13.5px] font-bold text-white tracking-tight mt-1">Scan & Win!</h2>
+      <div className="mt-1.5 text-[11px] text-[#A1A1AA] flex items-center gap-1.5">
+        <Check className="w-3.5 h-3.5" />
+        Visit 10 Platinum Sponsors
+      </div>
+      <div className="mt-2 text-[11px] text-[#E5E5E5] leading-snug">
+        Win exclusive ITS26 merch by scanning QR codes at participating sponsor booths today.
+      </div>
      </div>
     </div>
-
-    <h2 className="text-[13.5px] font-bold text-white tracking-tight">
-     {event.name}
-    </h2>
-
-    <div className="mt-1.5 text-[11px] text-[#A1A1AA] space-y-1">
-     <div className="flex items-center gap-1.5">
-      <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-      <span className="truncate">{event.venue}, {event.city}</span>
-     </div>
-     <div className="pl-[20px]">
-      <span>{event.dates}</span>
-     </div>
-    </div>
-
-    <div className="mt-1.5 flex items-center gap-1.5 text-[11px] sm:text-[12px] whitespace-nowrap overflow-x-auto no-scrollbar pb-1">
-     <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
-      <strong>{event.totalRegistered || attendees.length}</strong> attendees
-     </span>
-     <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
-      <strong>{event.totalSpeakers || attendees.filter(a => a.role === 'speaker').length}</strong> speakers
-     </span>
-     <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
-      <strong>{event.totalExhibitors || exhibitors.length}</strong> exhibitors
-     </span>
+    
+    {/* Dots */}
+    <div className="absolute bottom-2 right-3 flex gap-1.5 z-10">
+     {[0, 1, 2, 3].map(i => (
+      <button 
+       key={i} 
+       onClick={() => setActiveSlide(i)}
+       className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSlide === i ? 'bg-white' : 'bg-white/30'}`} 
+       aria-label={`Go to slide ${i + 1}`}
+      />
+     ))}
     </div>
    </div>
 
@@ -336,21 +443,37 @@ export const DelegateHome: React.FC = () => {
         setSelectedSessionId(session.id);
         setActiveDelegateTab('schedule');
        }}
-       className="p-2.5 bg-white rounded-lg border border-[#DEDCD7] hover:border-[#181818]/30 cursor-pointer transition-all flex flex-col gap-2 shadow-sm"
+       className="p-2 bg-white rounded-[12px] shadow-sm relative overflow-hidden flex flex-col gap-1 cursor-pointer hover:shadow-md transition-shadow border border-[#F3F4F6]"
       >
-       <div>
-        <p className="text-[13px] text-[#6B6B6B]">Day {session.day} · {session.timeRange}{session.room ? ` · ${session.room}` : ''}</p>
-        <h4 className="text-[12px] font-bold text-[#181818] mt-0.5 leading-snug">
+       {/* Red strip */}
+       <div className="absolute top-0 left-0 w-1.5 h-[35%] bg-[#D11E39] rounded-br-md" />
+       
+       <div className="flex items-center justify-between pl-1">
+        <div className="flex items-center gap-1 bg-[#FFF0F2] px-1.5 py-0.5 rounded-full">
+         <div className="w-1.5 h-1.5 rounded-full bg-[#D11E39]" />
+         <Calendar className="w-[10px] h-[10px] text-[#D11E39]" />
+         <span className="text-[9.5px] font-medium text-[#4B5563]">
+          Day {session.day} · {session.timeRange}
+         </span>
+        </div>
+        <span className="text-[10px] font-bold text-[#D11E39] flex items-center gap-0.5">
+         Details <ChevronRight className="w-3 h-3" />
+        </span>
+       </div>
+
+       <div className="pl-1">
+        <h4 className="text-[12.5px] font-bold text-[#181818] leading-tight pr-2">
          {session.title}
         </h4>
-        <p className="text-[13px] text-[#6B6B6B] mt-0.5">{session.speakerName}</p>
+        <p className="text-[10.5px] text-[#6B6B6B] mt-0.5">{session.speakerName || 'Not published'}</p>
        </div>
+
        <button
         onClick={(e) => {
          e.stopPropagation();
          toggleBookmarkSession(session.id);
         }}
-        className={`w-full py-1.5 rounded-lg text-[13px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-2 ${
+        className={`w-full py-1.5 rounded-[6px] text-[11.5px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-1.5 ${
          session.isBookmarked 
           ? 'border-[#0D9488] bg-[#F0FDF4] text-[#0D9488]'
           : 'border-[#181818] text-[#181818] bg-white hover:bg-gray-50'
@@ -358,11 +481,11 @@ export const DelegateHome: React.FC = () => {
        >
         {session.isBookmarked ? (
          <>
-          <Check className="w-4 h-4" /> Added
+          <Check className="w-3 h-3" /> Added to Schedule
          </>
         ) : (
          <>
-          <CalendarPlus className="w-4 h-4" /> Add
+          <CalendarPlus className="w-3 h-3" /> Add to Schedule
          </>
         )}
        </button>

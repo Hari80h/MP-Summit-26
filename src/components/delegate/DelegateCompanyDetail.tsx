@@ -18,25 +18,21 @@ export const DelegateCompanyDetail: React.FC = () => {
   if (!company) return null;
 
   return (
-    <div ref={scrollRef} className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-y-auto no-scrollbar px-2 pt-2 pb-16 space-y-2">
+    <div ref={scrollRef} className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-y-auto no-scrollbar">
       {/* Header */}
-      <div className="pt-2 pb-2.5 px-3 border-b border-[#DEDCD7] bg-[#F6F4F0] sticky top-0 z-10 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] sticky top-0 z-10 flex items-center justify-between">
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => setActiveDelegateTab('companies')}
-            className="w-8 h-8 flex items-center justify-center text-[#181818] transition-active active:scale-95"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
-          <h1 className="text-[12px] font-bold text-[#181818] line-clamp-1">{company.company}</h1>
-        </div>
-        <div className="flex items-center gap-1.5 bg-white border border-[#DEDCD7] px-2.5 py-1 rounded-full shadow-sm">
-          <div className="w-2 h-2 rounded-full bg-[#2F7D58]"></div>
-          <span className="text-[11px] font-semibold text-[#181818]">Demo</span>
+          <h1 className="text-[20px] font-bold text-[#181818] tracking-tight line-clamp-1">{company.company}</h1>
         </div>
       </div>
 
-      <div className="p-3 space-y-3">
+      <div className="px-4 pb-16 space-y-3">
         {/* Main Card */}
         <div className="bg-white rounded-[14px] border border-[#DEDCD7] p-3 shadow-sm">
           <div className="flex justify-between items-start mb-2">

@@ -38,23 +38,20 @@ export const DelegatePolls: React.FC = () => {
   const totalVotes = (submittedOption !== null && !poll) ? demoPoll.totalVotes + 1 : demoPoll.totalVotes;
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-hidden space-y-2">
-      <div className="pt-4 pb-2 px-3 flex-shrink-0">
-        <div className="flex items-start justify-between mb-1">
-          <div>
-            <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · INTERACT</p>
-            <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">Live Polls</h1>
-          </div>
+    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-hidden">
+      <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] flex-shrink-0 sticky top-0 z-10">
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => setActiveDelegateTab('home')}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm border border-[#DEDCD7] transition-colors active:scale-95 text-[#181818] mt-1"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
+          <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Live Polls</h1>
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto p-3 pb-16 space-y-2">
-        <div className="bg-white rounded-lg p-2.5 border border-[#DEDCD7] shadow-sm">
+      <div className="flex-1 overflow-y-auto px-4 pb-16 space-y-3">
+        <div className="bg-white rounded-lg p-3 border border-[#DEDCD7] shadow-sm">
           <div className="flex items-center gap-1.5 mb-1.5">
             <span className="flex items-center gap-1.5 bg-[#B51F32] px-1.5 py-0.5 rounded text-[10px] font-bold text-white uppercase tracking-wider">
               <span className="w-1 h-1 rounded-full bg-white animate-pulse" />

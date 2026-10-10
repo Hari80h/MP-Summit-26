@@ -16,39 +16,49 @@ export const DelegateCompanies: React.FC = () => {
   });
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-hidden space-y-2">
+    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="pt-2 pb-2.5 px-3 bg-white border-b border-[#DEDCD7] flex-shrink-0">
-        <div className="flex items-center gap-2 mb-2">
+      {viewSavedCompaniesOnly ? (
+        <div className="pt-4 pb-4 px-4 flex items-center gap-3 bg-[#F6F4F0]">
           <button 
             onClick={() => {
               setViewSavedCompaniesOnly(false);
-              setActiveDelegateTab('home');
+              setActiveDelegateTab('profile');
             }}
-            className="w-8 h-8 rounded-full bg-[#F6F4F0] flex items-center justify-center text-[#181818] transition-active active:scale-95"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
-          <h1 className="text-[12px] font-bold text-[#181818]">
-            {viewSavedCompaniesOnly ? 'Saved Companies' : 'Exhibitor Directory'}
-          </h1>
+          <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Saved Companies</h1>
         </div>
-        
-        {/* Search */}
-        <div className="relative">
-          <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search companies, booths, or tags..."
-            className="w-full bg-[#F6F4F0] border-none rounded-lg py-2.5 pl-10 pr-4 text-[12px] focus:ring-2 focus:ring-[#B51F32]/20 outline-none text-[#181818] placeholder-[#6B6B6B]"
-          />
+      ) : (
+        <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] flex-shrink-0">
+          <div className="flex items-center gap-3 mb-4">
+            <button 
+              onClick={() => setActiveDelegateTab('home')}
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
+            >
+              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+            </button>
+            <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Exhibitor Directory</h1>
+          </div>
+          
+          {/* Search */}
+          <div className="relative">
+            <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search companies, booths, or tags..."
+              className="w-full h-11 bg-white border border-[#E5E7EB] rounded-[10px] pl-10 pr-4 text-[13px] focus:ring-2 focus:ring-[#B51F32]/20 focus:border-[#B51F32] outline-none text-[#181818] placeholder-[#9CA3AF] shadow-sm transition-all"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* List */}
-      <div className="flex-1 overflow-y-auto p-3 pb-16 space-y-2 no-scrollbar">
+      <div className="flex-1 overflow-y-auto px-4 pb-16 space-y-3 no-scrollbar">
         <p className="text-[12px] font-semibold text-[#6B6B6B] mb-1">{filteredExhibitors.length} Exhibitors</p>
         
         {filteredExhibitors.map((company) => (

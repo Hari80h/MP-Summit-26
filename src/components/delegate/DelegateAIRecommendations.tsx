@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useStore } from '../../lib/store';
-import { ChevronLeft, Check, Clock, UserPlus, Settings, Lightbulb, Grid, CalendarPlus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Clock, UserPlus, Settings, Lightbulb, Grid, Calendar, CalendarPlus } from 'lucide-react';
 
 export const DelegateAIRecommendations: React.FC = () => {
   const {
@@ -136,21 +136,37 @@ export const DelegateAIRecommendations: React.FC = () => {
               <div
                 key={session.id}
                 onClick={() => setSelectedSessionId(session.id)}
-                className="p-2.5 bg-white rounded-[14px] border border-[#DEDCD7] hover:border-[#181818]/30 cursor-pointer transition-all flex flex-col gap-2 shadow-sm flex-shrink-0 w-[260px]"
+                className="p-2 bg-white rounded-[12px] shadow-sm relative overflow-hidden flex flex-col gap-1 cursor-pointer hover:shadow-md transition-shadow border border-[#F3F4F6] flex-shrink-0 w-[260px]"
               >
-                <div>
-                  <p className="text-[11px] text-[#6B6B6B]">Day {session.day} · {session.timeRange}{session.room ? ` · ${session.room}` : ''}</p>
-                  <h4 className="text-[12px] font-bold text-[#181818] mt-1 leading-snug">
+                {/* Red strip */}
+                <div className="absolute top-0 left-0 w-1.5 h-[35%] bg-[#D11E39] rounded-br-md" />
+                
+                <div className="flex items-center justify-between pl-1">
+                  <div className="flex items-center gap-1 bg-[#FFF0F2] px-1.5 py-0.5 rounded-full">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#D11E39]" />
+                    <Calendar className="w-[10px] h-[10px] text-[#D11E39]" />
+                    <span className="text-[9.5px] font-medium text-[#4B5563]">
+                      Day {session.day} · {session.timeRange}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-bold text-[#D11E39] flex items-center gap-0.5">
+                    Details <ChevronRight className="w-3 h-3" />
+                  </span>
+                </div>
+
+                <div className="pl-1">
+                  <h4 className="text-[12.5px] font-bold text-[#181818] leading-tight pr-2 whitespace-normal line-clamp-2">
                     {session.title}
                   </h4>
-                  <p className="text-[11px] text-[#6B6B6B] mt-0.5">{session.speakerName}</p>
+                  <p className="text-[10.5px] text-[#6B6B6B] mt-0.5">{session.speakerName || 'Not published'}</p>
                 </div>
+
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleBookmarkSession(session.id);
                   }}
-                  className={`w-full py-1.5 rounded-lg text-[11px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-2 ${
+                  className={`w-full py-1.5 rounded-[6px] text-[11.5px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-1.5 ${
                     session.isBookmarked 
                       ? 'border-[#0D9488] bg-[#F0FDF4] text-[#0D9488]'
                       : 'border-[#181818] text-[#181818] bg-white hover:bg-gray-50'
@@ -158,11 +174,11 @@ export const DelegateAIRecommendations: React.FC = () => {
                 >
                   {session.isBookmarked ? (
                     <>
-                      <Check className="w-4 h-4" /> Added
+                      <Check className="w-3 h-3" /> Added to Schedule
                     </>
                   ) : (
                     <>
-                      <CalendarPlus className="w-4 h-4" /> Add
+                      <CalendarPlus className="w-3 h-3" /> Add to Schedule
                     </>
                   )}
                 </button>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BarChart2, Bell, Briefcase, Building2, Calendar, Check, Clock, Filter, LineChart, Linkedin, Mic, Search, User, UserPlus, Users, X, XCircle } from 'lucide-react';
+import { BarChart2, Bell, Briefcase, Building2, Calendar, Check, ChevronLeft, Clock, Filter, LineChart, Linkedin, Mic, Search, User, UserPlus, Users, X, XCircle } from 'lucide-react';
 
 import { useStore } from '../../lib/store';
 
@@ -15,6 +15,7 @@ export const DelegatePeople: React.FC = () => {
     connectWith,
     disconnectFrom,
     setSelectedPersonId,
+    setActiveDelegateTab,
     acceptConnectionRequest,
     ignoreConnectionRequest,
     viewSavedPeopleOnly,
@@ -23,12 +24,7 @@ export const DelegatePeople: React.FC = () => {
 
   const [activeSubTab, setActiveSubTab] = useState<'recommended' | 'all' | 'connections' | 'pending' | 'requests'>('recommended');
   
-  React.useEffect(() => {
-    if (viewSavedPeopleOnly) {
-      setActiveSubTab('connections');
-      setViewSavedPeopleOnly(false); // consume the flag
-    }
-  }, [viewSavedPeopleOnly, setViewSavedPeopleOnly]);
+  // Remove the useEffect since we want to persist viewSavedPeopleOnly
 
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -56,6 +52,10 @@ export const DelegatePeople: React.FC = () => {
 
     if (!matchesSearch) return false;
 
+    if (viewSavedPeopleOnly) {
+      return isConnected(person.id);
+    }
+
     if (activeSubTab === 'recommended') {
       return (person.relevanceScore || 0) >= 80;
     }
@@ -70,13 +70,14 @@ export const DelegatePeople: React.FC = () => {
     }
     return true; // 'all'
   }).sort((a, b) => {
+    if (viewSavedPeopleOnly) return 0;
     if (activeSubTab === 'recommended') {
       return (b.relevanceScore || 0) - (a.relevanceScore || 0);
     }
     return 0;
   });
 
-  const finalFilteredList = activeSubTab === 'recommended' ? filteredList.slice(0, 15) : filteredList;
+  const finalFilteredList = (!viewSavedPeopleOnly && activeSubTab === 'recommended') ? filteredList.slice(0, 15) : filteredList;
 
   const handleConnect = (personId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -86,53 +87,72 @@ export const DelegatePeople: React.FC = () => {
   return (
     <div className="flex-1 bg-[#F6F4F0] px-2 pt-2 pb-16 space-y-2">
       {/* Header */}
-      <div className="pt-2 pb-1 px-1">
-        <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · NETWORKING</p>
-        <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">People</h1>
-      </div>
-
-      {/* Search Bar (44px target) */}
-      <div className="relative">
-        <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search by name, company, or interest (e.g. AI)..."
-          className="w-full h-11 pl-10 pr-4 rounded-lg bg-white border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-xs"
-        />
-        {searchQuery && (
-          <button
-            onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#6B6B6B] hover:text-[#181818]"
+      {viewSavedPeopleOnly ? (
+        <div className="pt-2 pb-2 px-2 mb-2 flex items-center gap-3">
+          <button 
+            onClick={() => {
+              setViewSavedPeopleOnly(false);
+              setActiveDelegateTab('profile');
+            }}
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
           >
-            Clear
+            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
-        )}
-      </div>
+          <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Saved People</h1>
+        </div>
+      ) : (
+        <div className="pt-2 pb-1 px-1">
+          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · NETWORKING</p>
+          <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">People</h1>
+        </div>
+      )}
 
-      {/* Filter Tabs */}
-      <div className="flex items-center gap-1.5 p-1 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7] overflow-x-auto no-scrollbar">
-        {[
-          { id: 'recommended', label: 'Recommended' },
-          { id: 'requests', label: incomingRequestsCount > 0 ? `Requests (${incomingRequestsCount})` : 'Requests' },
-          { id: 'all', label: 'All Attendees' },
-          { id: 'connections', label: `Connected (${connections.filter(c => c.status === 'connected').length})` },
-          { id: 'pending', label: 'Pending' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveSubTab(tab.id as any)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-              activeSubTab === tab.id
-                ? 'bg-white text-[#181818] shadow-xs'
-                : 'text-[#6B6B6B] hover:text-[#181818]'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      {!viewSavedPeopleOnly && (
+        <>
+          {/* Search Bar */}
+          <div className="relative mt-2 mb-3">
+            <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name, company, or interest (e.g. AI)..."
+              className="w-full h-11 bg-white border border-[#E5E7EB] rounded-[10px] pl-10 pr-4 text-[13px] focus:ring-2 focus:ring-[#B51F32]/20 focus:border-[#B51F32] outline-none text-[#181818] placeholder-[#9CA3AF] shadow-sm transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-[#6B6B6B] hover:text-[#181818]"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          {/* Filter Tabs */}
+          <div className="flex items-center gap-1.5 p-1 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7] overflow-x-auto no-scrollbar">
+            {[
+              { id: 'recommended', label: 'Recommended' },
+              { id: 'requests', label: incomingRequestsCount > 0 ? `Requests (${incomingRequestsCount})` : 'Requests' },
+              { id: 'all', label: 'All Attendees' },
+              { id: 'connections', label: `Connected (${connections.filter(c => c.status === 'connected').length})` },
+              { id: 'pending', label: 'Pending' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveSubTab(tab.id as any)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                  activeSubTab === tab.id
+                    ? 'bg-white text-[#181818] shadow-xs'
+                    : 'text-[#6B6B6B] hover:text-[#181818]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Attendees List */}
       <div className="space-y-2">
@@ -213,7 +233,7 @@ export const DelegatePeople: React.FC = () => {
                         handleConnect(person.id, e);
                       }
                     }}
-                    className={`flex-shrink-0 h-9 px-2.5 rounded-lg text-[13px] font-medium flex items-center gap-1.5 transition-all active:scale-95 ${
+                    className={`flex-shrink-0 w-[102px] justify-center h-[34px] rounded-lg text-[12.5px] font-medium flex items-center gap-1.5 transition-all active:scale-95 ${
                       connected
                         ? 'bg-red-50 text-[#B51F32] border border-red-200'
                         : pending

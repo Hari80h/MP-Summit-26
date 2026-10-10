@@ -48,6 +48,8 @@ interface StoreContextType {
   setViewSavedPeopleOnly: (v: boolean) => void;
   viewSavedCompaniesOnly: boolean;
   setViewSavedCompaniesOnly: (v: boolean) => void;
+  savedCompanyIds: string[];
+  toggleSaveCompany: (id: string) => void;
   activeExhibitorTab: 'home' | 'leads' | 'scan' | 'products' | 'more';
   setActiveExhibitorTab: (tab: 'home' | 'leads' | 'scan' | 'products' | 'more') => void;
   activeOrganizerTab: 'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'analytics' | 'reports' | 'settings';

@@ -26,20 +26,20 @@ export const DelegateSponsors: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-y-auto no-scrollbar px-2 pt-2 pb-16 space-y-2">
-      <div className="pt-3 pb-3 px-3 border-b border-[#DEDCD7] bg-[#F6F4F0] sticky top-0 z-10 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-y-auto no-scrollbar">
+      <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] sticky top-0 z-10 flex items-center justify-between">
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => setActiveDelegateTab('home')}
-            className="w-8 h-8 flex items-center justify-center text-[#181818] transition-active active:scale-95"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
-          <h1 className="text-[12px] font-bold text-[#181818]">Sponsors</h1>
+          <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Sponsors</h1>
         </div>
       </div>
 
-      <div className="p-3 space-y-3">
+      <div className="px-4 pb-16 space-y-3">
         {/* Title Sponsor */}
         <section>
           <h2 className="text-[12px] font-bold text-[#B51F32] uppercase tracking-wider mb-2 text-center">Title Sponsor</h2>

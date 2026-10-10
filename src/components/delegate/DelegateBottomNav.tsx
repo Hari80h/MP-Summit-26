@@ -31,15 +31,15 @@ export const DelegateBottomNav: React.FC = () => {
                 aria-label="Scan QR Code"
               >
                 <div
-                  className={`absolute -top-[24px] left-1/2 -translate-x-1/2 z-20 w-[44px] h-[44px] rounded-full flex items-center justify-center border-[2px] border-white ring-[2px] ring-[#FFD1D9] shadow-[0_8px_16px_rgba(255,180,195,0.6)] transition-transform active:scale-95 ${
+                  className={`absolute -top-[28px] left-1/2 -translate-x-1/2 z-20 w-[50px] h-[50px] rounded-full flex items-center justify-center border-[2px] border-white ring-[2px] ring-[#FFD1D9] shadow-[0_8px_16px_rgba(255,180,195,0.6)] transition-transform active:scale-95 ${
                     isActive ? 'bg-[#9C1A2B]' : 'bg-[#D11E39] hover:bg-[#B51F32]'
                   }`}
                 >
-                  <Icon className="w-[18px] h-[18px] text-white stroke-[2.2]" />
+                  <Icon className="w-[22px] h-[22px] text-white stroke-[2.2]" />
                 </div>
                 
                 {/* Placeholder to match the height of other tab icons, ensuring text aligns perfectly */}
-                <div className="w-[18px] h-[18px]" />
+                <div className="w-[22px] h-[22px]" />
                 
                 <div className="flex flex-col items-center mt-1 z-10">
                   <span className="text-[9px] font-bold tracking-tight text-[#181818]">
@@ -62,7 +62,7 @@ export const DelegateBottomNav: React.FC = () => {
               }`}
             >
               <div className="relative">
-                <Icon className={`w-[18px] h-[18px] ${isActive ? 'stroke-[2.2]' : 'stroke-[1.8]'}`} />
+                <Icon className={`w-[22px] h-[22px] ${isActive ? 'stroke-[2.2]' : 'stroke-[1.8]'}`} />
                 {item.badge !== undefined && (
                   <span className="absolute -top-1 -right-2 min-w-[14px] h-[14px] bg-[#D11E39] text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1">
                     {item.badge}

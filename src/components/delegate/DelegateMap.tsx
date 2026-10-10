@@ -12,17 +12,17 @@ export const DelegateMap: React.FC = () => {
   const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.25, 0.5));
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-hidden px-2 pt-2 space-y-2">
-      <div className="pt-3 pb-3 px-3 bg-white border-b border-[#DEDCD7] flex-shrink-0 z-10">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2">
+    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-hidden">
+      <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] flex-shrink-0 z-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <button 
               onClick={() => setActiveDelegateTab('home')}
-              className="w-8 h-8 rounded-full bg-[#F6F4F0] flex items-center justify-center text-[#181818] transition-active active:scale-95"
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
             </button>
-            <h1 className="text-[12px] font-bold text-[#181818]">Exhibit Hall Map</h1>
+            <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Exhibit Hall Map</h1>
           </div>
           <div className="flex bg-[#F6F4F0] rounded-lg p-1">
             <button onClick={handleZoomOut} className="p-1.5 rounded text-[#181818] hover:bg-white transition-colors">

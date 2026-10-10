@@ -101,54 +101,7 @@ export const DelegateEditProfile: React.FC = () => {
           </div>
         </div>
 
-        {/* Contact Handles */}
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#E5E7EB] shadow-sm space-y-2">
-          <h2 className="text-[12px] font-bold text-[#181818] border-b border-[#F3F4F6] pb-2">Contact Handles</h2>
-          
-          <div className="space-y-1.5">
-            <label className="text-[12px] font-semibold text-[#6B6B6B]">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
-            />
-          </div>
 
-          <div className="space-y-1.5">
-            <label className="text-[12px] font-semibold text-[#6B6B6B]">Mobile Number</label>
-            <input
-              type="tel"
-              name="mobile"
-              value={formData.mobile}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-[12px] font-semibold text-[#6B6B6B]">LinkedIn Username / Handle</label>
-            <input
-              type="text"
-              name="linkedin"
-              value={formData.linkedin}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-[12px] font-semibold text-[#6B6B6B]">Twitter / X Handle</label>
-            <input
-              type="text"
-              name="twitter"
-              value={formData.twitter}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
-            />
-          </div>
-        </div>
 
       </div>
     </div>

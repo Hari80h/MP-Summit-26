@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { AlertCircle, ArrowRight, BarChart2, Bookmark, BookmarkCheck, Briefcase, Building2, Calendar, CalendarPlus, Check, CheckCircle2, ChevronLeft, Clock, LineChart, MapPin, MessageSquare, Mic, Send, ThumbsUp, User, Users } from 'lucide-react';
+import { AlertCircle, ArrowRight, BarChart2, Bookmark, BookmarkCheck, Briefcase, Building2, Calendar, CalendarPlus, Check, CheckCircle2, ChevronLeft, ChevronRight, Clock, LineChart, MapPin, MessageSquare, Mic, Send, ThumbsUp, User, Users } from 'lucide-react';
 
 import { useStore } from '../../lib/store';
 
@@ -73,33 +73,33 @@ export const DelegateSchedule: React.FC = () => {
     return (
       <div ref={scrollRef} className="flex-1 bg-[#F6F4F0] select-none overflow-y-auto px-2 pt-2 pb-16 space-y-2">
         {/* Back Button & Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pb-1">
           <button
             onClick={() => {
               setSelectedSessionId(null);
               setPollVoteError(null);
             }}
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#181818] hover:text-[#B51F32] transition-colors py-1 px-2 -ml-2 rounded-lg"
+            className="flex items-center gap-1.5 text-[15px] font-medium text-[#181818] transition-colors py-1 px-1 -ml-1 rounded-lg active:opacity-70"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5" />
             <span>Back to Schedule</span>
           </button>
           <button
             onClick={() => toggleBookmarkSession(activeSession.id)}
-            className={`p-2 rounded-lg border text-xs font-semibold flex items-center gap-1 transition-colors ${
+            className={`px-3 py-1.5 rounded-[8px] border text-[13px] font-bold flex items-center gap-1.5 transition-colors active:scale-95 ${
               activeSession.isBookmarked
-                ? 'bg-[#EBF5F0] border-[#2F7D58]/40 text-[#2F7D58]'
-                : 'bg-white border-[#DEDCD7] text-[#181818]'
+                ? 'bg-[#F0FDF4] border-[#BBF7D0] text-[#166534]'
+                : 'bg-white border-[#E5E7EB] text-[#181818] shadow-sm'
             }`}
           >
             {activeSession.isBookmarked ? (
               <>
-                <BookmarkCheck className="w-4 h-4 text-[#2F7D58]" />
+                <BookmarkCheck className="w-[18px] h-[18px]" />
                 <span>Saved</span>
               </>
             ) : (
               <>
-                <Bookmark className="w-4 h-4" />
+                <Bookmark className="w-[18px] h-[18px]" />
                 <span>Save</span>
               </>
             )}
@@ -107,36 +107,42 @@ export const DelegateSchedule: React.FC = () => {
         </div>
 
         {/* Session Card Info */}
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#EFEEEA] text-[#181818] px-2 py-0.5 rounded">
-              {activeSession.track}
-            </span>
-            {activeSession.status === 'live' && (
-              <span className="text-[10px] font-bold uppercase tracking-wider bg-red-50 text-[#B51F32] border border-red-200 px-2 py-0.5 rounded animate-pulse">
-                Live Now
+        <div className="p-4 rounded-[16px] shadow-sm relative overflow-hidden bg-white border border-[#F3F4F6]">
+          <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-[#FFF0F2] opacity-80 z-0"></div>
+          <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-[#FCE8E8] rounded-full blur-3xl z-0 pointer-events-none"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D11E39] px-2.5 py-1 rounded-md">
+                {activeSession.track || 'SESSION'}
               </span>
-            )}
-          </div>
-
-          <h1 className="text-[13px] font-bold text-[#181818] leading-snug">
-            {activeSession.title}
-          </h1>
-
-          <div className="mt-2.5 flex flex-wrap items-center gap-2 text-xs text-[#6B6B6B]">
-            <div className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-[#181818]" />
-              <span className="font-mono">{activeSession.timeRange}</span>
+              {activeSession.status === 'live' && (
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-red-50 text-[#B51F32] border border-red-200 px-2 py-0.5 rounded animate-pulse">
+                  Live Now
+                </span>
+              )}
             </div>
-            <div className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-[#181818]" />
-              <span>{activeSession.room}</span>
+
+            <h1 className="text-[17px] font-bold text-[#181818] leading-[1.3] mb-4 pr-4">
+              {activeSession.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#4B5563]">
+              <div className="flex items-center gap-1.5 font-medium">
+                <Clock className="w-[15px] h-[15px] text-[#181818]" />
+                <span>{activeSession.timeRange}</span>
+              </div>
+              <div className="w-[1px] h-3 bg-[#DEDCD7]"></div>
+              <div className="flex items-center gap-1.5 font-medium">
+                <MapPin className="w-[15px] h-[15px] text-[#181818]" />
+                <span>{activeSession.room}</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* 4 Detail Tabs: Overview | Speaker | Q&A | Poll */}
-        <div className="flex bg-[#EFEEEA] p-1 rounded-lg border border-[#DEDCD7]">
+        <div className="flex bg-[#F3F4F6] p-1 rounded-[12px]">
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'speaker', label: 'Speaker' },
@@ -149,9 +155,9 @@ export const DelegateSchedule: React.FC = () => {
                 setDetailSubTab(tab.id as any);
                 setPollVoteError(null);
               }}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex-1 py-2 text-[12.5px] font-bold transition-all rounded-[10px] ${
                 detailSubTab === tab.id
-                  ? 'bg-white text-[#181818] shadow-xs'
+                  ? 'bg-white text-[#D11E39] shadow-sm border-b-[2.5px] border-[#D11E39]'
                   : 'text-[#6B6B6B] hover:text-[#181818]'
               }`}
             >
@@ -219,17 +225,20 @@ export const DelegateSchedule: React.FC = () => {
 
         {/* TAB 3: Q&A */}
         {detailSubTab === 'qa' && (
-          <div className="space-y-2">
+          <div className="space-y-3 pt-1">
             {/* Submit Question Box */}
-            <form onSubmit={handleQuestionSubmit} className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs space-y-2.5">
+            <form onSubmit={handleQuestionSubmit} className="bg-white p-3.5 rounded-[12px] border border-[#F3F4F6] shadow-sm space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#181818]">Ask the Speaker</span>
-                <label className="flex items-center gap-1.5 text-xs text-[#6B6B6B] cursor-pointer">
+                <span className="text-[14px] font-bold text-[#181818]">Ask the Speaker</span>
+                <label className="flex items-center gap-1.5 text-[12.5px] text-[#6B6B6B] cursor-pointer">
+                  <div className={`w-3.5 h-3.5 rounded-[3px] border ${isAnonymous ? 'bg-[#D11E39] border-[#D11E39]' : 'border-[#9CA3AF] bg-white'} flex items-center justify-center transition-colors`}>
+                    {isAnonymous && <Check className="w-2.5 h-2.5 text-white stroke-[3]" />}
+                  </div>
                   <input
                     type="checkbox"
                     checked={isAnonymous}
                     onChange={(e) => setIsAnonymous(e.target.checked)}
-                    className="rounded text-[#B51F32] focus:ring-[#B51F32]"
+                    className="hidden"
                   />
                   <span>Ask anonymously</span>
                 </label>
@@ -239,16 +248,18 @@ export const DelegateSchedule: React.FC = () => {
                 value={questionText}
                 onChange={(e) => setQuestionText(e.target.value)}
                 placeholder="What would you like to ask regarding enterprise agentic architectures?"
-                rows={2}
-                className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] transition-all resize-none"
+                rows={3}
+                className="w-full p-2.5 rounded-[8px] bg-[#F9FAFB] border border-[#E5E7EB] text-[13px] text-[#181818] focus:outline-none focus:border-[#D11E39] focus:ring-1 focus:ring-[#D11E39] transition-all resize-none placeholder:text-[#9CA3AF]"
               />
 
-              <div className="flex justify-between items-center pt-1">
-                <span className="text-[11px] text-[#6B6B6B]">Moderated live during session</span>
+              <div className="flex justify-between items-center pt-0.5">
+                <span className="text-[11px] text-[#6B6B6B] flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5" /> Moderated live during session
+                </span>
                 <button
                   type="submit"
                   disabled={!questionText.trim()}
-                  className="px-2.5 py-2 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-95 text-white font-semibold text-xs rounded-lg shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50"
+                  className="px-4 py-2.5 bg-[#D11E39] hover:bg-[#B51F32] active:scale-95 text-white font-bold text-[13px] rounded-[8px] shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:active:scale-100"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Submit Question</span>
@@ -257,13 +268,31 @@ export const DelegateSchedule: React.FC = () => {
             </form>
 
             {/* Questions List */}
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between text-xs text-[#6B6B6B] px-1">
-                <span className="font-semibold text-[#181818]">Submitted Questions</span>
-                <span>Sorted by votes</span>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between px-1 text-[#6B6B6B]">
+                <h3 className="text-[15px] font-bold text-[#181818]">Submitted Questions</h3>
+                <span className="flex items-center gap-1.5 text-[12px]">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="6" x2="13" y2="6"></line><line x1="4" y1="12" x2="11" y2="12"></line><line x1="4" y1="18" x2="11" y2="18"></line><polyline points="15 15 18 18 21 15"></polyline><line x1="18" y1="6" x2="18" y2="18"></line></svg> 
+                  Sorted by votes <ChevronRight className="w-3.5 h-3.5 rotate-90" />
+                </span>
               </div>
 
-              {sessionQuestions.map((q) => {
+              {sessionQuestions.length === 0 ? (
+                <div className="bg-white rounded-[16px] border border-dashed border-[#E5E7EB] p-8 flex flex-col items-center justify-center text-center space-y-3">
+                  <div className="relative">
+                    <MessageSquare className="w-14 h-14 text-[#FFF0F2] fill-[#FFF0F2]" />
+                    <MessageSquare className="w-10 h-10 text-[#D11E39] fill-[#D11E39] absolute -bottom-1 -right-1" />
+                    {/* decorative lines */}
+                    <div className="absolute -top-1 -right-3 w-1.5 h-3 bg-[#D11E39] rounded-full rotate-45 opacity-80" />
+                    <div className="absolute top-1 -right-6 w-1.5 h-2.5 bg-[#D11E39] rounded-full rotate-75 opacity-80" />
+                  </div>
+                  <div className="pt-2">
+                    <p className="font-bold text-[#181818] text-[15px]">No questions yet</p>
+                    <p className="text-[13px] text-[#6B6B6B] mt-1">Be the first to ask a question to the speaker!</p>
+                  </div>
+                </div>
+              ) : (
+              sessionQuestions.map((q) => {
                 const hasUpvoted = q.upvotedBy.includes(currentUser.id);
                 return (
                   <div
@@ -306,7 +335,8 @@ export const DelegateSchedule: React.FC = () => {
                     </button>
                   </div>
                 );
-              })}
+              })
+              )}
             </div>
           </div>
         )}
@@ -464,24 +494,40 @@ export const DelegateSchedule: React.FC = () => {
             <div
               key={session.id}
               onClick={() => setSelectedSessionId(session.id)}
-              className="p-2.5 bg-white rounded-lg border border-[#DEDCD7] hover:border-[#181818]/30 cursor-pointer transition-all flex flex-col shadow-sm"
+              className="p-2 bg-white rounded-[12px] shadow-sm relative overflow-hidden flex flex-col gap-1 cursor-pointer hover:shadow-md transition-shadow border border-[#F3F4F6]"
             >
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-[12px] font-medium text-[#6B6B6B]">Day {session.day} · {session.timeRange}</p>
-                  <span className="text-[11px] font-bold text-[#B51F32] flex items-center gap-1 group-hover:underline">
-                    View details <ArrowRight className="w-3 h-3" />
+              {/* Red strip */}
+              <div className="absolute top-0 left-0 w-1.5 h-[35%] bg-[#D11E39] rounded-br-md" />
+              
+              <div className="flex items-center justify-between pl-1">
+                <div className="flex items-center gap-1 bg-[#FFF0F2] px-1.5 py-0.5 rounded-full">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#D11E39]" />
+                  <Calendar className="w-[10px] h-[10px] text-[#D11E39]" />
+                  <span className="text-[9.5px] font-medium text-[#4B5563]">
+                    Day {session.day} · {session.timeRange}
                   </span>
                 </div>
-                <h4 className="text-[12px] font-bold text-[#181818] leading-tight">
+                <span className="text-[10px] font-bold text-[#D11E39] flex items-center gap-0.5">
+                  Details <ChevronRight className="w-3 h-3" />
+                </span>
+              </div>
+
+              <div className="pl-1">
+                <h4 className="text-[12.5px] font-bold text-[#181818] leading-tight pr-2">
                   {session.title}
                 </h4>
-                <p className="text-[12.5px] text-[#6B6B6B] mt-1 leading-snug line-clamp-1">
-                  <span className="font-semibold text-[#4B5563]">{session.speakerName}</span>
-                  {(session.speakerDesignation || session.speakerCompany) && ' · '}
-                  {session.speakerDesignation}
-                  {session.speakerDesignation && session.speakerCompany && ', '}
-                  {session.speakerCompany}
+                <p className="text-[10.5px] text-[#6B6B6B] mt-0.5 leading-snug line-clamp-1">
+                  {session.speakerName ? (
+                    <>
+                      <span className="font-semibold text-[#4B5563]">{session.speakerName}</span>
+                      {(session.speakerDesignation || session.speakerCompany) && ' · '}
+                      {session.speakerDesignation}
+                      {session.speakerDesignation && session.speakerCompany && ', '}
+                      {session.speakerCompany}
+                    </>
+                  ) : (
+                    'Not published'
+                  )}
                 </p>
               </div>
               <button
@@ -489,7 +535,7 @@ export const DelegateSchedule: React.FC = () => {
                   e.stopPropagation();
                   toggleBookmarkSession(session.id);
                 }}
-                className={`w-full py-1.5 mt-2 rounded-lg text-[12.5px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-1.5 ${
+                className={`w-full py-1.5 rounded-[6px] text-[11.5px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-1.5 ${
                   session.isBookmarked 
                     ? 'border-[#0D9488] bg-[#F0FDF4] text-[#0D9488]'
                     : 'border-[#181818] text-[#181818] bg-white hover:bg-gray-50'
@@ -497,11 +543,11 @@ export const DelegateSchedule: React.FC = () => {
               >
                 {session.isBookmarked ? (
                   <>
-                    <Check className="w-4 h-4" /> Added
+                    <Check className="w-3 h-3" /> Added to Schedule
                   </>
                 ) : (
                   <>
-                    <CalendarPlus className="w-4 h-4" /> Add
+                    <CalendarPlus className="w-3 h-3" /> Add to Schedule
                   </>
                 )}
               </button>
