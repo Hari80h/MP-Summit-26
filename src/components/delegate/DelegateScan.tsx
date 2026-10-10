@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import QRCode from 'react-qr-code';
 import { useStore } from '../../lib/store';
 import { QrCode, Check, ArrowRight, X, Scan } from 'lucide-react';
 import { Person } from '../../types';
@@ -57,18 +58,14 @@ export const DelegateScan: React.FC = () => {
         </p>
 
         {/* Larger QR Code Container */}
-        <div className="relative w-36 h-36 my-1.5 bg-white p-1.5 rounded-xl border border-[#181818]/15 flex items-center justify-center shadow-inner shrink-0">
-          <svg viewBox="0 0 100 100" className="w-full h-full">
-            <path d="M10,10 h30 v30 h-30 z M15,15 v20 h20 v-20 z M20,20 h10 v10 h-10 z" fill="#181818" />
-            <path d="M60,10 h30 v30 h-30 z M65,15 v20 h20 v-20 z M70,20 h10 v10 h-10 z" fill="#181818" />
-            <path d="M10,60 h30 v30 h-30 z M15,65 v20 h20 v-20 z M20,70 h10 v10 h-10 z" fill="#181818" />
-            <circle cx="50" cy="50" r="12" fill="#B51F32" />
-            <rect x="45" y="15" width="10" height="20" fill="#181818" />
-            <rect x="15" y="45" width="20" height="10" fill="#181818" />
-            <rect x="50" y="65" width="15" height="15" fill="#181818" />
-            <rect x="70" y="50" width="20" height="10" fill="#181818" />
-            <rect x="70" y="70" width="15" height="15" fill="#181818" />
-          </svg>
+        <div className="relative w-36 h-36 my-1.5 bg-white p-2 rounded-xl border border-[#181818]/15 flex items-center justify-center shadow-inner shrink-0">
+          <QRCode 
+            value={`eventsphere://reg/${currentUser.registrationId}`} 
+            size={128}
+            bgColor="#FFFFFF"
+            fgColor="#181818"
+            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+          />
         </div>
       </div>
 
@@ -146,11 +143,18 @@ export const DelegateScan: React.FC = () => {
             </div>
 
             {/* Attendee Details Card */}
-            <div className="bg-[#F6F4F0] p-2.5 rounded-[14px] border border-[#E5E7EB] space-y-2 mb-2.5">
-              <div className="flex flex-col gap-1">
-                <h3 className="text-[12px] font-bold text-[#181818] leading-tight">{scannedPerson.name}</h3>
-                <p className="text-[11px] text-[#6B6B6B]">
-                  {scannedPerson.designation} · <strong className="text-[#181818] font-medium">{scannedPerson.company}</strong>
+            <div className="bg-[#F6F4F0] p-3 rounded-[14px] border border-[#E5E7EB] mb-3 flex items-center gap-3">
+              {scannedPerson.avatar ? (
+                <img src={scannedPerson.avatar} alt={scannedPerson.name} className="w-10 h-10 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0" />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center font-medium text-[13px] text-[#181818] flex-shrink-0 shadow-sm">
+                  {scannedPerson.name.split(' ').map((n) => n[0]).join('')}
+                </div>
+              )}
+              <div className="flex flex-col gap-0.5">
+                <h3 className="text-[13.5px] font-bold text-[#181818] leading-tight">{scannedPerson.name}</h3>
+                <p className="text-[11.5px] text-[#6B6B6B]">
+                  {scannedPerson.designation} <span className="opacity-60">·</span> <strong className="text-[#181818] font-medium">{scannedPerson.company}</strong>
                 </p>
               </div>
             </div>

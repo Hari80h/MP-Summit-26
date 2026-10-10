@@ -19,7 +19,8 @@ export const DelegatePeople: React.FC = () => {
     acceptConnectionRequest,
     ignoreConnectionRequest,
     viewSavedPeopleOnly,
-    setViewSavedPeopleOnly
+    setViewSavedPeopleOnly,
+    savedPeopleIds
   } = useStore();
 
   const [activeSubTab, setActiveSubTab] = useState<'recommended' | 'all' | 'connections' | 'pending' | 'requests'>('recommended');
@@ -53,7 +54,7 @@ export const DelegatePeople: React.FC = () => {
     if (!matchesSearch) return false;
 
     if (viewSavedPeopleOnly) {
-      return isConnected(person.id);
+      return savedPeopleIds.includes(person.id);
     }
 
     if (activeSubTab === 'recommended') {

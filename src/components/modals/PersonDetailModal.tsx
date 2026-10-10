@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useStore } from '../../lib/store';
-import { X, Check, UserPlus, Mail, Phone, Linkedin, Twitter, ShieldCheck, Tag, Clock, Lock } from 'lucide-react';
+import { X, Check, UserPlus, Mail, Phone, Linkedin, Twitter, ShieldCheck, Tag, Clock, Lock, Star } from 'lucide-react';
 
 export const PersonDetailModal: React.FC = () => {
   const {
@@ -12,6 +12,8 @@ export const PersonDetailModal: React.FC = () => {
     connections,
     connectWith,
     disconnectFrom,
+    savedPeopleIds,
+    toggleSavePerson
   } = useStore();
 
   if (!selectedPersonId) return null;
@@ -21,6 +23,7 @@ export const PersonDetailModal: React.FC = () => {
 
   const isConnected = connections.some((c) => c.personId === person.id && c.status === 'connected');
   const isPending = connections.some((c) => c.personId === person.id && c.status === 'pending');
+  const isSaved = savedPeopleIds.includes(person.id);
 
   const handleConnect = () => {
     if (isConnected || isPending) {
@@ -47,7 +50,14 @@ export const PersonDetailModal: React.FC = () => {
         </div>
 
         {/* Identity & Avatar */}
-        <div className="flex items-start gap-2.5">
+        <div className="flex items-start gap-2.5 relative">
+          <button 
+            onClick={() => toggleSavePerson(person.id)}
+            className="absolute top-0 right-0 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <Star className={`w-5 h-5 ${isSaved ? 'fill-yellow-400 text-yellow-400' : 'text-[#9CA3AF]'}`} />
+          </button>
+          
           {person.avatar ? (
             <img src={person.avatar} alt={person.name} className="w-12 h-12 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0" />
           ) : (
@@ -55,7 +65,7 @@ export const PersonDetailModal: React.FC = () => {
               {person.name.split(' ').map((n) => n[0]).join('')}
             </div>
           )}
-          <div className="pt-0.5">
+          <div className="pt-0.5 pr-8">
             <h2 className="text-[16px] font-bold text-[#181818] leading-tight">{person.name}</h2>
             <p className="text-[14px] text-[#4B5563] mt-0.5">
               {person.designation} · {person.company}

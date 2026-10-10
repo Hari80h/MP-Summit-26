@@ -49,6 +49,8 @@ interface StoreContextType {
   viewSavedCompaniesOnly: boolean;
   setViewSavedCompaniesOnly: (v: boolean) => void;
   savedCompanyIds: string[];
+  savedPeopleIds: string[];
+  toggleSavePerson: (id: string) => void;
   toggleSaveCompany: (id: string) => void;
   activeExhibitorTab: 'home' | 'leads' | 'scan' | 'products' | 'more';
   setActiveExhibitorTab: (tab: 'home' | 'leads' | 'scan' | 'products' | 'more') => void;
@@ -139,6 +141,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [activeExhibitorTab, setActiveExhibitorTab] = useState<'home' | 'leads' | 'scan' | 'products' | 'more'>('home');
   const [activeOrganizerTab, setActiveOrganizerTab] = useState<'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'analytics' | 'reports' | 'settings'>('overview');
   const [viewMode, setViewMode] = useState<'frame' | 'responsive'>('frame');
+
   const toggleSaveCompany = (id: string) => {
     setSavedCompanyIds(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]);
   };
@@ -158,6 +161,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [savedCompanyIds, setSavedCompanyIds] = useState<string[]>([]);
+  const [savedPeopleIds, setSavedPeopleIds] = useState<string[]>([]);
+  const toggleSavePerson = (id: string) => {
+    setSavedPeopleIds((prev) => {
+      const isSaved = prev.includes(id);
+      if (isSaved) return prev.filter((pId) => pId !== id);
+      return [...prev, id];
+    });
+  };
+
 
   // Entities
   const [event, setEvent] = useState<EventMetadata>(INITIAL_EVENT);
@@ -754,6 +766,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setViewSavedPeopleOnly,
     viewSavedCompaniesOnly,
     savedCompanyIds,
+    savedPeopleIds,
+    toggleSavePerson,
     toggleSaveCompany,
     setViewSavedCompaniesOnly,
         setActiveDelegateTab,

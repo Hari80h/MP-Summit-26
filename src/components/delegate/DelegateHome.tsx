@@ -445,18 +445,14 @@ export const DelegateHome: React.FC = () => {
        }}
        className="p-2 bg-white rounded-[12px] shadow-sm relative overflow-hidden flex flex-col gap-1 cursor-pointer hover:shadow-md transition-shadow border border-[#F3F4F6]"
       >
-       {/* Red strip */}
-       <div className="absolute top-0 left-0 w-1.5 h-[35%] bg-[#D11E39] rounded-br-md" />
-       
        <div className="flex items-center justify-between pl-1">
-        <div className="flex items-center gap-1 bg-[#FFF0F2] px-1.5 py-0.5 rounded-full">
-         <div className="w-1.5 h-1.5 rounded-full bg-[#D11E39]" />
-         <Calendar className="w-[10px] h-[10px] text-[#D11E39]" />
+        <div className="flex items-center gap-1 bg-[#F3F4F6] px-1.5 py-0.5 rounded-full">
+         <Calendar className="w-[10px] h-[10px] text-[#6B6B6B]" />
          <span className="text-[9.5px] font-medium text-[#4B5563]">
           Day {session.day} · {session.timeRange}
          </span>
         </div>
-        <span className="text-[10px] font-bold text-[#D11E39] flex items-center gap-0.5">
+        <span className="text-[10px] font-bold text-[#6B6B6B] flex items-center gap-0.5">
          Details <ChevronRight className="w-3 h-3" />
         </span>
        </div>

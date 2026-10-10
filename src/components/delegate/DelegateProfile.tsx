@@ -16,6 +16,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
   const {
     currentUser,
     connections,
+    savedPeopleIds,
     sessions,
     showToast,
     setActiveDelegateTab,
@@ -164,7 +165,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
         >
           <div className="flex items-center gap-3">
             <Star className="w-[20px] h-[20px] text-[#181818]" />
-            <span className="font-semibold text-[#181818] text-[13px]">Saved People ({connections.filter(c => c.status === 'connected').length})</span>
+            <span className="font-semibold text-[#181818] text-[13px]">Saved People ({savedPeopleIds.length})</span>
           </div>
           <ChevronRight className="w-5 h-5 text-[#9CA3AF]" />
         </button>
@@ -253,8 +254,8 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
               <span className="text-[14px] font-medium text-[#181818] w-[80px] flex-shrink-0">Mobile</span>
               <input 
                 type="text" 
-                value={currentUser.phone === 'Not publicly listed' ? '' : (currentUser.phone || '')} 
-                onChange={(e) => updateCurrentUser({ phone: e.target.value })} 
+                value={currentUser.mobile === 'Not publicly listed' ? '' : (currentUser.mobile || '')} 
+                onChange={(e) => updateCurrentUser({ mobile: e.target.value })} 
                 placeholder="Add mobile..." 
                 className="flex-1 min-w-0 max-w-[160px] px-2.5 py-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-md text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
               />
