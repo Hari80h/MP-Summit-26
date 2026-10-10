@@ -10,6 +10,7 @@ import {
   Download,
   ExternalLink,
   ChevronLeft,
+  ChevronRight,
   FileText,
   Globe,
   X,
@@ -152,102 +153,96 @@ export const ExhibitorProducts: React.FC = () => {
     const productVisitors = interestedVisitors.filter((v) => v.productId === activeProduct.id);
 
     return (
-      <div className="flex-1 bg-[#F6F4F0] select-none px-2 pt-2 pb-16 space-y-2">
+      <div className="flex-1 bg-[#F6F4F0] select-none px-4 pt-4 pb-20 space-y-4">
         {/* Back and Edit/Delete Header */}
         <div className="flex items-center justify-between">
           <button
             onClick={() => setSelectedProductId(null)}
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#181818] hover:text-[#B51F32] transition-colors py-1 px-2 -ml-2 rounded-lg"
+            className="flex items-center gap-1 text-sm font-semibold text-[#6B6B6B] hover:text-[#181818] transition-colors -ml-1 py-1 px-1 rounded-lg"
           >
-            <ChevronLeft className="w-4 h-4" />
-            <span>Back to Products</span>
+            <ChevronLeft className="w-5 h-5" />
+            <span>Back</span>
           </button>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => handleOpenEdit(activeProduct)}
-              className="px-2.5 py-1.5 rounded-lg border border-[#DEDCD7] bg-white text-xs font-semibold flex items-center gap-1.5 hover:bg-[#F6F4F0] text-[#181818] transition-colors shadow-xs"
+              className="px-3 py-2 rounded-xl bg-white border border-[#DEDCD7] text-sm font-semibold flex items-center gap-1.5 hover:bg-[#F6F4F0] text-[#181818] transition-colors shadow-sm"
             >
-              <Pencil className="w-3.5 h-3.5 text-[#00A4EF]" />
+              <Pencil className="w-4 h-4 text-gray-500" />
               <span>Edit</span>
             </button>
             <button
               onClick={() => setDeletingProductId(activeProduct.id)}
-              className="px-2.5 py-1.5 rounded-lg border border-red-200 bg-red-50 text-xs font-semibold flex items-center gap-1.5 hover:bg-red-100 text-[#B51F32] transition-colors shadow-xs"
+              className="px-3 py-2 rounded-xl bg-red-50 border border-red-200 text-sm font-semibold flex items-center gap-1.5 hover:bg-red-100 text-[#B51F32] transition-colors shadow-sm"
             >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Delete</span>
+              <Trash2 className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Product Card Title & Metrics */}
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs space-y-3">
-          <div className="flex items-start gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#00A4EF]/10 border border-[#00A4EF]/20 flex items-center justify-center text-[#00A4EF] font-bold text-[12px] flex-shrink-0">
-              <Package className="w-6 h-6 stroke-[2]" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
-                {activeProduct.category} · Booth {activeProduct.booth}
-              </span>
-              <h1 className="text-[13px] font-bold text-[#181818] leading-tight truncate">
-                {activeProduct.name}
-              </h1>
-              <p className="text-xs text-[#6B6B6B] mt-0.5">
-                {activeProduct.tagline}
-              </p>
-            </div>
+        <div className="bg-white p-5 rounded-3xl border border-[#DEDCD7] shadow-sm space-y-5">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] block mb-2">
+              {activeProduct.category} · Booth {activeProduct.booth}
+            </span>
+            <h1 className="text-2xl font-serif text-[#181818] leading-tight mb-1">
+              {activeProduct.name}
+            </h1>
+            <p className="text-sm text-[#6B6B6B]">
+              {activeProduct.tagline}
+            </p>
           </div>
 
           {/* Metrics Row: Views, Enquiries, Interested Visitors */}
-          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#DEDCD7]/60 text-center">
-            <div className="p-2 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7]">
-              <span className="text-[10px] text-[#6B6B6B] block">Views</span>
-              <span className="text-[12px] font-bold font-mono text-[#181818]">
+          <div className="grid grid-cols-3 gap-3 pt-5 border-t border-[#DEDCD7]/60 text-center">
+            <div className="p-3 bg-[#F6F4F0] rounded-2xl">
+              <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Views</span>
+              <span className="text-xl font-light text-[#181818]">
                 {activeProduct.views}
               </span>
             </div>
-            <div className="p-2 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7]">
-              <span className="text-[10px] text-[#6B6B6B] block">Enquiries</span>
-              <span className="text-[12px] font-bold font-mono text-[#B51F32]">
+            <div className="p-3 bg-[#F6F4F0] rounded-2xl">
+              <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Enquiries</span>
+              <span className="text-xl font-light text-[#B51F32]">
                 {activeProduct.enquiries}
               </span>
             </div>
             <div
               onClick={() => setShowVisitorsModal(true)}
-              className="p-2 bg-[#F6F4F0] hover:bg-[#EFEEEA] rounded-lg border border-[#DEDCD7] cursor-pointer transition-colors"
+              className="p-3 bg-green-50/50 hover:bg-green-50 rounded-2xl border border-green-100 cursor-pointer transition-colors"
             >
-              <span className="text-[10px] text-[#6B6B6B] block">Interested</span>
-              <span className="text-[12px] font-bold font-mono text-[#2F7D58]">
+              <span className="text-xs font-semibold text-[#2F7D58] block mb-1">Interested</span>
+              <span className="text-xl font-light text-[#2F7D58]">
                 {activeProduct.interestedVisitorsCount}
               </span>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex items-center gap-3 pt-2">
             <button
               onClick={() => enquireProduct(activeProduct.id)}
-              className="flex-1 h-11 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center gap-1.5"
+              className="flex-1 h-12 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-sm rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>Simulate Product Enquiry</span>
+              <span>Product Enquiry</span>
             </button>
 
             <button
               onClick={() => setShowVisitorsModal(true)}
-              className="h-11 px-3 bg-white hover:bg-[#F6F4F0] border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg shadow-xs transition-colors flex items-center gap-1"
+              className="h-12 px-4 bg-white hover:bg-[#F6F4F0] border border-[#DEDCD7] text-[#181818] font-semibold text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
               title="View Interested Visitors"
             >
               <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">Visitors</span>
+              <span>Visitors</span>
             </button>
           </div>
         </div>
 
         {/* 5 Tabs: Overview | Features | Benefits | Use Cases | Resources */}
-        <div className="flex bg-[#EFEEEA] p-1 rounded-lg border border-[#DEDCD7] overflow-x-auto no-scrollbar">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'features', label: 'Features' },
@@ -259,10 +254,10 @@ export const ExhibitorProducts: React.FC = () => {
               key={tab.id}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onClick={() => setDetailSubTab(tab.id as any)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all border ${
                 detailSubTab === tab.id
-                  ? 'bg-white text-[#181818] shadow-xs'
-                  : 'text-[#6B6B6B] hover:text-[#181818]'
+                  ? 'bg-white border-[#DEDCD7] text-[#181818] shadow-sm'
+                  : 'bg-transparent border-transparent text-[#6B6B6B] hover:text-[#181818] hover:bg-black/5'
               }`}
             >
               {tab.label}
@@ -271,10 +266,10 @@ export const ExhibitorProducts: React.FC = () => {
         </div>
 
         {/* TAB CONTENT */}
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs text-xs space-y-3">
+        <div className="bg-white p-5 rounded-3xl border border-[#DEDCD7] shadow-sm text-sm space-y-4">
           {detailSubTab === 'overview' && (
             <div>
-              <h3 className="font-bold text-[#181818] mb-1.5 uppercase tracking-wide text-[11px]">
+              <h3 className="font-semibold text-[#181818] mb-2 text-base">
                 Product Overview
               </h3>
               <p className="text-[#6B6B6B] leading-relaxed">
@@ -285,13 +280,13 @@ export const ExhibitorProducts: React.FC = () => {
 
           {detailSubTab === 'features' && (
             <div>
-              <h3 className="font-bold text-[#181818] mb-2 uppercase tracking-wide text-[11px]">
+              <h3 className="font-semibold text-[#181818] mb-3 text-base">
                 Key Technical Features
               </h3>
-              <ul className="space-y-2 text-[#6B6B6B]">
+              <ul className="space-y-3 text-[#6B6B6B]">
                 {activeProduct.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#B51F32] mt-1.5 flex-shrink-0" />
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#B51F32] mt-2 flex-shrink-0" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -301,13 +296,13 @@ export const ExhibitorProducts: React.FC = () => {
 
           {detailSubTab === 'benefits' && (
             <div>
-              <h3 className="font-bold text-[#181818] mb-2 uppercase tracking-wide text-[11px]">
+              <h3 className="font-semibold text-[#181818] mb-3 text-base">
                 Enterprise Business Benefits
               </h3>
-              <ul className="space-y-2 text-[#6B6B6B]">
+              <ul className="space-y-3 text-[#6B6B6B]">
                 {activeProduct.benefits.map((benefit, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#2F7D58] mt-1.5 flex-shrink-0" />
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2F7D58] mt-2 flex-shrink-0" />
                     <span>{benefit}</span>
                   </li>
                 ))}
@@ -317,13 +312,13 @@ export const ExhibitorProducts: React.FC = () => {
 
           {detailSubTab === 'useCases' && (
             <div>
-              <h3 className="font-bold text-[#181818] mb-2 uppercase tracking-wide text-[11px]">
+              <h3 className="font-semibold text-[#181818] mb-3 text-base">
                 Production Use Cases
               </h3>
-              <ul className="space-y-2 text-[#6B6B6B]">
+              <ul className="space-y-3 text-[#6B6B6B]">
                 {activeProduct.useCases.map((useCase, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#181818] mt-1.5 flex-shrink-0" />
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#181818] mt-2 flex-shrink-0" />
                     <span>{useCase}</span>
                   </li>
                 ))}
@@ -332,39 +327,43 @@ export const ExhibitorProducts: React.FC = () => {
           )}
 
           {detailSubTab === 'resources' && (
-            <div className="space-y-2.5">
-              <h3 className="font-bold text-[#181818] mb-1.5 uppercase tracking-wide text-[11px]">
+            <div className="space-y-3">
+              <h3 className="font-semibold text-[#181818] mb-3 text-base">
                 Collateral & Links
               </h3>
 
               <div
                 onClick={() => showToast('Product Brochure downloaded ✓', 'success')}
-                className="p-2.5 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7] flex items-center justify-between cursor-pointer hover:bg-[#EFEEEA] transition-colors"
+                className="p-4 bg-[#F6F4F0] rounded-2xl border border-[#DEDCD7] flex items-center justify-between cursor-pointer hover:bg-[#EFEEEA] transition-colors"
               >
-                <div className="flex items-center gap-2.5">
-                  <FileText className="w-4 h-4 text-[#B51F32]" />
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-white rounded-lg shadow-sm">
+                    <FileText className="w-5 h-5 text-[#B51F32]" />
+                  </div>
                   <div>
-                    <p className="font-bold text-[#181818]">Executive Product Brochure</p>
-                    <p className="text-[10px] text-[#6B6B6B]">PDF · 3.2 MB</p>
+                    <p className="font-semibold text-[#181818]">Executive Product Brochure</p>
+                    <p className="text-xs text-[#6B6B6B] mt-0.5">PDF · 3.2 MB</p>
                   </div>
                 </div>
-                <Download className="w-4 h-4 text-[#6B6B6B]" />
+                <Download className="w-5 h-5 text-[#6B6B6B]" />
               </div>
 
               <a
                 href={activeProduct.resources?.websiteUrl || 'https://azure.microsoft.com'}
                 target="_blank"
                 rel="noreferrer"
-                className="p-2.5 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7] flex items-center justify-between hover:bg-[#EFEEEA] transition-colors"
+                className="p-4 bg-[#F6F4F0] rounded-2xl border border-[#DEDCD7] flex items-center justify-between hover:bg-[#EFEEEA] transition-colors block"
               >
-                <div className="flex items-center gap-2.5">
-                  <Globe className="w-4 h-4 text-[#00A4EF]" />
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-white rounded-lg shadow-sm">
+                    <Globe className="w-5 h-5 text-[#00A4EF]" />
+                  </div>
                   <div>
-                    <p className="font-bold text-[#181818]">Official Documentation & Specs</p>
-                    <p className="text-[10px] text-[#6B6B6B]">azure.microsoft.com</p>
+                    <p className="font-semibold text-[#181818]">Official Documentation & Specs</p>
+                    <p className="text-xs text-[#6B6B6B] mt-0.5">azure.microsoft.com</p>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-[#6B6B6B]" />
+                <ExternalLink className="w-5 h-5 text-[#6B6B6B]" />
               </a>
             </div>
           )}
@@ -372,7 +371,7 @@ export const ExhibitorProducts: React.FC = () => {
 
         {/* Interested Visitors Modal */}
         {showVisitorsModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
             <div className="bg-white rounded-[14px] w-full max-w-md max-h-[85vh] overflow-y-auto p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
               <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
                 <div>
@@ -443,48 +442,35 @@ export const ExhibitorProducts: React.FC = () => {
 
   // Showcase Products Catalog View
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none px-2 pt-2 pb-16 space-y-2">
+    <div className="flex-1 bg-[#F6F4F0] select-none px-4 pt-4 pb-20 space-y-5">
       {/* Header with Title and Add Product Button */}
       <div className="flex items-start justify-between gap-2">
         <div>
-          <h1 className="text-[12px] font-bold text-[#181818] tracking-tight">Showcase Products</h1>
-          <p className="text-xs text-[#6B6B6B] mt-0.5">
+          <h1 className="text-xl font-serif text-[#181818] tracking-tight">Showcase Products</h1>
+          <p className="text-sm text-[#6B6B6B] mt-1">
             Microsoft Booth B-14 Featured Solutions
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="h-9 px-3 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-95 text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center gap-1.5 shrink-0"
+          className="h-10 px-4 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-95 text-white font-semibold text-sm rounded-xl shadow-sm transition-all flex items-center gap-1.5 shrink-0"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>Add Product</span>
+          <span>Add</span>
         </button>
-      </div>
-
-      {/* Featured Section Badge */}
-      <div className="flex items-center justify-between bg-white px-2.5 py-2.5 rounded-lg border border-[#DEDCD7] shadow-xs">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#2F7D58] animate-pulse" />
-          <span className="text-xs font-bold text-[#181818]">
-            Featured Solutions ({companyProducts.length})
-          </span>
-        </div>
-        <span className="text-[11px] font-medium text-[#6B6B6B]">
-          Exhibitor Booth B-14
-        </span>
       </div>
 
       {/* Products List (Microsoft Only) */}
       <div className="space-y-3">
         {companyProducts.length === 0 ? (
-          <div className="bg-white p-8 rounded-lg border border-[#DEDCD7] text-center space-y-3">
+          <div className="bg-white p-8 rounded-2xl border border-[#DEDCD7] text-center space-y-3">
             <Package className="w-8 h-8 text-[#6B6B6B] mx-auto opacity-50" />
-            <p className="text-[12px] font-semibold text-[#181818]">No featured products listed yet</p>
-            <p className="text-xs text-[#6B6B6B]">Add your booth solutions to showcase them to attendees.</p>
+            <p className="text-base font-semibold text-[#181818]">No featured products listed yet</p>
+            <p className="text-sm text-[#6B6B6B]">Add your booth solutions to showcase them to attendees.</p>
             <button
               onClick={handleOpenAdd}
-              className="mt-2 px-3 py-2 bg-[#B51F32] text-white text-xs font-bold rounded-lg"
+              className="mt-2 px-4 py-2 bg-[#B51F32] text-white text-sm font-semibold rounded-xl"
             >
               + Add First Product
             </button>
@@ -494,33 +480,28 @@ export const ExhibitorProducts: React.FC = () => {
             <div
               key={prod.id}
               onClick={() => setSelectedProductId(prod.id)}
-              className="bg-white p-2.5 rounded-lg border border-[#DEDCD7] hover:border-[#B51F32]/40 transition-all shadow-xs cursor-pointer flex flex-col gap-2.5"
+              className="bg-white p-4 rounded-2xl border border-[#DEDCD7] hover:border-[#B51F32]/40 transition-all shadow-sm cursor-pointer flex flex-col gap-3"
             >
               <div className="flex items-start justify-between gap-2">
-                <div className="flex items-start gap-2 flex-1 min-w-0">
-                  <div className="w-8 h-8 rounded-lg bg-[#00A4EF]/10 border border-[#00A4EF]/20 flex items-center justify-center text-[#00A4EF] font-bold text-[12px] flex-shrink-0">
-                    <Package className="w-5 h-5 stroke-[2]" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
-                      {prod.category} · Booth {prod.booth}
-                    </span>
-                    <h3 className="text-[12px] font-bold text-[#181818] truncate">{prod.name}</h3>
-                  </div>
+                <div className="flex-1 min-w-0 pr-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] block mb-1">
+                    {prod.category} · Booth {prod.booth}
+                  </span>
+                  <h3 className="text-lg font-semibold text-[#181818] truncate">{prod.name}</h3>
                 </div>
 
                 {/* Edit & Delete Action Buttons */}
                 <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => handleOpenEdit(prod)}
-                    className="p-1.5 text-[#6B6B6B] hover:text-[#00A4EF] hover:bg-[#00A4EF]/10 rounded-lg transition-colors"
+                    className="p-2 text-[#6B6B6B] hover:text-[#00A4EF] bg-gray-50 hover:bg-[#00A4EF]/10 rounded-lg transition-colors"
                     title="Edit Product"
                   >
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setDeletingProductId(prod.id)}
-                    className="p-1.5 text-[#6B6B6B] hover:text-[#B51F32] hover:bg-[#B51F32]/10 rounded-lg transition-colors"
+                    className="p-2 text-[#6B6B6B] hover:text-[#B51F32] bg-gray-50 hover:bg-[#B51F32]/10 rounded-lg transition-colors"
                     title="Delete Product"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -528,24 +509,24 @@ export const ExhibitorProducts: React.FC = () => {
                 </div>
               </div>
 
-              <p className="text-xs text-[#6B6B6B] line-clamp-2 leading-relaxed">
+              <p className="text-sm text-[#6B6B6B] line-clamp-2">
                 {prod.tagline}
               </p>
 
-              <div className="pt-2 border-t border-[#DEDCD7]/60 flex items-center justify-between text-xs text-[#6B6B6B]">
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center gap-1 text-[11px]">
-                    <Eye className="w-3.5 h-3.5" />
-                    <strong className="text-[#181818] font-mono">{prod.views}</strong> views
+              <div className="pt-3 border-t border-[#DEDCD7]/60 flex items-center justify-between text-sm text-[#6B6B6B]">
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1.5">
+                    <Eye className="w-4 h-4 text-gray-400" />
+                    <strong className="text-[#181818] font-semibold">{prod.views}</strong> views
                   </span>
-                  <span className="flex items-center gap-1 text-[11px]">
-                    <MessageCircle className="w-3.5 h-3.5 text-[#B51F32]" />
-                    <strong className="text-[#B51F32] font-mono">{prod.enquiries}</strong> enquiries
+                  <span className="flex items-center gap-1.5">
+                    <MessageCircle className="w-4 h-4 text-[#B51F32]/60" />
+                    <strong className="text-[#B51F32] font-semibold">{prod.enquiries}</strong> enquiries
                   </span>
                 </div>
 
-                <span className="text-xs font-semibold text-[#B51F32] hover:underline">
-                  View Details →
+                <span className="text-sm font-semibold text-[#B51F32] flex items-center gap-1 hover:underline">
+                  View Details <ChevronRight className="w-4 h-4" />
                 </span>
               </div>
             </div>
@@ -555,7 +536,7 @@ export const ExhibitorProducts: React.FC = () => {
 
       {/* Edit Product Modal */}
       {showEditModal && editingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
           <div className="bg-white rounded-[14px] w-full max-w-sm p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
             <div className="flex items-center justify-between pb-2 border-b border-[#DEDCD7]">
               <div>
@@ -643,7 +624,7 @@ export const ExhibitorProducts: React.FC = () => {
 
       {/* Add Product Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
           <div className="bg-white rounded-[14px] w-full max-w-sm p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
             <div className="flex items-center justify-between pb-2 border-b border-[#DEDCD7]">
               <div>
@@ -731,7 +712,7 @@ export const ExhibitorProducts: React.FC = () => {
 
       {/* Delete Confirmation Modal */}
       {deletingProductId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
           <div className="bg-white rounded-[14px] w-full max-w-xs p-3 space-y-2 shadow-2xl border border-[#DEDCD7] text-center">
             <div className="w-11 h-11 bg-red-100 rounded-full flex items-center justify-center text-[#B51F32] mx-auto">
               <Trash2 className="w-5 h-5" />

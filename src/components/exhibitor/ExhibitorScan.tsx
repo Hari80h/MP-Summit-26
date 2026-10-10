@@ -30,7 +30,7 @@ export const ExhibitorScan: React.FC = () => {
   } | null>(null);
 
   const [selectedInterests, setSelectedInterests] = useState<string[]>(['Azure AI Platform']);
-  const [leadStatus, setLeadStatus] = useState<LeadStatus>('Qualified');
+  const [leadStatus, setLeadStatus] = useState<LeadStatus>('New');
   const [notes, setNotes] = useState('Looking to evaluate Azure AI for product pipeline. Requested follow-up demo.');
   const [isSavedSuccess, setIsSavedSuccess] = useState(false);
 
@@ -56,7 +56,7 @@ export const ExhibitorScan: React.FC = () => {
       mobile: mobileToUse,
       linkedin: linkedinToUse,
       source: 'Booth Scan (B-14)',
-      status: 'Qualified',
+      status: 'New',
       interests: ['Azure AI Platform'],
       notes: person.name === 'Aarav Sharma'
         ? 'Senior PM at Google. Interested in Azure AI hybrid deployment and enterprise SLAs. Urgent follow-up requested.'
@@ -64,7 +64,7 @@ export const ExhibitorScan: React.FC = () => {
       productsViewed: ['Azure AI Platform'],
     });
 
-    setLeadStatus('Qualified');
+    setLeadStatus('New');
     setSelectedInterests(['Azure AI Platform']);
     setNotes(
       person.name === 'Aarav Sharma'
@@ -105,120 +105,92 @@ export const ExhibitorScan: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none px-2 pt-2 pb-16 space-y-2">
+    <div className="flex-1 bg-[#F6F4F0] select-none px-4 pt-4 pb-24 space-y-5">
       {/* Scanner Header */}
       <div>
-        <h1 className="text-[12px] font-bold text-[#181818] tracking-tight">Lead Capture Scanner</h1>
-        <p className="text-xs text-[#6B6B6B] mt-0.5">
-          Scan attendee badge QR codes at Microsoft Booth B-14
+        <h1 className="text-xl font-serif text-[#181818] tracking-tight">Lead Capture Scanner</h1>
+        <p className="text-sm text-[#6B6B6B] mt-1">
+          Tap the viewfinder to scan attendee badge QR codes
         </p>
       </div>
 
       {/* Camera Viewfinder */}
-      <div className="relative w-full aspect-[4/3] max-w-sm mx-auto bg-[#181818] rounded-[14px] overflow-hidden border-2 border-[#DEDCD7] flex flex-col items-center justify-between p-3 shadow-md text-white">
-        <div className="w-full flex items-center justify-between text-[11px] text-[#AAAAAA] z-10">
-          <span className="font-mono">MICROSOFT B-14 LEADS</span>
-          <span className="flex items-center gap-1 text-[#2F7D58] font-bold">
+      <div 
+        onClick={() => handleSimulateScan(candidateAttendees[0])}
+        className="relative w-full aspect-[4/3] max-w-sm mx-auto bg-[#181818] rounded-3xl overflow-hidden border-4 border-[#181818] flex flex-col items-center justify-between p-4 shadow-xl text-white cursor-pointer hover:border-gray-800 transition-colors group"
+      >
+        <div className="w-full flex items-center justify-between text-xs text-[#AAAAAA] z-10">
+          <span className="font-mono tracking-wider">MS B-14 LEADS</span>
+          <span className="flex items-center gap-1.5 text-[#2F7D58] font-semibold">
             <span className="w-2 h-2 rounded-full bg-[#2F7D58] animate-pulse" />
             READY
           </span>
         </div>
 
         {/* Reticle */}
-        <div className="relative w-48 h-48 border-2 border-dashed border-white/30 rounded-[14px] flex items-center justify-center">
-          <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-[#B51F32] rounded-tl-lg" />
-          <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-[#B51F32] rounded-tr-lg" />
-          <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-[#B51F32] rounded-bl-lg" />
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-[#B51F32] rounded-br-lg" />
-          <div className="absolute left-2 right-2 h-0.5 bg-[#B51F32] shadow-[0_0_8px_#B51F32] scanner-laser" />
+        <div className="relative w-56 h-56 border border-dashed border-white/20 rounded-2xl flex items-center justify-center group-hover:border-white/40 transition-colors">
+          <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-[#B51F32] rounded-tl-xl" />
+          <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-[#B51F32] rounded-tr-xl" />
+          <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-[#B51F32] rounded-bl-xl" />
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-[#B51F32] rounded-br-xl" />
+          <div className="absolute left-2 right-2 h-[2px] bg-[#B51F32] shadow-[0_0_12px_#B51F32] scanner-laser" />
 
-          <div className="text-center p-2.5 z-10 pointer-events-none">
-            <Camera className="w-9 h-9 text-white/40 mx-auto mb-1 stroke-1" />
-            <p className="text-[11px] text-white/70 font-medium">Scan Delegate Badge</p>
+          <div className="text-center p-3 z-10 pointer-events-none transition-transform group-hover:scale-105">
+            <Camera className="w-10 h-10 text-white/50 mx-auto mb-2 stroke-1" />
+            <p className="text-xs text-white/80 font-medium">Tap to Scan Badge</p>
           </div>
         </div>
 
-        <div className="text-[10px] text-[#888888] z-10">
+        <div className="text-xs text-white/50 z-10">
           Consent-aware lead capture · Instant cloud sync
         </div>
       </div>
 
-      {/* Simulate Buttons */}
-      <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-[#181818]">Simulate Badge Scan</span>
-          <span className="text-[10px] text-[#B51F32] font-semibold">Step 8 in Demo Flow</span>
-        </div>
-        <p className="text-[11px] text-[#6B6B6B]">
-          Tap <strong className="text-[#181818]">Aarav Sharma</strong> to simulate capturing him as a Microsoft booth lead:
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-          {candidateAttendees.slice(0, 3).map((person) => (
-            <button
-              key={person.id}
-              onClick={() => handleSimulateScan(person)}
-              className="p-2.5 bg-[#EFEEEA] hover:bg-[#E5E3DC] active:scale-95 text-left rounded-lg border border-[#DEDCD7] text-xs transition-all flex items-center justify-between group"
-            >
-              <div>
-                <p className="font-bold text-[#181818] group-hover:text-[#B51F32]">
-                  {person.name}
-                </p>
-                <p className="text-[10px] text-[#6B6B6B]">
-                  {person.designation} · {person.company}
-                </p>
-              </div>
-              <Camera className="w-3.5 h-3.5 text-[#B51F32]" />
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Captured Lead Form Modal / Card */}
+      {/* Captured Lead Form Card */}
       {scannedLead && (
         <form
           onSubmit={handleSaveLeadSubmit}
-          className="bg-white p-2.5 rounded-[14px] border-2 border-[#181818] shadow-md animate-in fade-in slide-in-from-bottom-2 space-y-3"
+          className="bg-white p-5 rounded-3xl border border-[#DEDCD7] shadow-lg animate-in fade-in slide-in-from-bottom-4 space-y-5"
         >
           {/* Header */}
-          <div className="flex items-center justify-between pb-2 border-b border-[#DEDCD7]">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#B51F32]" />
-              <h3 className="text-[12px] font-bold text-[#181818]">
+          <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#2F7D58] animate-pulse" />
+              <h3 className="text-base font-bold text-[#181818]">
                 New Lead: {scannedLead.name}
               </h3>
             </div>
-            <span className="text-[10px] font-mono bg-[#EFEEEA] px-2 py-0.5 rounded text-[#181818]">
+            <span className="text-xs font-mono bg-[#EFEEEA] px-2.5 py-1 rounded-md text-[#6B6B6B]">
               {scannedLead.source}
             </span>
           </div>
 
           {/* Attendee Details */}
-          <div className="bg-[#F6F4F0] p-2 rounded-lg border border-[#DEDCD7] text-xs space-y-1">
-            <p className="font-bold text-[#181818]">
+          <div className="bg-[#F6F4F0] p-4 rounded-2xl border border-[#DEDCD7] text-sm space-y-3">
+            <p className="font-semibold text-[#181818]">
               {scannedLead.designation} · {scannedLead.company}
             </p>
-            <div className="flex items-center justify-between text-[11px] text-[#6B6B6B]">
-              <span>Email: <strong className="text-[#181818] font-mono">{scannedLead.email}</strong></span>
-              <span>Mobile: <strong className="text-[#181818] font-mono">{scannedLead.mobile}</strong></span>
+            <div className="flex flex-col gap-1.5 text-[#6B6B6B]">
+              <span className="flex items-center justify-between">Email: <strong className="text-[#181818]">{scannedLead.email}</strong></span>
+              <span className="flex items-center justify-between">Mobile: <strong className="text-[#181818]">{scannedLead.mobile}</strong></span>
             </div>
           </div>
 
           {/* Status Selection */}
           <div>
-            <label className="block text-xs font-semibold text-[#181818] mb-1">
-              Lead Qualification Status
+            <label className="block text-sm font-semibold text-[#181818] mb-2">
+              Qualification Status
             </label>
-            <div className="grid grid-cols-3 gap-1.5">
-              {(['New', 'Interested', 'Qualified', 'Contacted', 'Follow-up'] as LeadStatus[]).map((st) => (
+            <div className="grid grid-cols-3 gap-2">
+              {(['New', 'Interested', 'Follow-up'] as LeadStatus[]).map((st) => (
                 <button
                   type="button"
                   key={st}
                   onClick={() => setLeadStatus(st)}
-                  className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                  className={`py-2 px-2 rounded-xl text-xs font-semibold border transition-all ${
                     leadStatus === st
-                      ? 'bg-[#181818] text-white border-[#181818]'
-                      : 'bg-white text-[#6B6B6B] border-[#DEDCD7] hover:border-[#181818]'
+                      ? 'bg-[#181818] text-white border-[#181818] shadow-sm'
+                      : 'bg-white text-[#6B6B6B] border-[#DEDCD7] hover:bg-[#F6F4F0]'
                   }`}
                 >
                   {st}
@@ -229,10 +201,10 @@ export const ExhibitorScan: React.FC = () => {
 
           {/* Products of Interest */}
           <div>
-            <label className="block text-xs font-semibold text-[#181818] mb-1">
+            <label className="block text-sm font-semibold text-[#181818] mb-2">
               Products of Interest
             </label>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {[
                 'Azure AI Platform',
                 'Microsoft Fabric',
@@ -245,10 +217,10 @@ export const ExhibitorScan: React.FC = () => {
                     type="button"
                     key={prod}
                     onClick={() => handleToggleInterest(prod)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${
                       selected
-                        ? 'bg-[#B51F32] text-white border-[#B51F32]'
-                        : 'bg-[#F6F4F0] text-[#181818] border-[#DEDCD7]'
+                        ? 'bg-[#181818] text-white border-[#181818] shadow-sm'
+                        : 'bg-[#F6F4F0] text-[#181818] border-[#DEDCD7] hover:bg-[#EFEEEA]'
                     }`}
                   >
                     {prod} {selected ? '✓' : '+'}
@@ -260,29 +232,29 @@ export const ExhibitorScan: React.FC = () => {
 
           {/* Notes */}
           <div>
-            <label className="block text-xs font-semibold text-[#181818] mb-1">
+            <label className="block text-sm font-semibold text-[#181818] mb-2">
               Booth Conversation Notes
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              rows={2}
-              className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] transition-all resize-none"
+              rows={3}
+              className="w-full p-4 rounded-2xl bg-[#F6F4F0] border border-[#DEDCD7] text-sm text-[#181818] focus:outline-none focus:border-[#181818] transition-all resize-none shadow-sm"
               placeholder="Enter specific follow-up requirements..."
             />
           </div>
 
           {/* Save Action */}
           {isSavedSuccess ? (
-            <div className="p-2.5 bg-[#EBF5F0] border border-[#2F7D58]/30 rounded-lg text-xs text-[#2F7D58] flex items-center justify-between">
-              <div className="flex items-center gap-1.5 font-bold">
-                <CheckCircle2 className="w-4 h-4" />
+            <div className="p-4 bg-green-50 border border-green-200 rounded-2xl text-sm text-[#2F7D58] flex items-center justify-between">
+              <div className="flex items-center gap-2 font-bold">
+                <CheckCircle2 className="w-5 h-5" />
                 <span>Lead Saved & Metrics Updated ✓</span>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveExhibitorTab('leads')}
-                className="font-bold underline text-xs text-[#2F7D58]"
+                className="font-bold underline text-sm text-[#2F7D58] hover:text-green-800"
               >
                 View Leads
               </button>
@@ -290,9 +262,9 @@ export const ExhibitorScan: React.FC = () => {
           ) : (
             <button
               type="submit"
-              className="w-full h-8 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center gap-2"
+              className="w-full h-14 bg-[#181818] hover:bg-black active:scale-[0.98] text-white font-semibold text-sm rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-5 h-5" />
               <span>Save Lead to Microsoft CRM</span>
             </button>
           )}

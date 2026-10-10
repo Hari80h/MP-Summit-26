@@ -31,7 +31,7 @@ export const PersonDetailModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in select-none">
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in select-none">
       <div className="bg-white rounded-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
