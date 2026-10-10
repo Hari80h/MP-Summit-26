@@ -61,7 +61,7 @@ export interface Connection {
   connectedAt: string;
 }
 
-export type LeadStatus = 'New' | 'Interested' | 'Qualified' | 'Contacted' | 'Follow-up';
+export type LeadStatus = 'New' | 'Interested' | 'Follow-up';
 
 export interface Lead {
   id: string;

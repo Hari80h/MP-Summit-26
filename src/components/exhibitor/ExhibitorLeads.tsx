@@ -73,63 +73,67 @@ export const ExhibitorLeads: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none px-2 pt-2 pb-16 space-y-2">
+    <div className="flex-1 bg-[#F6F4F0] select-none px-4 pt-4 pb-20 space-y-4">
       {/* Header & Export Action */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[12px] font-bold text-[#181818] tracking-tight">Booth Leads</h1>
-          <p className="text-xs text-[#6B6B6B] mt-0.5">
+          <h1 className="text-xl font-serif text-[#181818] tracking-tight">Booth Leads</h1>
+          <p className="text-sm text-[#6B6B6B] mt-1">
             {leads.length} captured leads at Booth B-14
           </p>
         </div>
 
         <button
           onClick={handleExportCSV}
-          className="px-3 py-1.5 bg-white hover:bg-[#F6F4F0] active:scale-95 border border-[#DEDCD7] rounded-lg text-xs font-semibold text-[#181818] shadow-xs transition-all flex items-center gap-1.5"
+          className="px-3 py-2 bg-white hover:bg-[#F6F4F0] active:scale-95 border border-[#DEDCD7] rounded-xl text-sm font-semibold text-[#181818] shadow-sm transition-all flex items-center gap-1.5"
         >
-          <Download className="w-3.5 h-3.5" />
-          <span>Export Leads</span>
+          <Download className="w-4 h-4" />
+          <span>Export</span>
         </button>
       </div>
 
       {/* Search Input */}
       <div className="relative">
-        <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <Search className="w-5 h-5 text-[#6B6B6B] absolute left-3 top-1/2 -translate-y-1/2" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search leads by name, company, interest..."
-          className="w-full h-11 pl-10 pr-4 rounded-lg bg-white border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] transition-all shadow-xs"
+          className="w-full h-12 pl-10 pr-4 rounded-xl bg-white border border-[#DEDCD7] text-sm text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] transition-all shadow-sm"
         />
       </div>
 
-      {/* Status Filter Tabs: All and Interested */}
-      <div className="flex items-center gap-2 p-1 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7]">
-        {[
-          { id: 'All', label: `All (${leads.length})` },
-          { id: 'Interested', label: `Interested (${leads.filter((l) => l.status === 'Interested').length})` },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setSelectedStatusTab(tab.id)}
-            className={`flex-1 py-2 rounded-lg text-xs font-bold text-center transition-all ${
-              selectedStatusTab === tab.id
-                ? 'bg-white text-[#181818] shadow-xs'
-                : 'text-[#6B6B6B] hover:text-[#181818]'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {/* Status Filter Tabs */}
+      <div className="overflow-x-auto hide-scrollbar -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="flex items-center gap-1.5 p-1 bg-[#EFEEEA] rounded-xl border border-[#DEDCD7] w-max min-w-full">
+          {[
+            { id: 'All', label: `All (${leads.length})` },
+            { id: 'New', label: `New (${leads.filter((l) => l.status === 'New').length})` },
+            { id: 'Interested', label: `Interested (${leads.filter((l) => l.status === 'Interested').length})` },
+            { id: 'Follow-up', label: `Follow-up (${leads.filter((l) => l.status === 'Follow-up').length})` },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setSelectedStatusTab(tab.id)}
+              className={`flex-1 px-4 py-2 rounded-lg text-sm font-semibold text-center transition-all whitespace-nowrap ${
+                selectedStatusTab === tab.id
+                  ? 'bg-white text-[#181818] shadow-sm'
+                  : 'text-[#6B6B6B] hover:text-[#181818]'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Leads Table / Cards List */}
-      <div className="space-y-2.5">
+      {/* Leads List */}
+      <div className="space-y-2">
         {filteredLeads.length === 0 ? (
-          <div className="p-8 text-center bg-white rounded-[14px] border border-[#DEDCD7]">
-            <p className="text-xs font-semibold text-[#181818]">No leads match your filter</p>
-            <p className="text-[11px] text-[#6B6B6B] mt-1">
+          <div className="p-8 text-center bg-white rounded-2xl border border-[#DEDCD7]">
+            <p className="text-base font-semibold text-[#181818]">No leads match your filter</p>
+            <p className="text-sm text-[#6B6B6B] mt-2">
               Scan attendees from the SCAN tab to capture new leads.
             </p>
           </div>
@@ -138,50 +142,35 @@ export const ExhibitorLeads: React.FC = () => {
             <div
               key={lead.id}
               onClick={() => handleOpenLead(lead)}
-              className="bg-white p-2.5 rounded-lg border border-[#DEDCD7] hover:border-[#B51F32]/40 transition-all shadow-xs cursor-pointer flex flex-col gap-2"
+              className="bg-white px-4 py-4 rounded-2xl border border-[#DEDCD7] hover:border-[#B51F32]/30 transition-all cursor-pointer flex items-center gap-3"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-xs font-bold text-[#181818]">{lead.name}</h3>
-                    {lead.syncStatus === 'pending' && (
-                      <span className="text-[9px] font-bold text-[#595959] bg-amber-50 border border-amber-200 px-1 py-0.2 rounded">
-                        Sync pending
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[11px] text-[#6B6B6B]">
-                    {lead.designation} · <strong className="text-[#181818]">{lead.company}</strong>
-                  </p>
-                </div>
-
-                {/* Status Badge */}
-                <span
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-                    lead.status === 'Qualified'
-                      ? 'bg-green-50 text-[#2F7D58] border-green-200'
-                      : lead.status === 'Interested'
-                      ? 'bg-blue-50 text-blue-700 border-blue-200'
-                      : lead.status === 'Follow-up'
-                      ? 'bg-purple-50 text-purple-700 border-purple-200'
-                      : 'bg-gray-100 text-[#181818] border-gray-200'
-                  }`}
-                >
-                  {lead.status}
-                </span>
+              {/* Avatar */}
+              <div className="w-11 h-11 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                {lead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </div>
 
-              {/* Interests & Source */}
-              <div className="flex flex-wrap items-center justify-between gap-1.5 text-[11px] pt-1 border-t border-[#DEDCD7]/60">
-                <div className="flex flex-wrap gap-1">
-                  {lead.interests.map((interest, idx) => (
-                    <span key={idx} className="bg-[#EFEEEA] text-[#181818] px-1.5 py-0.5 rounded text-[10px] font-medium">
-                      {interest}
-                    </span>
-                  ))}
-                </div>
-                <span className="text-[10px] font-mono text-[#6B6B6B]">{lead.capturedAt}</span>
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-[15px] font-semibold text-[#181818] truncate">{lead.name}</h3>
+                <p className="text-xs text-[#6B6B6B] mt-0.5 truncate">
+                  {lead.designation} · <strong className="text-[#181818]">{lead.company}</strong>
+                </p>
               </div>
+
+              {/* Status Badge */}
+              <span
+                className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg border shrink-0 ${
+                  lead.status === 'New'
+                    ? 'bg-green-50 text-[#2F7D58] border-green-200'
+                    : lead.status === 'Interested'
+                    ? 'bg-blue-50 text-blue-700 border-blue-200'
+                    : lead.status === 'Follow-up'
+                    ? 'bg-purple-50 text-purple-700 border-purple-200'
+                    : 'bg-gray-50 text-[#6B6B6B] border-gray-200'
+                }`}
+              >
+                {lead.status}
+              </span>
             </div>
           ))
         )}
@@ -189,60 +178,62 @@ export const ExhibitorLeads: React.FC = () => {
 
       {/* Lead Detail Modal */}
       {selectedLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-md max-h-[90vh] overflow-y-auto p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in">
+          <div className="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-5 space-y-5 shadow-2xl border border-[#DEDCD7]">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
+            <div className="flex items-start justify-between pb-4 border-b border-[#DEDCD7]">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B6B6B] block mb-1">
                   Lead Detail
                 </span>
-                <h2 className="text-[13px] font-bold text-[#181818]">{selectedLead.name}</h2>
+                <h2 className="text-2xl font-serif text-[#181818] leading-tight">{selectedLead.name}</h2>
               </div>
               <button
                 onClick={() => setSelectedLead(null)}
-                className="p-1 rounded-lg text-[#6B6B6B] hover:text-[#181818]"
+                className="p-1.5 rounded-full bg-gray-50 text-[#6B6B6B] hover:text-[#181818] hover:bg-gray-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Profile & Consent-Respected Contacts */}
-            <div className="bg-[#F6F4F0] p-2.5 rounded-lg border border-[#DEDCD7] space-y-2 text-xs">
-              <p className="font-bold text-[#181818]">
+            <div className="bg-[#F6F4F0] p-4 rounded-2xl border border-[#DEDCD7] space-y-3">
+              <p className="font-semibold text-[#181818] text-sm">
                 {selectedLead.designation} · {selectedLead.company}
               </p>
 
-              <div className="space-y-1 pt-1 border-t border-[#DEDCD7]/60 text-[#6B6B6B]">
-                <div className="flex justify-between">
+              <div className="space-y-2 pt-3 border-t border-[#DEDCD7]/60 text-sm text-[#6B6B6B]">
+                <div className="flex justify-between items-center gap-2">
                   <span>Email:</span>
-                  <strong className="text-[#181818] font-mono">{selectedLead.email}</strong>
+                  <strong className="text-[#181818] truncate">{selectedLead.email}</strong>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center gap-2">
                   <span>Mobile:</span>
-                  <strong className="text-[#181818] font-mono">{selectedLead.mobile}</strong>
+                  <strong className="text-[#181818]">{selectedLead.mobile}</strong>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center gap-2">
                   <span>Source:</span>
-                  <span className="text-[#181818] font-medium">{selectedLead.source}</span>
+                  <span className="text-[#181818] font-medium bg-white px-2 py-0.5 rounded-md border border-[#DEDCD7] text-xs">
+                    {selectedLead.source}
+                  </span>
                 </div>
               </div>
             </div>
 
             {/* Editable Status */}
             <div>
-              <label className="block text-xs font-semibold text-[#181818] mb-1.5">
+              <label className="block text-sm font-semibold text-[#181818] mb-2">
                 Qualification Status
               </label>
-              <div className="grid grid-cols-3 gap-1.5">
-                {(['New', 'Interested', 'Qualified', 'Contacted', 'Follow-up'] as LeadStatus[]).map((st) => (
+              <div className="grid grid-cols-3 gap-2">
+                {(['New', 'Interested', 'Follow-up'] as LeadStatus[]).map((st) => (
                   <button
                     key={st}
                     onClick={() => handleStatusChange(st)}
-                    className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                    className={`py-2 px-2 rounded-xl text-xs font-semibold border transition-all ${
                       selectedLead.status === st
-                        ? 'bg-[#181818] text-white border-[#181818]'
-                        : 'bg-white text-[#6B6B6B] border-[#DEDCD7]'
+                        ? 'bg-[#181818] text-white border-[#181818] shadow-sm'
+                        : 'bg-white text-[#6B6B6B] border-[#DEDCD7] hover:bg-[#F6F4F0]'
                     }`}
                   >
                     {st}
@@ -253,58 +244,61 @@ export const ExhibitorLeads: React.FC = () => {
 
             {/* Notes Section with In-place Edit */}
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-xs font-semibold text-[#181818]">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-semibold text-[#181818]">
                   Conversation Notes
                 </label>
                 {!isEditingNotes && (
                   <button
                     onClick={() => setIsEditingNotes(true)}
-                    className="text-xs text-[#B51F32] font-semibold flex items-center gap-1 hover:underline"
+                    className="text-xs text-[#181818] bg-white border border-[#DEDCD7] px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1.5 hover:bg-[#F6F4F0] transition-colors"
                   >
-                    <Edit3 className="w-3 h-3" />
+                    <Edit3 className="w-3.5 h-3.5" />
                     <span>Edit</span>
                   </button>
                 )}
               </div>
 
               {isEditingNotes ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <textarea
                     value={editNotesText}
                     onChange={(e) => setEditNotesText(e.target.value)}
-                    rows={3}
-                    className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32]"
+                    rows={4}
+                    className="w-full p-4 rounded-2xl bg-white border border-[#DEDCD7] text-sm text-[#181818] focus:outline-none focus:border-[#181818] resize-none shadow-sm"
+                    placeholder="Enter conversation notes here..."
                   />
                   <div className="flex justify-end gap-2">
                     <button
                       onClick={() => setIsEditingNotes(false)}
-                      className="px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium text-[#181818]"
+                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 transition-colors rounded-xl text-sm font-semibold text-[#181818]"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleSaveNotes}
-                      className="px-3 py-1 bg-[#B51F32] text-white rounded-lg text-xs font-semibold"
+                      className="px-4 py-2 bg-[#181818] hover:bg-black transition-colors text-white rounded-xl text-sm font-semibold shadow-sm"
                     >
                       Save Notes
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="p-2.5 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7] text-xs text-[#181818] leading-relaxed">
-                  {selectedLead.notes || 'No notes added yet.'}
+                <div className="p-4 bg-[#F6F4F0] rounded-2xl border border-[#DEDCD7] text-sm text-[#181818] leading-relaxed min-h-[80px]">
+                  {selectedLead.notes || <span className="text-[#6B6B6B] italic">No notes added yet.</span>}
                 </div>
               )}
             </div>
 
             {/* Close Button */}
-            <button
-              onClick={() => setSelectedLead(null)}
-              className="w-full py-2.5 bg-[#181818] text-white font-semibold text-xs rounded-lg shadow-xs hover:bg-black transition-colors"
-            >
-              Done
-            </button>
+            <div className="pt-2">
+              <button
+                onClick={() => setSelectedLead(null)}
+                className="w-full h-14 bg-[#181818] hover:bg-black active:scale-[0.98] text-white font-semibold text-sm rounded-2xl shadow-sm transition-all"
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -294,7 +294,7 @@ export const OrganizerAttendees: React.FC = () => {
 
       {/* Attendee Detail Modal */}
       {selectedPerson && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
           <div className="bg-white rounded-[14px] w-full max-w-lg max-h-[90vh] overflow-y-auto p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
             <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
               <div>
@@ -374,7 +374,7 @@ export const OrganizerAttendees: React.FC = () => {
 
       {/* CSV Import Modal with Column Mapping */}
       {showImportModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
           <div className="bg-white rounded-[14px] w-full max-w-md p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
             <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
               <div>
@@ -458,7 +458,7 @@ export const OrganizerAttendees: React.FC = () => {
 
       {/* Add Walk-in Attendee Modal */}
       {showWalkInModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
           <div className="bg-white rounded-[14px] w-full max-w-md p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
             <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
               <div>

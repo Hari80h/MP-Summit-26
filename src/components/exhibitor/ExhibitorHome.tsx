@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useStore } from '../../lib/store';
-import { QrCode, Users, Package, ArrowRight, Building2, MapPin, CheckCircle, Flame } from 'lucide-react';
+import { QrCode, Bell, ChevronRight, Users, BarChart2, ShoppingBag, Link } from 'lucide-react';
 
 export const ExhibitorHome: React.FC = () => {
   const {
@@ -12,136 +12,138 @@ export const ExhibitorHome: React.FC = () => {
     setActiveExhibitorTab,
   } = useStore();
 
-  const msftProductsCount = products.filter((p) => p.company.toLowerCase() === 'microsoft').length;
+  const msftProducts = products.filter((p) => p.company.toLowerCase() === 'microsoft');
 
   const msft = exhibitors.find((e) => e.company === 'Microsoft') || {
-    visits: 312,
+    visits: 748,
     leads: leads.length,
-    enquiries: 48,
-    teamSize: 6,
+    enquiries: 96,
+    teamSize: 11,
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none px-2 pt-2 pb-16 space-y-2">
-      {/* Booth Identifier Header */}
-      <div className="flex items-center justify-between pt-1">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-[14px] bg-[#00A4EF] text-white flex items-center justify-center font-bold text-[12px] shadow-sm">
-            MS
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <h1 className="text-[12px] font-bold text-[#181818] tracking-tight">Microsoft</h1>
-              <span className="w-2 h-2 rounded-full bg-[#2F7D58]" />
+    <div className="flex-1 flex flex-col min-h-full bg-[#F6F4F0] select-none pb-24">
+      {/* Page Header (Outside the black box) */}
+      <div className="px-5 pt-6 pb-3 flex justify-between items-center">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B6B6B]">
+          Exhibitor · Booth B-14
+        </span>
+        <button className="p-2 -mr-2 rounded-full hover:bg-[#E5E3DC] transition-colors">
+          <Bell className="w-5 h-5 text-[#181818]" />
+        </button>
+      </div>
+
+      {/* Dark Metrics Card (The smaller black box) */}
+      <div className="bg-[#151515] mx-4 px-5 pt-6 pb-6 text-white rounded-3xl shadow-2xl relative z-10 overflow-hidden">
+        {/* Soft Red Glow Background */}
+        <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-bl from-[#B51F32]/40 via-[#B51F32]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+        {/* Title */}
+        <div className="mb-6 relative z-10">
+          <h1 className="text-3xl font-serif mb-1 tracking-tight text-white">Microsoft</h1>
+          <p className="text-[11px] text-gray-400">ITS26 · Hall B · {msft.teamSize} team members on floor</p>
+        </div>
+
+        {/* 4 Core Metrics Grid */}
+        <div className="grid grid-cols-2 gap-3 mb-6 relative z-10">
+          {/* Card 1 - Highlighted */}
+          <div className="bg-[#F6F4F0] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                <Users className="w-4 h-4 text-[#B51F32]" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-light text-[#181818] leading-none mb-1">{msft.visits}</span>
+                <span className="text-[10px] text-[#6B6B6B] font-medium">Booth visits</span>
+              </div>
             </div>
-            <p className="text-xs text-[#6B6B6B] flex items-center gap-1">
-              <span>Booth B-14</span>
-              <span>·</span>
-              <span>Hall B</span>
-              <span>·</span>
-              <strong className="text-[#181818]">ITS26</strong>
-            </p>
+            <ChevronRight className="w-4 h-4 text-gray-400" />
+          </div>
+
+          {/* Card 2 */}
+          <div className="bg-[#242424] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
+                <BarChart2 className="w-4 h-4 text-[#E68A96]" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-light text-white leading-none mb-1">{msft.leads || 171}</span>
+                <span className="text-[10px] text-gray-400 font-medium">Leads</span>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-500" />
+          </div>
+
+          {/* Card 3 */}
+          <div className="bg-[#242424] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
+                <ShoppingBag className="w-4 h-4 text-[#E68A96]" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-light text-white leading-none mb-1">{msft.enquiries || 96}</span>
+                <span className="text-[10px] text-gray-400 font-medium">Product enquiries</span>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-500" />
+          </div>
+
+          {/* Card 4 */}
+          <div className="bg-[#242424] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
+                <Link className="w-4 h-4 text-[#E68A96]" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-light text-white leading-none mb-1">96</span>
+                <span className="text-[10px] text-gray-400 font-medium">Connections</span>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-500" />
           </div>
         </div>
 
-        <div className="text-right">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#2F7D58] bg-[#EBF5F0] border border-[#2F7D58]/30 px-2 py-0.5 rounded">
-            Booth Live
-          </span>
-          <p className="text-[11px] text-[#6B6B6B] mt-0.5">6 Staff Checked-in</p>
-        </div>
-      </div>
-
-      {/* 4 Core Metrics Grid (3-second readability) */}
-      <div className="grid grid-cols-2 gap-2">
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <span className="text-xs font-semibold text-[#6B6B6B]">Booth Visits</span>
-          <p className="text-[15px] font-black text-[#181818] mt-1 font-mono tracking-tight">
-            {msft.visits}
-          </p>
-          <span className="text-[10px] text-[#2F7D58] font-bold flex items-center gap-0.5 mt-0.5">
-            <span>↑ 18% vs target</span>
-          </span>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border-2 border-[#B51F32]/20 shadow-xs relative overflow-hidden">
-          <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#B51F32]" />
-          <span className="text-xs font-semibold text-[#B51F32]">Leads Captured</span>
-          <p className="text-[15px] font-black text-[#181818] mt-1 font-mono tracking-tight">
-            {msft.leads}
-          </p>
-          <span className="text-[10px] text-[#6B6B6B] mt-0.5 block">
-            Target: 300 leads
-          </span>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <span className="text-xs font-semibold text-[#6B6B6B]">Product Enquiries</span>
-          <p className="text-[15px] font-black text-[#181818] mt-1 font-mono tracking-tight">
-            {msft.enquiries}
-          </p>
-          <span className="text-[10px] text-[#2F7D58] font-bold flex items-center gap-0.5 mt-0.5">
-            <span>High conversion</span>
-          </span>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <span className="text-xs font-semibold text-[#6B6B6B]">Connections</span>
-          <p className="text-[15px] font-black text-[#181818] mt-1 font-mono tracking-tight">
-            96
-          </p>
-          <span className="text-[10px] text-[#6B6B6B] mt-0.5 block">
-            Team interactions
-          </span>
-        </div>
-      </div>
-
-      {/* Primary Action Buttons (44px targets) */}
-      <div className="space-y-2.5 pt-1">
+        {/* Primary Scan Button */}
         <button
           onClick={() => setActiveExhibitorTab('scan')}
-          className="w-full h-8 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center gap-2"
+          className="w-full h-14 bg-gradient-to-r from-[#B51F32] to-[#8C1625] hover:from-[#9C1A2B] hover:to-[#73101D] text-white font-semibold text-sm rounded-2xl flex items-center justify-between px-5 transition-all active:scale-[0.98] shadow-md relative z-10"
         >
-          <QrCode className="w-4 h-4 stroke-[2.4]" />
-          <span>Scan Attendee QR Badge</span>
+          <div className="flex items-center gap-2 flex-1 justify-center ml-5">
+            <QrCode className="w-5 h-5" />
+            <span>Scan Attendee QR</span>
+          </div>
+          <ChevronRight className="w-5 h-5 opacity-70" />
         </button>
-
-        <div className="grid grid-cols-2 gap-2.5">
-          <button
-            onClick={() => setActiveExhibitorTab('leads')}
-            className="h-11 bg-white hover:bg-[#F6F4F0] active:scale-[0.98] border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center gap-1.5"
-          >
-            <Users className="w-3.5 h-3.5 text-[#181818]" />
-            <span>View Leads ({msft.leads})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveExhibitorTab('products')}
-            className="h-11 bg-white hover:bg-[#F6F4F0] active:scale-[0.98] border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center gap-1.5"
-          >
-            <Package className="w-3.5 h-3.5 text-[#181818]" />
-            <span>View Products ({msftProductsCount})</span>
-          </button>
-        </div>
       </div>
 
-      {/* Featured Showcase Info Card */}
-      <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-[#181818]">Booth Spotlight</span>
-          <span className="text-[10px] text-[#B51F32] font-semibold">B-14 Main Stage</span>
+      {/* Bottom Light Section */}
+      <div className="bg-[#F6F4F0] px-5 pt-8 flex-1">
+        <div className="flex justify-between items-end mb-4">
+          <h2 className="text-xl font-serif text-[#181818]">Product interest today</h2>
+          <button 
+            onClick={() => setActiveExhibitorTab('products')} 
+            className="text-xs font-semibold text-[#B51F32] hover:underline"
+          >
+            All products
+          </button>
         </div>
 
-        <p className="text-xs text-[#6B6B6B] leading-relaxed">
-          Showcasing Azure AI Platform, Microsoft Fabric, Copilot Studio, and Security Suite. Interactive hands-on developer demos run hourly until 5:00 PM.
-        </p>
-
-        <div className="p-2.5 bg-[#EFEEEA] rounded-lg flex items-center justify-between text-xs">
-          <div>
-            <span className="font-bold text-[#181818]">Lead Capture SLA</span>
-            <p className="text-[10px] text-[#6B6B6B]">Automatic CRM sync via EventSphere webhook</p>
-          </div>
-          <span className="text-[11px] font-bold text-[#2F7D58]">Active</span>
+        <div className="space-y-3">
+          {msftProducts.slice(0, 2).map((product) => (
+            <div 
+              key={product.id} 
+              className="bg-white p-4 rounded-[16px] border border-[#DEDCD7] flex justify-between items-center cursor-pointer active:scale-[0.99] transition-transform" 
+              onClick={() => setActiveExhibitorTab('products')}
+            >
+              <div>
+                <h3 className="text-base font-semibold text-[#181818] mb-0.5">{product.name}</h3>
+                <p className="text-xs text-[#6B6B6B]">
+                  {product.interestedVisitorsCount} interested · {product.views} views
+                </p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
+          ))}
         </div>
       </div>
     </div>
