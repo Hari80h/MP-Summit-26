@@ -67,6 +67,7 @@ export interface Lead {
   id: string;
   personId: string;
   name: string;
+  avatar?: string;
   company: string;
   designation: string;
   email: string;

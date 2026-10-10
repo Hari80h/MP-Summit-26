@@ -64,7 +64,7 @@ export const ExhibitorHome: React.FC = () => {
       </div>
 
       {/* Dark Metrics Card (The smaller black box) */}
-      <div className="bg-[#151515] mx-4 px-5 pt-6 pb-6 text-white rounded-3xl shadow-2xl relative z-10 overflow-hidden">
+      <div className="bg-[#151515] mx-4 px-5 pt-6 pb-6 text-white rounded-3xl shadow-2xl relative z-10 overflow-hidden shrink-0">
         {/* Soft Red Glow Background */}
         <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-bl from-[#B51F32]/40 via-[#B51F32]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
@@ -75,61 +75,49 @@ export const ExhibitorHome: React.FC = () => {
         </div>
 
         {/* 4 Core Metrics Grid */}
-        <div className="grid grid-cols-2 gap-3 mb-6 relative z-10">
-          {/* Card 1 - Highlighted */}
-          <div className="bg-[#F6F4F0] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center shrink-0">
-                <Users className="w-4 h-4 text-[#B51F32]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-light text-[#181818] leading-none mb-1">{msft.visits}</span>
-                <span className="text-[10px] text-[#6B6B6B] font-medium">Booth visits</span>
-              </div>
+        <div className="grid grid-cols-2 gap-2 mb-6 relative z-10">
+          {/* Card 1 */}
+          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
+              <Users className="w-4 h-4 text-[#E68A96]" />
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-400" />
+            <div className="flex flex-col">
+              <span className="text-xl font-light text-white leading-none mb-0.5">{msft.visits}</span>
+              <span className="text-[10px] text-gray-400 font-medium">Booth visits</span>
+            </div>
           </div>
 
           {/* Card 2 */}
-          <div className="bg-[#242424] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
-                <BarChart2 className="w-4 h-4 text-[#E68A96]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-light text-white leading-none mb-1">{msft.leads || 171}</span>
-                <span className="text-[10px] text-gray-400 font-medium">Leads</span>
-              </div>
+          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
+              <BarChart2 className="w-4 h-4 text-[#E68A96]" />
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-500" />
+            <div className="flex flex-col">
+              <span className="text-xl font-light text-white leading-none mb-0.5">{msft.leads || 171}</span>
+              <span className="text-[10px] text-gray-400 font-medium">Leads</span>
+            </div>
           </div>
 
           {/* Card 3 */}
-          <div className="bg-[#242424] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
-                <ShoppingBag className="w-4 h-4 text-[#E68A96]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-light text-white leading-none mb-1">{msft.enquiries || 96}</span>
-                <span className="text-[10px] text-gray-400 font-medium">Product enquiries</span>
-              </div>
+          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
+              <ShoppingBag className="w-4 h-4 text-[#E68A96]" />
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-500" />
+            <div className="flex flex-col">
+              <span className="text-xl font-light text-white leading-none mb-0.5">{msft.enquiries || 96}</span>
+              <span className="text-[10px] text-gray-400 font-medium">Product enquiries</span>
+            </div>
           </div>
 
           {/* Card 4 */}
-          <div className="bg-[#242424] p-4 rounded-2xl flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
-                <Link className="w-4 h-4 text-[#E68A96]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-light text-white leading-none mb-1">96</span>
-                <span className="text-[10px] text-gray-400 font-medium">Connections</span>
-              </div>
+          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
+              <Link className="w-4 h-4 text-[#E68A96]" />
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-500" />
+            <div className="flex flex-col">
+              <span className="text-xl font-light text-white leading-none mb-0.5">96</span>
+              <span className="text-[10px] text-gray-400 font-medium">Connections</span>
+            </div>
           </div>
         </div>
 

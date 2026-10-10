@@ -73,25 +73,32 @@ export const ExhibitorLeads: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none px-4 pt-4 pb-20 space-y-4">
-      {/* Header & Export Action */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-serif text-[#181818] tracking-tight">Booth Leads</h1>
-          <p className="text-sm text-[#6B6B6B] mt-1">
-            {leads.length} captured leads at Booth B-14
-          </p>
+    <div className="flex-1 bg-[#F6F4F0] select-none pb-20 flex flex-col">
+      {/* Rich Header Block */}
+      <div className="bg-[#151515] px-5 pt-10 pb-12 text-white rounded-b-[32px] shadow-lg relative overflow-hidden shrink-0">
+        {/* Soft Red Glow Background */}
+        <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-bl from-[#B51F32]/50 via-[#B51F32]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="flex items-start justify-between relative z-10 mb-2">
+          <div>
+            <h1 className="text-[28px] font-serif tracking-tight text-white leading-tight mb-1">
+              Booth Leads
+            </h1>
+            <p className="text-[12px] text-gray-300 font-medium">
+              {leads.length} captured leads at Booth B-14
+            </p>
+          </div>
+          <button
+            onClick={handleExportCSV}
+            className="h-10 px-4 bg-white/10 hover:bg-white/20 active:bg-white/30 text-white border border-white/20 font-semibold text-sm rounded-xl backdrop-blur-md transition-all flex items-center gap-1.5 shrink-0"
+          >
+            <Download className="w-4 h-4 stroke-[2.5]" />
+            <span>Export</span>
+          </button>
         </div>
-
-        <button
-          onClick={handleExportCSV}
-          className="px-3 py-2 bg-white hover:bg-[#F6F4F0] active:scale-95 border border-[#DEDCD7] rounded-xl text-sm font-semibold text-[#181818] shadow-sm transition-all flex items-center gap-1.5"
-        >
-          <Download className="w-4 h-4" />
-          <span>Export</span>
-        </button>
       </div>
 
+      <div className="px-4 -mt-8 relative z-20 space-y-4">
       {/* Search Input */}
       <div className="relative">
         <Search className="w-5 h-5 text-[#6B6B6B] absolute left-3 top-1/2 -translate-y-1/2" />
@@ -145,9 +152,13 @@ export const ExhibitorLeads: React.FC = () => {
               className="bg-white px-4 py-4 rounded-2xl border border-[#DEDCD7] hover:border-[#B51F32]/30 transition-all cursor-pointer flex items-center gap-3"
             >
               {/* Avatar */}
-              <div className="w-11 h-11 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
-                {lead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-              </div>
+              {lead.avatar ? (
+                <img src={lead.avatar} alt={lead.name} className="w-11 h-11 rounded-full object-cover shrink-0 shadow-sm border border-gray-200" />
+              ) : (
+                <div className="w-11 h-11 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                  {lead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                </div>
+              )}
 
               {/* Info */}
               <div className="flex-1 min-w-0">
@@ -302,6 +313,7 @@ export const ExhibitorLeads: React.FC = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

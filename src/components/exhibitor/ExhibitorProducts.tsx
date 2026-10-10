@@ -452,27 +452,33 @@ export const ExhibitorProducts: React.FC = () => {
 
   // Showcase Products Catalog View
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none px-4 pt-4 pb-20 space-y-5">
-      {/* Header with Title and Add Product Button */}
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <h1 className="text-xl font-serif text-[#181818] tracking-tight">Showcase Products</h1>
-          <p className="text-sm text-[#6B6B6B] mt-1">
-            Microsoft Booth B-14 Featured Solutions
-          </p>
+    <div className="flex-1 bg-[#F6F4F0] select-none pb-20 flex flex-col">
+      {/* Rich Header Block */}
+      <div className="bg-[#151515] px-5 pt-10 pb-12 text-white rounded-b-[32px] shadow-lg relative overflow-hidden shrink-0">
+        {/* Soft Red Glow Background */}
+        <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-bl from-[#B51F32]/50 via-[#B51F32]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="flex items-start justify-between relative z-10 mb-2">
+          <div>
+            <h1 className="text-[28px] font-serif tracking-tight text-white leading-tight mb-1">
+              Showcase Products
+            </h1>
+            <p className="text-[12px] text-gray-300 font-medium">
+              Microsoft Booth B-14 Featured Solutions
+            </p>
+          </div>
+          <button
+            onClick={handleOpenAdd}
+            className="h-10 px-4 bg-white/10 hover:bg-white/20 active:bg-white/30 text-white border border-white/20 font-semibold text-sm rounded-xl backdrop-blur-md transition-all flex items-center gap-1.5 shrink-0"
+          >
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <span>Add</span>
+          </button>
         </div>
-
-        <button
-          onClick={handleOpenAdd}
-          className="h-10 px-4 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-95 text-white font-semibold text-sm rounded-xl shadow-sm transition-all flex items-center gap-1.5 shrink-0"
-        >
-          <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>Add</span>
-        </button>
       </div>
 
       {/* Products List (Microsoft Only) */}
-      <div className="space-y-3">
+      <div className="px-4 -mt-8 relative z-20 space-y-3">
         {companyProducts.length === 0 ? (
           <div className="bg-white p-8 rounded-2xl border border-[#DEDCD7] text-center space-y-3">
             <Package className="w-8 h-8 text-[#6B6B6B] mx-auto opacity-50" />
@@ -490,28 +496,24 @@ export const ExhibitorProducts: React.FC = () => {
             <div
               key={prod.id}
               onClick={() => setSelectedProductId(prod.id)}
-              className="bg-white p-4 rounded-2xl border border-[#EBEBEB] hover:shadow-md transition-shadow shadow-sm cursor-pointer flex flex-col relative group"
+              className="bg-white p-3.5 rounded-2xl border border-[#EBEBEB] hover:shadow-md transition-shadow shadow-sm cursor-pointer flex justify-between gap-3 group"
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1 min-w-0 pr-10">
-                  <span className="text-[11px] font-medium uppercase tracking-wider text-[#8A8A8A] block mb-1">
-                    {prod.category} · Booth {prod.booth}
-                  </span>
-                  <h3 className="text-[17px] font-semibold text-[#181818] leading-snug break-words pr-1">
-                    {prod.name}
-                  </h3>
-                  <p className="text-[13px] text-[#6B6B6B] leading-relaxed line-clamp-2 mt-1.5">
-                    {prod.tagline}
-                  </p>
-                  <div className="mt-2 flex justify-start">
-                    <span className="text-[11px] font-semibold text-[#8A8A8A] flex items-center gap-0.5 group-hover:text-[#B51F32] transition-colors">
-                      View Details <ChevronRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
+              {/* Left: Text Content */}
+              <div className="flex-1 min-w-0 pr-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A8A8A] block mb-0.5">
+                  {prod.category} · Booth {prod.booth}
+                </span>
+                <h3 className="text-[16px] font-bold text-[#181818] leading-tight break-words mb-1">
+                  {prod.name}
+                </h3>
+                <p className="text-[12px] text-[#6B6B6B] leading-snug line-clamp-2">
+                  {prod.tagline}
+                </p>
+              </div>
 
-                {/* Edit & Delete Action Buttons (Top Right) */}
-                <div className="absolute top-4 right-4 flex items-center gap-0.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+              {/* Right: Actions & Details Link */}
+              <div className="flex flex-col items-end justify-between shrink-0 py-0.5">
+                <div className="flex items-center gap-0.5 -mr-1.5 -mt-1" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => handleOpenEdit(prod)}
                     className="p-1.5 text-[#8A8A8A] hover:text-[#00A4EF] bg-transparent hover:bg-gray-50 rounded-md transition-colors"
@@ -527,6 +529,10 @@ export const ExhibitorProducts: React.FC = () => {
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
+                
+                <span className="text-[10px] font-bold text-[#8A8A8A] flex items-center gap-0.5 group-hover:text-[#B51F32] transition-colors mt-2">
+                  View Details <ChevronRight className="w-3 h-3 -mr-0.5" />
+                </span>
               </div>
             </div>
           ))

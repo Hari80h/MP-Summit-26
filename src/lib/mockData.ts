@@ -643,7 +643,7 @@ export const INITIAL_LEADS: Lead[] = [
   {
     id: 'lead-1',
     personId: 'att-101',
-    name: 'Aarav Sharma',
+    name: "Aarav Sharma", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
     company: 'Infosys',
     designation: 'VP Cloud Engineering',
     email: 'aarav.sharma@infosys.com',
@@ -661,7 +661,7 @@ export const INITIAL_LEADS: Lead[] = [
   {
     id: 'lead-2',
     personId: 'att-102',
-    name: 'Geeta Rao',
+    name: "Geeta Rao", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026703d",
     company: 'TCS',
     designation: 'Chief Architect',
     email: 'geeta.rao@tcs.com',
@@ -679,7 +679,7 @@ export const INITIAL_LEADS: Lead[] = [
   {
     id: 'lead-3',
     personId: 'att-103',
-    name: 'Atharv Vyas',
+    name: "Atharv Vyas", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026702d",
     company: 'Wipro',
     designation: 'Director AI & Data',
     email: 'atharv.vyas@wipro.com',
@@ -697,7 +697,7 @@ export const INITIAL_LEADS: Lead[] = [
   {
     id: 'lead-4',
     personId: 'att-104',
-    name: 'Priya Nair',
+    name: "Priya Nair", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026701d",
     company: 'Flipkart',
     designation: 'Principal Engineer',
     email: 'priya.nair@flipkart.com',
@@ -715,7 +715,7 @@ export const INITIAL_LEADS: Lead[] = [
   {
     id: 'lead-5',
     personId: 'att-105',
-    name: 'Rohan Mehta',
+    name: "Rohan Mehta", avatar: "https://i.pravatar.cc/150?u=a04258a2462d826712d",
     company: 'Razorpay',
     designation: 'Head of Platform',
     email: 'rohan.mehta@razorpay.com',
