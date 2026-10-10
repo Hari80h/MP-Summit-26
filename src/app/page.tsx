@@ -70,9 +70,9 @@ export default function App() {
         setShowSplash(false);
         sessionStorage.setItem('es_splash_seen', 'true');
       }, 1500);
+      return () => clearTimeout(timer);
     }
-
-      }, [setRole, setHasAccessConfirmed]);
+  }, []);
 
 
   return (

@@ -179,14 +179,14 @@ export const ExhibitorLeads: React.FC = () => {
       {/* Lead Detail Modal */}
       {selectedLead && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in">
-          <div className="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-5 space-y-5 shadow-2xl border border-[#DEDCD7]">
+          <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-3.5 space-y-3 shadow-2xl border border-[#DEDCD7]">
             {/* Modal Header */}
-            <div className="flex items-start justify-between pb-4 border-b border-[#DEDCD7]">
+            <div className="flex items-start justify-between pb-2 border-b border-[#DEDCD7]">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B6B6B] block mb-1">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-[#6B6B6B] block mb-0.5">
                   Lead Detail
                 </span>
-                <h2 className="text-2xl font-serif text-[#181818] leading-tight">{selectedLead.name}</h2>
+                <h2 className="text-xl font-serif text-[#181818] leading-tight">{selectedLead.name}</h2>
               </div>
               <button
                 onClick={() => setSelectedLead(null)}
@@ -197,12 +197,12 @@ export const ExhibitorLeads: React.FC = () => {
             </div>
 
             {/* Profile & Consent-Respected Contacts */}
-            <div className="bg-[#F6F4F0] p-4 rounded-2xl border border-[#DEDCD7] space-y-3">
+            <div className="bg-[#F6F4F0] p-2.5 rounded-[14px] border border-[#DEDCD7] space-y-2">
               <p className="font-semibold text-[#181818] text-sm">
                 {selectedLead.designation} · {selectedLead.company}
               </p>
 
-              <div className="space-y-2 pt-3 border-t border-[#DEDCD7]/60 text-sm text-[#6B6B6B]">
+              <div className="space-y-1.5 pt-2 border-t border-[#DEDCD7]/60 text-[13px] text-[#6B6B6B]">
                 <div className="flex justify-between items-center gap-2">
                   <span>Email:</span>
                   <strong className="text-[#181818] truncate">{selectedLead.email}</strong>
@@ -222,7 +222,7 @@ export const ExhibitorLeads: React.FC = () => {
 
             {/* Editable Status */}
             <div>
-              <label className="block text-sm font-semibold text-[#181818] mb-2">
+              <label className="block text-[13px] font-semibold text-[#181818] mb-1.5">
                 Qualification Status
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -230,7 +230,7 @@ export const ExhibitorLeads: React.FC = () => {
                   <button
                     key={st}
                     onClick={() => handleStatusChange(st)}
-                    className={`py-2 px-2 rounded-xl text-xs font-semibold border transition-all ${
+                    className={`py-1.5 px-2 rounded-[10px] text-xs font-semibold border transition-all ${
                       selectedLead.status === st
                         ? 'bg-[#181818] text-white border-[#181818] shadow-sm'
                         : 'bg-white text-[#6B6B6B] border-[#DEDCD7] hover:bg-[#F6F4F0]'
@@ -244,16 +244,16 @@ export const ExhibitorLeads: React.FC = () => {
 
             {/* Notes Section with In-place Edit */}
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-[#181818]">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-[13px] font-semibold text-[#181818]">
                   Conversation Notes
                 </label>
                 {!isEditingNotes && (
                   <button
                     onClick={() => setIsEditingNotes(true)}
-                    className="text-xs text-[#181818] bg-white border border-[#DEDCD7] px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1.5 hover:bg-[#F6F4F0] transition-colors"
+                    className="text-[11px] text-[#181818] bg-white border border-[#DEDCD7] px-2 py-0.5 rounded-md font-semibold flex items-center gap-1 hover:bg-[#F6F4F0] transition-colors"
                   >
-                    <Edit3 className="w-3.5 h-3.5" />
+                    <Edit3 className="w-3 h-3" />
                     <span>Edit</span>
                   </button>
                 )}
@@ -284,17 +284,17 @@ export const ExhibitorLeads: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-[#F6F4F0] rounded-2xl border border-[#DEDCD7] text-sm text-[#181818] leading-relaxed min-h-[80px]">
+                <div className="p-3 bg-[#F6F4F0] rounded-2xl border border-[#DEDCD7] text-sm text-[#181818] leading-relaxed min-h-[60px]">
                   {selectedLead.notes || <span className="text-[#6B6B6B] italic">No notes added yet.</span>}
                 </div>
               )}
             </div>
 
             {/* Close Button */}
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 onClick={() => setSelectedLead(null)}
-                className="w-full h-14 bg-[#181818] hover:bg-black active:scale-[0.98] text-white font-semibold text-sm rounded-2xl shadow-sm transition-all"
+                className="w-full h-12 bg-[#181818] hover:bg-black active:scale-[0.98] text-white font-semibold text-sm rounded-xl shadow-sm transition-all"
               >
                 Done
               </button>

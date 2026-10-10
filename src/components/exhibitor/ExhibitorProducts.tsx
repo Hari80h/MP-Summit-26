@@ -158,10 +158,10 @@ export const ExhibitorProducts: React.FC = () => {
         <div className="flex items-center justify-between">
           <button
             onClick={() => setSelectedProductId(null)}
-            className="flex items-center gap-1 text-sm font-semibold text-[#6B6B6B] hover:text-[#181818] transition-colors -ml-1 py-1 px-1 rounded-lg"
+            className="flex items-center gap-1.5 text-[15px] font-medium text-[#181818] transition-colors py-1 px-1 -ml-1 rounded-lg active:opacity-70"
           >
             <ChevronLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>Back to Products</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -182,67 +182,74 @@ export const ExhibitorProducts: React.FC = () => {
         </div>
 
         {/* Product Card Title & Metrics */}
-        <div className="bg-white p-5 rounded-3xl border border-[#DEDCD7] shadow-sm space-y-5">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] block mb-2">
-              {activeProduct.category} · Booth {activeProduct.booth}
-            </span>
-            <h1 className="text-2xl font-serif text-[#181818] leading-tight mb-1">
-              {activeProduct.name}
-            </h1>
-            <p className="text-sm text-[#6B6B6B]">
-              {activeProduct.tagline}
-            </p>
-          </div>
+        <div className="p-4 rounded-[16px] shadow-sm relative overflow-hidden bg-white border border-[#F3F4F6]">
+          <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-[#FFF0F2] opacity-80 z-0"></div>
+          <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-[#FCE8E8] rounded-full blur-3xl z-0 pointer-events-none"></div>
 
-          {/* Metrics Row: Views, Enquiries, Interested Visitors */}
-          <div className="grid grid-cols-3 gap-3 pt-5 border-t border-[#DEDCD7]/60 text-center">
-            <div className="p-3 bg-[#F6F4F0] rounded-2xl">
-              <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Views</span>
-              <span className="text-xl font-light text-[#181818]">
-                {activeProduct.views}
-              </span>
+          <div className="relative z-10 space-y-5">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D11E39] px-2.5 py-1 rounded-md">
+                  {activeProduct.category} · BOOTH {activeProduct.booth}
+                </span>
+              </div>
+              <h2 className="text-[19px] font-bold text-[#111827] leading-snug mb-2">
+                {activeProduct.name}
+              </h2>
+              <div className="text-[13px] text-[#4B5563] font-medium leading-relaxed">
+                {activeProduct.tagline}
+              </div>
             </div>
-            <div className="p-3 bg-[#F6F4F0] rounded-2xl">
-              <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Enquiries</span>
-              <span className="text-xl font-light text-[#B51F32]">
-                {activeProduct.enquiries}
-              </span>
-            </div>
-            <div
-              onClick={() => setShowVisitorsModal(true)}
-              className="p-3 bg-green-50/50 hover:bg-green-50 rounded-2xl border border-green-100 cursor-pointer transition-colors"
-            >
-              <span className="text-xs font-semibold text-[#2F7D58] block mb-1">Interested</span>
-              <span className="text-xl font-light text-[#2F7D58]">
-                {activeProduct.interestedVisitorsCount}
-              </span>
-            </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3 pt-2">
-            <button
-              onClick={() => enquireProduct(activeProduct.id)}
-              className="flex-1 h-12 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-sm rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Product Enquiry</span>
-            </button>
+            {/* Metrics Row: Views, Enquiries, Interested Visitors */}
+            <div className="grid grid-cols-3 gap-3 pt-5 border-t border-[#E5E7EB] text-center">
+              <div className="p-3 bg-white/50 rounded-2xl border border-[#F3F4F6]">
+                <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Views</span>
+                <span className="text-xl font-light text-[#181818]">
+                  {activeProduct.views}
+                </span>
+              </div>
+              <div className="p-3 bg-white/50 rounded-2xl border border-[#F3F4F6]">
+                <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Enquiries</span>
+                <span className="text-xl font-light text-[#B51F32]">
+                  {activeProduct.enquiries}
+                </span>
+              </div>
+              <div
+                onClick={() => setShowVisitorsModal(true)}
+                className="p-3 bg-green-50/50 hover:bg-green-50 rounded-2xl border border-green-100 cursor-pointer transition-colors"
+              >
+                <span className="text-xs font-semibold text-[#2F7D58] block mb-1">Interested</span>
+                <span className="text-xl font-light text-[#2F7D58]">
+                  {activeProduct.interestedVisitorsCount}
+                </span>
+              </div>
+            </div>
 
-            <button
-              onClick={() => setShowVisitorsModal(true)}
-              className="h-12 px-4 bg-white hover:bg-[#F6F4F0] border border-[#DEDCD7] text-[#181818] font-semibold text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
-              title="View Interested Visitors"
-            >
-              <Users className="w-4 h-4" />
-              <span>Visitors</span>
-            </button>
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={() => enquireProduct(activeProduct.id)}
+                className="flex-1 h-12 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Product Enquiry</span>
+              </button>
+
+              <button
+                onClick={() => setShowVisitorsModal(true)}
+                className="h-12 px-4 bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-[#111827] font-semibold text-[13px] rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
+                title="View Interested Visitors"
+              >
+                <Users className="w-4 h-4" />
+                <span>Visitors</span>
+              </button>
+            </div>
           </div>
         </div>
 
         {/* 5 Tabs: Overview | Features | Benefits | Use Cases | Resources */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+        <div className="flex bg-white rounded-t-xl border border-b-0 border-[#E5E7EB] overflow-x-auto no-scrollbar mt-4 relative z-10 shadow-sm">
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'features', label: 'Features' },
@@ -254,19 +261,22 @@ export const ExhibitorProducts: React.FC = () => {
               key={tab.id}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onClick={() => setDetailSubTab(tab.id as any)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all border ${
+              className={`flex-none px-4 py-3 text-[13px] font-bold text-center transition-colors relative ${
                 detailSubTab === tab.id
-                  ? 'bg-white border-[#DEDCD7] text-[#181818] shadow-sm'
-                  : 'bg-transparent border-transparent text-[#6B6B6B] hover:text-[#181818] hover:bg-black/5'
+                  ? 'text-[#B51F32]'
+                  : 'text-[#6B7280] hover:text-[#374151]'
               }`}
             >
               {tab.label}
+              {detailSubTab === tab.id && (
+                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#B51F32] rounded-t-full"></span>
+              )}
             </button>
           ))}
         </div>
 
         {/* TAB CONTENT */}
-        <div className="bg-white p-5 rounded-3xl border border-[#DEDCD7] shadow-sm text-sm space-y-4">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl rounded-t-none p-5 shadow-sm text-[13px] space-y-4 relative z-20 mt-[-16px]">
           {detailSubTab === 'overview' && (
             <div>
               <h3 className="font-semibold text-[#181818] mb-2 text-base">
@@ -480,54 +490,43 @@ export const ExhibitorProducts: React.FC = () => {
             <div
               key={prod.id}
               onClick={() => setSelectedProductId(prod.id)}
-              className="bg-white p-4 rounded-2xl border border-[#DEDCD7] hover:border-[#B51F32]/40 transition-all shadow-sm cursor-pointer flex flex-col gap-3"
+              className="bg-white p-4 rounded-2xl border border-[#EBEBEB] hover:shadow-md transition-shadow shadow-sm cursor-pointer flex flex-col relative group"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1 min-w-0 pr-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] block mb-1">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0 pr-10">
+                  <span className="text-[11px] font-medium uppercase tracking-wider text-[#8A8A8A] block mb-1">
                     {prod.category} · Booth {prod.booth}
                   </span>
-                  <h3 className="text-lg font-semibold text-[#181818] truncate">{prod.name}</h3>
+                  <h3 className="text-[17px] font-semibold text-[#181818] leading-snug break-words pr-1">
+                    {prod.name}
+                  </h3>
+                  <p className="text-[13px] text-[#6B6B6B] leading-relaxed line-clamp-2 mt-1.5">
+                    {prod.tagline}
+                  </p>
+                  <div className="mt-2 flex justify-start">
+                    <span className="text-[11px] font-semibold text-[#8A8A8A] flex items-center gap-0.5 group-hover:text-[#B51F32] transition-colors">
+                      View Details <ChevronRight className="w-3 h-3" />
+                    </span>
+                  </div>
                 </div>
 
-                {/* Edit & Delete Action Buttons */}
-                <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+                {/* Edit & Delete Action Buttons (Top Right) */}
+                <div className="absolute top-4 right-4 flex items-center gap-0.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => handleOpenEdit(prod)}
-                    className="p-2 text-[#6B6B6B] hover:text-[#00A4EF] bg-gray-50 hover:bg-[#00A4EF]/10 rounded-lg transition-colors"
+                    className="p-1.5 text-[#8A8A8A] hover:text-[#00A4EF] bg-transparent hover:bg-gray-50 rounded-md transition-colors"
                     title="Edit Product"
                   >
-                    <Pencil className="w-4 h-4" />
+                    <Pencil className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => setDeletingProductId(prod.id)}
-                    className="p-2 text-[#6B6B6B] hover:text-[#B51F32] bg-gray-50 hover:bg-[#B51F32]/10 rounded-lg transition-colors"
+                    className="p-1.5 text-[#8A8A8A] hover:text-[#B51F32] bg-transparent hover:bg-gray-50 rounded-md transition-colors"
                     title="Delete Product"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </div>
-
-              <p className="text-sm text-[#6B6B6B] line-clamp-2">
-                {prod.tagline}
-              </p>
-
-              <div className="pt-3 border-t border-[#DEDCD7]/60 flex items-center justify-between text-sm text-[#6B6B6B]">
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1.5">
-                    <Eye className="w-4 h-4 text-gray-400" />
-                    <strong className="text-[#181818] font-semibold">{prod.views}</strong> views
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <MessageCircle className="w-4 h-4 text-[#B51F32]/60" />
-                    <strong className="text-[#B51F32] font-semibold">{prod.enquiries}</strong> enquiries
-                  </span>
-                </div>
-
-                <span className="text-sm font-semibold text-[#B51F32] flex items-center gap-1 hover:underline">
-                  View Details <ChevronRight className="w-4 h-4" />
-                </span>
               </div>
             </div>
           ))
