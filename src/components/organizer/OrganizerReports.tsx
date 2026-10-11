@@ -68,7 +68,7 @@ export const OrganizerReports: React.FC = () => {
   };
 
   return (
-    <div className="space-y-3 select-none max-w-5xl">
+    <div className="space-y-3 select-text max-w-5xl">
       {/* Top Header & Report Actions */}
       <div className="no-print flex flex-wrap items-center justify-between gap-2.5">
         <div>

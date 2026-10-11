@@ -4,16 +4,12 @@ import React from 'react';
 import { useStore } from '../../lib/store';
 import {
   Users,
-  UserCheck,
-  Building,
+  CheckCircle2,
+  Building2,
   Mic,
   QrCode,
   Share2,
-  TrendingUp,
-  ArrowRight,
-  Calendar,
-  MapPin,
-  CheckCircle2
+  Download
 } from 'lucide-react';
 
 export const OrganizerOverview: React.FC = () => {
@@ -23,197 +19,247 @@ export const OrganizerOverview: React.FC = () => {
     setActiveOrganizerTab,
   } = useStore();
 
-  const checkInRate = ((event.totalCheckedIn / event.totalRegistered) * 100).toFixed(1);
+  const registered = event.totalRegistered || 2438;
+  const checkedIn = event.totalCheckedIn || 1120;
+  const exhibitorsCount = event.totalExhibitors || 86;
+  const speakersCount = event.totalSpeakers || 42;
+  const scansCount = event.totalScans || 6212;
+  const connectionsCount = event.totalConnections || 3281;
+  const checkInRate = registered > 0 ? Math.round((checkedIn / registered) * 100) : 46;
 
-  // Sort exhibitors by leads descending
-  const sortedExhibitors = [...exhibitors].sort((a, b) => b.leads - a.leads);
+  // Top exhibitors data matching mockup
+  const leadExhibitors = [
+    { name: 'Microsoft', booth: 'B-14', leads: 248, max: 280 },
+    { name: 'Google Cloud', booth: 'B-02', leads: 186, max: 280 },
+    { name: 'AWS', booth: 'B-09', leads: 164, max: 280 },
+    { name: 'TCS', booth: 'B-21', leads: 142, max: 280 },
+    { name: 'Infosys', booth: 'B-30', leads: 96, max: 280 },
+  ];
 
   return (
-    <div className="space-y-3 select-none max-w-6xl">
-      {/* Event Header Banner */}
-      <div className="bg-white p-3 rounded-[14px] border border-[#DEDCD7] shadow-xs flex flex-wrap items-center justify-between gap-2.5">
+    <div className="space-y-6 select-text max-w-7xl mx-auto">
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#B51F32] animate-pulse" />
-            <span className="px-2 py-0.5 bg-red-50 text-[#B51F32] text-xs font-bold uppercase rounded-md tracking-wider border border-red-100">
-              {event.status} EVENT
-            </span>
-            <span className="text-xs font-mono font-bold text-[#181818] bg-[#EFEEEA] px-2 py-0.5 rounded border border-[#DEDCD7]">
-              {event.id}
-            </span>
-          </div>
-          <h1 className="text-[15px] font-black text-[#181818] tracking-tight">
+          <span className="text-xs uppercase tracking-widest font-semibold text-[#8C8983] block select-text">
+            {event.id} · {event.city.toUpperCase()} · DAY 1 OF 3
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] tracking-tight mt-1 select-text">
             {event.name}
           </h1>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#6B6B6B] mt-1.5 font-medium">
-            <span className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#181818]" />
-              {event.dates}
-            </span>
-            <span>·</span>
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-[#181818]" />
-              {event.venue}, {event.city}
+          <div className="flex items-center gap-2 mt-2 text-xs sm:text-sm text-[#5E5B54] select-text">
+            <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
+            <span className="font-medium select-text">
+              LIVE · {checkedIn.toLocaleString()} of {registered.toLocaleString()} checked in ({checkInRate}%)
             </span>
           </div>
         </div>
 
-        <button
-          onClick={() => setActiveOrganizerTab('analytics')}
-          className="px-3 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center gap-1.5"
-        >
-          <span>View Full Analytics</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* 6 Core Metrics Cards (3-second readability) */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5">
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <div className="flex items-center justify-between text-xs text-[#6B6B6B]">
-            <span className="font-semibold">Total Registered</span>
-            <Users className="w-4 h-4 text-[#181818]" />
-          </div>
-          <p className="text-3xl font-black text-[#181818] font-mono mt-2 tracking-tight">
-            {event.totalRegistered.toLocaleString()}
-          </p>
-          <p className="text-[11px] text-[#6B6B6B] mt-1">
-            Confirmed external registrations
-          </p>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border-2 border-[#2F7D58]/30 shadow-xs relative">
-          <div className="flex items-center justify-between text-xs text-[#2F7D58]">
-            <span className="font-bold">Checked In</span>
-            <UserCheck className="w-4 h-4 text-[#2F7D58]" />
-          </div>
-          <div className="flex items-baseline gap-2 mt-2">
-            <p className="text-3xl font-black text-[#181818] font-mono tracking-tight">
-              {event.totalCheckedIn.toLocaleString()}
-            </p>
-            <span className="text-xs font-bold text-[#2F7D58] bg-[#EBF5F0] px-1.5 py-0.5 rounded">
-              {checkInRate}%
-            </span>
-          </div>
-          <div className="w-full bg-[#EFEEEA] h-1.5 rounded-full mt-2 overflow-hidden">
-            <div
-              className="bg-[#2F7D58] h-full rounded-full transition-all duration-500"
-              style={{ width: `${checkInRate}%` }}
-            />
-          </div>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <div className="flex items-center justify-between text-xs text-[#6B6B6B]">
-            <span className="font-semibold">Exhibitors</span>
-            <Building className="w-4 h-4 text-[#181818]" />
-          </div>
-          <p className="text-3xl font-black text-[#181818] font-mono mt-2 tracking-tight">
-            {event.totalExhibitors}
-          </p>
-          <p className="text-[11px] text-[#6B6B6B] mt-1">
-            Across Halls A, B, and C
-          </p>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <div className="flex items-center justify-between text-xs text-[#6B6B6B]">
-            <span className="font-semibold">Speakers</span>
-            <Mic className="w-4 h-4 text-[#181818]" />
-          </div>
-          <p className="text-3xl font-black text-[#181818] font-mono mt-2 tracking-tight">
-            {event.totalSpeakers}
-          </p>
-          <p className="text-[11px] text-[#6B6B6B] mt-1">
-            Keynotes & technical tracks
-          </p>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <div className="flex items-center justify-between text-xs text-[#6B6B6B]">
-            <span className="font-semibold">Total QR Scans</span>
-            <QrCode className="w-4 h-4 text-[#B51F32]" />
-          </div>
-          <p className="text-3xl font-black text-[#181818] font-mono mt-2 tracking-tight">
-            {event.totalScans.toLocaleString()}
-          </p>
-          <p className="text-[11px] text-[#2F7D58] font-semibold mt-1">
-            ↑ Real-time scan velocity
-          </p>
-        </div>
-
-        <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs">
-          <div className="flex items-center justify-between text-xs text-[#6B6B6B]">
-            <span className="font-semibold">Connections Made</span>
-            <Share2 className="w-4 h-4 text-[#181818]" />
-          </div>
-          <p className="text-3xl font-black text-[#181818] font-mono mt-2 tracking-tight">
-            {event.totalConnections.toLocaleString()}
-          </p>
-          <p className="text-[11px] text-[#6B6B6B] mt-1">
-            Mutual delegate contacts
-          </p>
-        </div>
-      </div>
-
-      {/* Exhibitor Leads Leaderboard */}
-      <div className="bg-white p-3 rounded-[14px] border border-[#DEDCD7] shadow-xs space-y-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-[13px] font-bold text-[#181818]">Top Exhibitor Lead Performance</h2>
-            <p className="text-xs text-[#6B6B6B]">
-              Real-time qualified attendee leads captured at sponsor booths
-            </p>
-          </div>
+        {/* Action Buttons */}
+        <div className="flex items-center gap-3">
           <button
-            onClick={() => setActiveOrganizerTab('exhibitors')}
-            className="text-xs font-semibold text-[#B51F32] hover:underline"
+            onClick={() => setActiveOrganizerTab('reports')}
+            className="px-4 py-2 bg-white hover:bg-[#F2EFE9] text-[#1A1A1A] text-sm font-medium rounded-xl border border-[#DDD8CE] shadow-xs transition-colors flex items-center gap-2"
           >
-            All 86 Exhibitors →
+            <Download className="w-4 h-4 text-[#1A1A1A]" />
+            <span>Export</span>
+          </button>
+          <button
+            onClick={() => setActiveOrganizerTab('reports')}
+            className="px-5 py-2 bg-[#101012] hover:bg-black text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors"
+          >
+            Event Report
           </button>
         </div>
+      </div>
 
-        <div className="space-y-3">
-          {sortedExhibitors.slice(0, 5).map((ex, index) => {
-            const maxLeads = sortedExhibitors[0].leads || 1;
-            const percentage = Math.round((ex.leads / maxLeads) * 100);
+      {/* 6 Core Metrics Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        {/* Registered */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
+          <Users className="w-4 h-4 text-[#8C8983]" />
+          <div>
+            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
+              {registered.toLocaleString()}
+            </p>
+            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Registered</p>
+          </div>
+        </div>
 
-            return (
-              <div key={ex.id} className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#EFEEEA] font-bold text-[10px] flex items-center justify-center text-[#181818]">
-                      {index + 1}
-                    </span>
-                    <strong className="text-[#181818] font-semibold">{ex.company}</strong>
-                    <span className="text-[#6B6B6B] font-mono text-[11px]">({ex.booth})</span>
-                    {ex.company === 'Microsoft' && (
-                      <span className="text-[9px] bg-red-50 text-[#B51F32] font-bold px-1.5 py-0.2 rounded border border-red-100">
-                        Demo Active
-                      </span>
-                    )}
+        {/* Checked in */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
+          <CheckCircle2 className="w-4 h-4 text-[#8C8983]" />
+          <div>
+            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
+              {checkedIn.toLocaleString()}
+            </p>
+            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Checked in</p>
+          </div>
+        </div>
+
+        {/* Exhibitors */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
+          <Building2 className="w-4 h-4 text-[#8C8983]" />
+          <div>
+            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
+              {exhibitorsCount}
+            </p>
+            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Exhibitors</p>
+          </div>
+        </div>
+
+        {/* Speakers */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
+          <Mic className="w-4 h-4 text-[#8C8983]" />
+          <div>
+            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
+              {speakersCount}
+            </p>
+            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Speakers</p>
+          </div>
+        </div>
+
+        {/* QR scans */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
+          <QrCode className="w-4 h-4 text-[#8C8983]" />
+          <div>
+            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
+              {scansCount.toLocaleString()}
+            </p>
+            <p className="text-xs text-[#8C8983] mt-1.5 select-text">QR scans</p>
+          </div>
+        </div>
+
+        {/* Connections */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
+          <Share2 className="w-4 h-4 text-[#8C8983]" />
+          <div>
+            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
+              {connectionsCount.toLocaleString()}
+            </p>
+            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Connections</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Grid: Top Exhibitors & Right Column Stack */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* Top exhibitors by leads */}
+        <div className="lg:col-span-7 bg-white rounded-2xl p-6 border border-[#E8E4DA] shadow-xs">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-base font-bold text-[#1A1A1A]">Top exhibitors by leads</h2>
+            <button
+              onClick={() => setActiveOrganizerTab('exhibitors')}
+              className="text-xs font-semibold text-[#C84A3B] hover:underline"
+            >
+              All exhibitors
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {leadExhibitors.map((ex) => {
+              const percentage = Math.round((ex.leads / ex.max) * 100);
+
+              return (
+                <div key={ex.name} className="flex items-center gap-4 text-xs">
+                  <div className="w-24 sm:w-28 flex-shrink-0">
+                    <p className="font-bold text-[#1A1A1A] truncate">{ex.name}</p>
+                    <p className="text-[11px] text-[#8C8983] font-mono">{ex.booth}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-[#181818]">
-                      {ex.leads} leads
-                    </span>
-                    <span className="text-[11px] text-[#6B6B6B]">
-                      {ex.visits} visits
-                    </span>
+
+                  <div className="flex-1 bg-[#EFECE4] h-2.5 rounded-full overflow-hidden">
+                    <div
+                      className="bg-[#101012] h-full rounded-full transition-all duration-500"
+                      style={{ width: `${percentage}%` }}
+                    />
                   </div>
+
+                  <span className="w-10 text-right font-bold text-[#1A1A1A] font-mono text-sm flex-shrink-0">
+                    {ex.leads}
+                  </span>
                 </div>
+              );
+            })}
+          </div>
+        </div>
 
-                <div className="w-full bg-[#EFEEEA] h-2 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all duration-500 ${
-                      ex.company === 'Microsoft' ? 'bg-[#B51F32]' : 'bg-[#181818]'
-                    }`}
-                    style={{ width: `${percentage}%` }}
-                  />
+        {/* Right Column: Check-in Progress (Black + Red Shadow) & Today's Programme */}
+        <div className="lg:col-span-5 space-y-4">
+          {/* Check-in Progress Box (Styled black with subtle red shadow theme per user request) */}
+          <div className="relative overflow-hidden bg-[#101012] text-white rounded-2xl p-6 border border-[#B51F32]/40 shadow-[0_8px_30px_rgba(181,31,50,0.22)]">
+            {/* Ambient subtle red corner glow */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#B51F32]/20 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="relative z-10">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-white/50">
+                CHECK-IN PROGRESS
+              </p>
+              <p className="text-4xl font-serif font-bold text-white tracking-tight mt-1">
+                {checkInRate}%
+              </p>
+
+              {/* Progress bar with red theme */}
+              <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden mt-4">
+                <div
+                  className="bg-gradient-to-r from-[#B51F32] to-[#E0533C] h-full rounded-full shadow-[0_0_10px_rgba(181,31,50,0.6)] transition-all duration-500"
+                  style={{ width: `${checkInRate}%` }}
+                />
+              </div>
+
+              <p className="text-xs text-white/60 mt-3 font-medium">
+                Peak: 9:00–9:45 AM · Gate A fastest (38/min)
+              </p>
+            </div>
+          </div>
+
+          {/* Today's programme */}
+          <div className="bg-white rounded-2xl p-6 border border-[#E8E4DA] shadow-xs">
+            <h3 className="text-base font-bold text-[#1A1A1A] mb-4">
+              Today&apos;s programme
+            </h3>
+
+            <div className="space-y-4">
+              {/* Item 1 */}
+              <div className="flex items-start gap-3 text-xs">
+                <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
+                  09:30
+                </span>
+                <div>
+                  <p className="text-sm font-bold text-[#1A1A1A]">Opening Keynote</p>
+                  <p className="text-xs text-[#8C8983] mt-0.5">
+                    Main Hall · 842 attending ·{' '}
+                    <span className="text-[#16A34A] font-semibold">LIVE</span>
+                  </p>
                 </div>
               </div>
-            );
-          })}
+
+              {/* Item 2 */}
+              <div className="flex items-start gap-3 text-xs">
+                <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
+                  10:45
+                </span>
+                <div>
+                  <p className="text-sm font-bold text-[#1A1A1A]">
+                    Production RAG at Scale
+                  </p>
+                  <p className="text-xs text-[#8C8983] mt-0.5">Hall B · 412 saved</p>
+                </div>
+              </div>
+
+              {/* Item 3 */}
+              <div className="flex items-start gap-3 text-xs">
+                <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
+                  12:00
+                </span>
+                <div>
+                  <p className="text-sm font-bold text-[#1A1A1A]">
+                    Design Systems for AI
+                  </p>
+                  <p className="text-xs text-[#8C8983] mt-0.5">Hall C · 268 saved</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

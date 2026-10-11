@@ -62,9 +62,10 @@ export function generateAttendees(count: number): Person[] {
         shareLinkedIn: true,
         preset: 'Connections Only'
       },
-      checkedIn: true,
-      registrationId: `REG-${Math.floor(rng() * 10000)}`,
-      ticketType: 'General Delegate'
+      checkedIn: i < 1115,
+      registrationId: `#${String(1000 + i).padStart(4, '0')}`,
+      ticketType: (i % 12 === 0 ? 'VIP' : i % 8 === 0 ? 'Exhibitor' : i % 15 === 0 ? 'Speaker' : 'Delegate'),
+      role: (i % 12 === 0 ? 'vip' : i % 8 === 0 ? 'exhibitor_staff' : i % 15 === 0 ? 'speaker' : 'delegate'),
     });
   }
   return attendees;
@@ -2358,4 +2359,5 @@ export const GENERATED_PRODUCTS: Product[] = [
     "useCases": ["Enterprise IT", "Startups", "Digital Transformation"],
     "resources": {"websiteUrl": "https://example.com"}
   }
-];export const GENERATED_ATTENDEES = generateAttendees(400);
+];
+export const GENERATED_ATTENDEES = generateAttendees(2389);

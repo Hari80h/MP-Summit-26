@@ -16,7 +16,7 @@ export const OrganizerSettings: React.FC = () => {
   };
 
   return (
-    <div className="space-y-3 select-none max-w-4xl">
+    <div className="space-y-3 select-text max-w-4xl">
       <div>
         <h1 className="text-[15px] font-black text-[#181818] tracking-tight">Console Settings</h1>
         <p className="text-xs text-[#6B6B6B] mt-0.5">

@@ -130,7 +130,7 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'eventsphere_its26_store_v4';
+const STORAGE_KEY = 'eventsphere_its26_store_v8';
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation & Role
@@ -202,9 +202,35 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.event) setEvent(parsed.event);
-        if (parsed.currentUser) setCurrentUser(parsed.currentUser);
-        if (parsed.attendees) setAttendees(parsed.attendees);
+        if (parsed.event) {
+          setEvent({
+            ...INITIAL_EVENT,
+            ...parsed.event,
+            totalRegistered: parsed.event.totalRegistered || INITIAL_EVENT.totalRegistered,
+            totalCheckedIn: parsed.event.totalCheckedIn || INITIAL_EVENT.totalCheckedIn,
+            totalExhibitors: parsed.event.totalExhibitors || INITIAL_EVENT.totalExhibitors,
+            totalSpeakers: parsed.event.totalSpeakers || INITIAL_EVENT.totalSpeakers,
+            totalScans: parsed.event.totalScans || INITIAL_EVENT.totalScans,
+            totalConnections: parsed.event.totalConnections || INITIAL_EVENT.totalConnections,
+          });
+        }
+        if (parsed.currentUser) {
+          const u = parsed.currentUser;
+          if (!u.registrationId || u.registrationId.toLowerCase().includes('not public')) {
+            u.registrationId = '#0523';
+          }
+          setCurrentUser(u);
+        }
+        if (parsed.attendees) {
+          const sanitized = parsed.attendees.map((a: Person) => {
+            if (!a.registrationId || a.registrationId.toLowerCase().includes('not public') || a.registrationId.toLowerCase().includes('unlisted')) {
+              const num = String(Math.abs(a.id.split('').reduce((acc: number, c: string) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 9000 + 1000).padStart(4, '0');
+              return { ...a, registrationId: `#${num}` };
+            }
+            return a;
+          });
+          setAttendees(sanitized);
+        }
         if (parsed.connections) setConnections(parsed.connections);
         if (parsed.leads && parsed.leads.length > 0) setLeads(parsed.leads);
         else setLeads(INITIAL_LEADS);

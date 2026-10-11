@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../../lib/store';
 import {
   Search,
@@ -27,11 +27,19 @@ export const OrganizerAttendees: React.FC = () => {
     addWalkInAttendee,
     importAttendeesMock,
     showToast,
+    event,
   } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'All' | 'Checked In' | 'Not Checked In' | 'VIP' | 'Speakers' | 'Exhibitors'>('All');
+  const [activeTab, setActiveTab] = useState<'All' | 'Checked in' | 'Not in' | 'VIP' | 'Speakers' | 'Exhibitors'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(11);
+
+  // Reset to page 1 whenever search query, filter tab, or page size changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeTab, pageSize]);
 
   // Modals
   const [showImportModal, setShowImportModal] = useState(false);
@@ -51,27 +59,71 @@ export const OrganizerAttendees: React.FC = () => {
 
   // Filter attendees
   const filteredAttendees = attendees.filter((person) => {
+    const q = searchQuery.toLowerCase().trim();
+    const regId = (person.registrationId || '').toLowerCase();
     const matchesSearch =
-      searchQuery === '' ||
-      person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.registrationId.toLowerCase().includes(searchQuery.toLowerCase());
+      q === '' ||
+      person.name.toLowerCase().includes(q) ||
+      person.company.toLowerCase().includes(q) ||
+      person.designation.toLowerCase().includes(q) ||
+      person.email.toLowerCase().includes(q) ||
+      regId.includes(q);
 
     if (!matchesSearch) return false;
 
-    if (activeTab === 'Checked In') return person.checkedIn;
-    if (activeTab === 'Not Checked In') return !person.checkedIn;
-    if (activeTab === 'VIP') return person.role === 'vip';
-    if (activeTab === 'Speakers') return person.role === 'speaker';
-    if (activeTab === 'Exhibitors') return person.role === 'exhibitor_staff';
+    if (activeTab === 'Checked in') return person.checkedIn;
+    if (activeTab === 'Not in') return !person.checkedIn;
+    if (activeTab === 'VIP') return person.role === 'vip' || person.ticketType?.toLowerCase().includes('vip');
+    if (activeTab === 'Speakers') return person.role === 'speaker' || person.ticketType?.toLowerCase().includes('speaker');
+    if (activeTab === 'Exhibitors') return person.role === 'exhibitor_staff' || person.ticketType?.toLowerCase().includes('exhibitor');
     return true; // 'All'
   });
+
+  const totalRecords = event.totalRegistered || 2438;
+
+  const totalPages = Math.max(1, Math.ceil(filteredAttendees.length / pageSize));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const startIndex = (safeCurrentPage - 1) * pageSize;
+  const paginatedAttendees = filteredAttendees.slice(startIndex, startIndex + pageSize);
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    // When near the beginning: show 1, 2, 3, 4, 5, 6, '...', totalPages
+    if (safeCurrentPage <= 4) {
+      return [1, 2, 3, 4, 5, 6, '...', totalPages];
+    }
+    // When near the end: show last 6 pages
+    if (safeCurrentPage >= totalPages - 3) {
+      return [1, '...', totalPages - 5, totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+    // In the middle: show 2 pages behind and 2 pages ahead
+    return [
+      1,
+      '...',
+      safeCurrentPage - 2,
+      safeCurrentPage - 1,
+      safeCurrentPage,
+      safeCurrentPage + 1,
+      safeCurrentPage + 2,
+      '...',
+      totalPages,
+    ];
+  };
+
+  const getFormattedRegId = (person: Person) => {
+    if (!person.registrationId || person.registrationId.toLowerCase().includes('not public') || person.registrationId.toLowerCase().includes('unlisted')) {
+      const num = String(Math.abs(person.id.split('').reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 9000 + 1000).padStart(4, '0');
+      return `#${num}`;
+    }
+    return person.registrationId.startsWith('#') ? person.registrationId : `#${person.registrationId}`;
+  };
 
   const handleExportCSV = () => {
     const headers = ['Registration ID', 'Name', 'Email', 'Company', 'Designation', 'Ticket Type', 'Checked In', 'Check-In Time'];
     const rows = attendees.map((a) => [
-      `"${a.registrationId}"`,
+      `"${getFormattedRegId(a)}"`,
       `"${a.name}"`,
       `"${a.email}"`,
       `"${a.company}"`,
@@ -122,173 +174,237 @@ export const OrganizerAttendees: React.FC = () => {
   };
 
   return (
-    <div className="space-y-3 select-none max-w-6xl">
+    <div className="space-y-5 select-text max-w-7xl mx-auto">
       {/* Header & Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-[15px] font-black text-[#181818] tracking-tight">Attendee Management</h1>
-          <p className="text-xs text-[#6B6B6B] mt-0.5">
-            2,438 pre-registered records synced from external registration portal
-          </p>
+          <span className="text-xs uppercase tracking-widest font-semibold text-[#8C8983] block">
+            {event.id} · {totalRecords.toLocaleString()} RECORDS
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] tracking-tight mt-1">
+            Attendees
+          </h1>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => {
               setMappingStep('upload');
               setShowImportModal(true);
             }}
-            className="px-2.5 py-2 bg-white hover:bg-[#F6F4F0] border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg shadow-xs transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 bg-white hover:bg-[#F2EFE9] text-[#1A1A1A] text-sm font-medium rounded-xl border border-[#DDD8CE] shadow-xs transition-colors"
           >
-            <Upload className="w-3.5 h-3.5 text-[#181818]" />
-            <span>Import CSV</span>
+            Import CSV
           </button>
 
           <button
             onClick={() => setShowWalkInModal(true)}
-            className="px-2.5 py-2 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-semibold text-xs rounded-lg shadow-xs transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 bg-white hover:bg-[#F2EFE9] text-[#1A1A1A] text-sm font-medium rounded-xl border border-[#DDD8CE] shadow-xs transition-colors"
           >
-            <UserPlus className="w-3.5 h-3.5" />
-            <span>Add Walk-in</span>
+            + Walk-in
           </button>
 
           <button
             onClick={handleExportCSV}
-            className="px-2.5 py-2 bg-white hover:bg-[#F6F4F0] border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg shadow-xs transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 bg-[#101012] hover:bg-black text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors flex items-center gap-1.5"
           >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export Roster</span>
+            <Download className="w-4 h-4 text-white" />
+            <span>Export</span>
           </button>
         </div>
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] shadow-xs space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          {/* Filter Tabs */}
-          <div className="flex items-center gap-1.5 p-1 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7] overflow-x-auto no-scrollbar">
-            {(['All', 'Checked In', 'Not Checked In', 'VIP', 'Speakers', 'Exhibitors'] as const).map((tab) => (
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        {/* Search Input */}
+        <div className="relative w-full sm:w-80 flex-shrink-0">
+          <Search className="w-4 h-4 text-[#8C8983] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search name, company, ID..."
+            className="w-full h-10 pl-9 pr-3 rounded-xl bg-white border border-[#E8E4DA] text-xs text-[#1A1A1A] placeholder:text-[#8C8983] focus:outline-none focus:ring-1 focus:ring-[#B51F32]/40 shadow-xs"
+          />
+        </div>
+
+        {/* Filter Pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          {(['All', 'Checked in', 'Not in', 'VIP', 'Speakers', 'Exhibitors'] as const).map((tab) => {
+            const isActive = activeTab === tab;
+            return (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                  activeTab === tab
-                    ? 'bg-white text-[#181818] shadow-xs'
-                    : 'text-[#6B6B6B] hover:text-[#181818]'
+                className={`px-3.5 py-2 rounded-lg text-xs whitespace-nowrap transition-all ${
+                  isActive
+                    ? 'bg-[#101012] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] font-semibold'
+                    : 'bg-white text-[#5E5B54] hover:text-[#1A1A1A] border border-[#E8E4DA] font-medium'
                 }`}
               >
                 {tab}
               </button>
-            ))}
-          </div>
-
-          {/* Search Input */}
-          <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by name, company, REG-ID..."
-              className="w-full h-9 pl-9 pr-3 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32]"
-            />
-          </div>
+            );
+          })}
         </div>
+      </div>
 
-        {/* Attendees Table */}
+      {/* Attendees Table Card */}
+      <div className="bg-white rounded-2xl border border-[#E8E4DA] shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-[#DEDCD7] text-[#6B6B6B] font-semibold text-[11px] uppercase tracking-wider">
-                <th className="py-2.5 px-3">Attendee</th>
-                <th className="py-2.5 px-3">Organization</th>
-                <th className="py-2.5 px-3">Ticket / Role</th>
-                <th className="py-2.5 px-3">Registration ID</th>
-                <th className="py-2.5 px-3">Check-In Status</th>
-                <th className="py-2.5 px-3 text-right">Actions</th>
+              <tr className="border-b border-[#EFECE4] text-[#8C8983] font-bold text-[10.5px] uppercase tracking-wider">
+                <th className="py-2.5 px-5 font-bold">NAME</th>
+                <th className="py-2.5 px-5 font-bold">COMPANY</th>
+                <th className="py-2.5 px-5 font-bold">DESIGNATION</th>
+                <th className="py-2.5 px-5 font-bold">TYPE</th>
+                <th className="py-2.5 px-5 font-bold">STATUS</th>
+                <th className="py-2.5 px-5 font-bold text-right">REG ID</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#DEDCD7]/60">
-              {filteredAttendees.map((person) => (
-                <tr
-                  key={person.id}
-                  onClick={() => setSelectedPerson(person)}
-                  className="hover:bg-[#F6F4F0] transition-colors cursor-pointer group"
-                >
-                  <td className="py-3 px-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-full bg-[#EFEEEA] border border-[#DEDCD7] flex items-center justify-center font-bold text-[10px] text-[#181818] flex-shrink-0">
-                        {person.name.split(' ').map((n) => n[0]).join('')}
-                      </div>
-                      <div>
-                        <p className="font-bold text-[#181818] group-hover:text-[#B51F32]">
+            <tbody className="divide-y divide-[#F4F1EA]">
+              {paginatedAttendees.map((person) => {
+                const initials = person.name.split(' ').map((n) => n[0]).join('').slice(0, 2);
+                const typeLabel =
+                  person.role === 'speaker' || person.ticketType?.toLowerCase().includes('speaker')
+                    ? 'Speaker'
+                    : person.role === 'vip' || person.ticketType?.toLowerCase().includes('vip')
+                    ? 'VIP'
+                    : person.role === 'exhibitor_staff' || person.ticketType?.toLowerCase().includes('exhibitor')
+                    ? 'Exhibitor'
+                    : 'Delegate';
+
+                return (
+                  <tr
+                    key={person.id}
+                    onClick={() => setSelectedPerson(person)}
+                    className="hover:bg-[#FAF7F2] transition-colors cursor-pointer"
+                  >
+                    {/* NAME */}
+                    <td className="py-2 px-5">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full bg-[#E5DFD3] text-[#554D41] flex items-center justify-center font-bold text-[10px] flex-shrink-0">
+                          {initials}
+                        </div>
+                        <span className="font-bold text-xs sm:text-sm text-[#1A1A1A]">
                           {person.name}
-                        </p>
-                        <p className="text-[10px] text-[#6B6B6B]">{person.email}</p>
+                        </span>
                       </div>
-                    </div>
-                  </td>
+                    </td>
 
-                  <td className="py-3 px-3">
-                    <p className="font-semibold text-[#181818]">{person.company}</p>
-                    <p className="text-[10px] text-[#6B6B6B]">{person.designation}</p>
-                  </td>
+                    {/* COMPANY */}
+                    <td className="py-2 px-5 text-xs sm:text-sm text-[#5E5B54]">
+                      {person.company}
+                    </td>
 
-                  <td className="py-3 px-3">
-                    <span
-                      className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded border ${
-                        person.role === 'speaker'
-                          ? 'bg-purple-50 text-purple-700 border-purple-200'
-                          : person.role === 'vip'
-                          ? 'bg-amber-50 text-amber-700 border-amber-200'
-                          : person.role === 'exhibitor_staff'
-                          ? 'bg-blue-50 text-blue-700 border-blue-200'
-                          : 'bg-gray-50 text-[#181818] border-gray-200'
-                      }`}
-                    >
-                      {person.ticketType}
-                    </span>
-                  </td>
+                    {/* DESIGNATION */}
+                    <td className="py-2 px-5 text-xs sm:text-sm text-[#5E5B54]">
+                      {person.designation}
+                    </td>
 
-                  <td className="py-3 px-3 font-mono text-[11px] text-[#6B6B6B]">
-                    {person.registrationId}
-                  </td>
+                    {/* TYPE */}
+                    <td className="py-2 px-5">
+                      <span className="inline-block bg-[#EFECE4] text-[#5E5B54] text-[11px] font-medium px-2 py-0.5 rounded-md">
+                        {typeLabel}
+                      </span>
+                    </td>
 
-                  <td className="py-3 px-3">
-                    <div className="flex items-center gap-1.5">
+                    {/* STATUS */}
+                    <td className="py-2 px-5">
                       {person.checkedIn ? (
-                        <span className="flex items-center gap-1 text-[11px] font-bold text-[#2F7D58]">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          <span>Checked In</span>
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16A34A]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
+                          Checked in
                         </span>
                       ) : (
-                        <span className="flex items-center gap-1 text-[11px] text-[#6B6B6B]">
-                          <XCircle className="w-3.5 h-3.5" />
-                          <span>Pending</span>
+                        <span className="text-xs text-[#8C8983] font-medium">
+                          Not in
                         </span>
                       )}
-                    </div>
-                    {person.checkInTime && (
-                      <p className="text-[10px] text-[#6B6B6B]">{person.checkInTime}</p>
-                    )}
-                  </td>
+                    </td>
 
-                  <td className="py-3 px-3 text-right" onClick={(e) => e.stopPropagation()}>
-                    <button
-                      onClick={() => toggleCheckIn(person.id)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all active:scale-95 ${
-                        person.checkedIn
-                          ? 'bg-[#EFEEEA] hover:bg-[#E5E3DC] text-[#6B6B6B] border-[#DEDCD7]'
-                          : 'bg-[#2F7D58] hover:bg-[#256346] text-white border-[#2F7D58]'
-                      }`}
-                    >
-                      {person.checkedIn ? 'Check Out' : 'Check In'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    {/* REG ID */}
+                    <td className="py-2 px-5 text-right font-mono text-xs text-[#8C8983]">
+                      {getFormattedRegId(person)}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+        </div>
+
+        {/* Table Footer / Pagination */}
+        <div className="py-2.5 px-5 border-t border-[#EFECE4] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#8C8983]">
+          <div>
+            Showing {filteredAttendees.length === 0 ? 0 : startIndex + 1}
+            {paginatedAttendees.length > 1 ? `–${startIndex + paginatedAttendees.length}` : ''} of{' '}
+            {filteredAttendees.length.toLocaleString()} · sorted by check-in recency
+          </div>
+
+          <div className="flex items-center gap-1 font-medium select-none">
+            {safeCurrentPage > 1 && (
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                className="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer text-[#8C8983] transition-colors outline-none focus:outline-none"
+                title="Previous page"
+              >
+                ←
+              </button>
+            )}
+
+            {getPageNumbers().map((page, idx) => {
+              if (page === '...') {
+                const isLeftDots = idx === 1;
+                return (
+                  <button
+                    type="button"
+                    key={`dots-${idx}`}
+                    onClick={() =>
+                      setCurrentPage((p) =>
+                        isLeftDots ? Math.max(1, p - 5) : Math.min(totalPages, p + 5)
+                      )
+                    }
+                    className="w-7 h-7 rounded-lg text-xs flex items-center justify-center text-[#8C8983] hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer transition-colors outline-none focus:outline-none"
+                    title={isLeftDots ? 'Jump back 5 pages' : 'Jump ahead 5 pages'}
+                  >
+                    ...
+                  </button>
+                );
+              }
+
+              const pageNum = Number(page);
+              const isActive = safeCurrentPage === pageNum;
+
+              return (
+                <button
+                  type="button"
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center transition-all outline-none focus:outline-none ${
+                    isActive
+                      ? 'bg-[#101012] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] cursor-default'
+                      : 'text-[#8C8983] hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+
+            {safeCurrentPage < totalPages && (
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                className="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer text-[#8C8983] transition-colors outline-none focus:outline-none"
+                title="Next page"
+              >
+                →
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -315,7 +431,7 @@ export const OrganizerAttendees: React.FC = () => {
             <div className="bg-[#F6F4F0] p-2.5 rounded-lg border border-[#DEDCD7] space-y-2 text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-[#6B6B6B]">Registration ID:</span>
-                <strong className="font-mono text-[#181818]">{selectedPerson.registrationId}</strong>
+                <strong className="font-mono text-[#181818]">{getFormattedRegId(selectedPerson)}</strong>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-[#6B6B6B]">Ticket Tier:</span>

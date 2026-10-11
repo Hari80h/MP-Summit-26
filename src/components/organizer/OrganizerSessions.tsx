@@ -44,7 +44,7 @@ export const OrganizerSessions: React.FC = () => {
   });
 
   return (
-    <div className="space-y-3 select-none max-w-6xl">
+    <div className="space-y-3 select-text max-w-6xl">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2.5">
         <div>

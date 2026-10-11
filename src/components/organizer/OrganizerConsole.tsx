@@ -13,7 +13,6 @@ import {
   ShieldCheck,
   ChevronRight,
   ExternalLink,
-  Smartphone,
   LogOut
 } from 'lucide-react';
 import { OrganizerOverview } from './OrganizerOverview';
@@ -28,7 +27,6 @@ export const OrganizerConsole: React.FC = () => {
   const {
     activeOrganizerTab,
     setActiveOrganizerTab,
-    setRole,
     event,
     setHasAccessConfirmed,
   } = useStore();
@@ -44,25 +42,40 @@ export const OrganizerConsole: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-49px)] bg-[#F6F4F0] flex flex-col md:flex-row">
+    <div className="h-screen w-full bg-[#FAF7F2] flex flex-col md:flex-row overflow-hidden">
       {/* Sidebar Navigation */}
-      <aside className="no-print w-full md:w-64 bg-white border-r border-[#DEDCD7] flex flex-col justify-between p-3 flex-shrink-0">
-        <div className="space-y-3">
-          {/* Console Header */}
-          <div className="px-2 pt-2">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-[#6B6B6B] block">
-              Organizer Operations
-            </span>
-            <h2 className="text-[13px] font-extrabold text-[#181818] tracking-tight mt-0.5">
-              Event Command Center
-            </h2>
-            <p className="text-[11px] text-[#6B6B6B]">
-              India Tech Summit 2026 · Bengaluru
-            </p>
+      <aside className="no-print w-full md:w-64 h-full bg-[#101012] text-white flex flex-col justify-between p-4 flex-shrink-0 border-r border-[#B51F32]/30 shadow-[4px_0_25px_rgba(181,31,50,0.16)] z-20">
+        <div className="space-y-4">
+          {/* Console Header & Brand */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-[#C87D55] text-white flex items-center justify-center font-serif text-xl font-bold shadow-xs">
+                E
+              </div>
+              <div>
+                <h2 className="text-xs font-black tracking-widest uppercase text-white leading-none">
+                  EventSphere
+                </h2>
+                <p className="text-[11px] text-white/50 mt-1 font-medium">
+                  Organizer Console
+                </p>
+              </div>
+            </div>
+
+            {/* Event pill badge / box */}
+            <div className="p-2.5 bg-[#17171A] rounded-xl border border-[#B51F32]/40 shadow-[0_2px_12px_rgba(181,31,50,0.18)]">
+              <p className="text-xs font-semibold text-white truncate">
+                {event.name}
+              </p>
+              <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-white/60 font-mono">
+                <span>{event.id} · LIVE</span>
+                <span className="w-2 h-2 rounded-full bg-[#22C55E] inline-block animate-pulse" />
+              </div>
+            </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1">
+          <nav className="space-y-1 pt-1">
             {sidebarItems.map((item) => {
               const isActive = activeOrganizerTab === item.id;
               const Icon = item.icon;
@@ -73,19 +86,19 @@ export const OrganizerConsole: React.FC = () => {
                   onClick={() => setActiveOrganizerTab(item.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     isActive
-                      ? 'bg-[#B51F32] text-white shadow-xs'
-                      : 'text-[#6B6B6B] hover:text-[#181818] hover:bg-[#F6F4F0]'
+                      ? 'bg-[#FAF7F2] text-[#111113] font-bold shadow-xs'
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
                   </div>
 
                   {item.badge && (
                     <span
-                      className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                        isActive ? 'bg-white/20 text-white' : 'bg-[#EFEEEA] text-[#181818]'
+                      className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
+                        isActive ? 'bg-[#E3DFD5] text-[#111113]' : 'bg-white/15 text-white/90'
                       }`}
                     >
                       {item.badge}
@@ -97,24 +110,11 @@ export const OrganizerConsole: React.FC = () => {
           </nav>
         </div>
 
-        {/* Bottom Switcher Shortcut */}
-        <div className="pt-3 border-t border-[#DEDCD7] space-y-2">
-          <div className="p-2.5 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7] text-xs">
-            <p className="text-[11px] font-semibold text-[#181818]">Connected to ITS26 Live Store</p>
-            <p className="text-[10px] text-[#6B6B6B] mt-0.5">Role switch maintains shared state</p>
-          </div>
-
-          <button
-            onClick={() => setRole('delegate')}
-            className="w-full py-2 px-3 bg-white hover:bg-[#EFEEEA] border border-[#DEDCD7] rounded-lg text-xs font-semibold text-[#181818] transition-colors flex items-center justify-center gap-1.5"
-          >
-            <Smartphone className="w-3.5 h-3.5 text-[#B51F32]" />
-            <span>Switch to Delegate App</span>
-          </button>
-
+        {/* Bottom Logout */}
+        <div className="pt-4 pb-3 border-t border-white/10">
           <button
             onClick={() => setHasAccessConfirmed(false)}
-            className="w-full py-2 px-3 bg-white hover:bg-red-50 border border-[#DEDCD7] hover:border-red-200 rounded-lg text-xs font-semibold text-[#B51F32] transition-colors flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-3 bg-[#17171A] hover:bg-red-950/40 border border-[#B51F32]/40 rounded-xl text-xs font-semibold text-red-300 hover:text-red-200 transition-colors flex items-center justify-center gap-2 shadow-[0_2px_10px_rgba(181,31,50,0.15)] cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Log out</span>
@@ -123,7 +123,7 @@ export const OrganizerConsole: React.FC = () => {
       </aside>
 
       {/* Main Console Content Body */}
-      <main className="flex-1 p-3 lg:p-8 overflow-y-auto max-w-7xl">
+      <main className="flex-1 h-full overflow-y-auto p-4 lg:p-8">
         {activeOrganizerTab === 'overview' && <OrganizerOverview />}
         {activeOrganizerTab === 'attendees' && <OrganizerAttendees />}
         {activeOrganizerTab === 'exhibitors' && <OrganizerExhibitors />}

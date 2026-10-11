@@ -76,7 +76,7 @@ export default function App() {
 
 
   return (
-    <div className="min-h-[100dvh] bg-[#F6F4F0] flex flex-col font-sans">
+    <div className={`bg-[#F6F4F0] flex flex-col font-sans ${role === 'organizer' ? 'h-[100dvh] overflow-hidden' : 'min-h-[100dvh]'}`}>
       {/* Splash Screen */}
       {showSplash && <SplashScreen onDismiss={() => setShowSplash(false)} />}
 

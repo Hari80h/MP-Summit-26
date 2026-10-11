@@ -30,7 +30,7 @@ export const OrganizerAnalytics: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-3 select-none max-w-6xl">
+    <div className="space-y-3 select-text max-w-6xl">
       {/* Header */}
       <div className="pt-2 pb-1 px-1">
         <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · ORGANIZER</p>
