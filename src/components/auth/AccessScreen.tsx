@@ -24,6 +24,12 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
     }
   }, [mobile]);
 
+  const handleQuickSelect = (num: string) => {
+    setMobile(num);
+    setErrorMessage('');
+    if (status === 'error') setStatus('idle');
+  };
+
   const handleVerify = (e?: React.FormEvent | React.MouseEvent) => {
     if (e && typeof e.preventDefault === 'function') {
       e.preventDefault();
@@ -52,11 +58,20 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
 
     let detectedRole: 'delegate' | 'exhibitor' | 'organizer' = 'delegate';
 
+<<<<<<< Updated upstream
     if (num === '9876543211' || num.endsWith('43211') || num.endsWith('3211')) {
       detectedRole = 'exhibitor';
     } else if (num === '9876543212' || num === '90876543212' || num.endsWith('43212') || num.endsWith('3212')) {
       detectedRole = 'organizer';
     } else {
+=======
+    if (mobile10 === '9876543211' || digits.endsWith('43211') || digits.endsWith('3211')) {
+      detectedRole = 'exhibitor';
+    } else if (mobile10 === '90876543212' || digits.endsWith('43212') || digits.endsWith('3212')) {
+      detectedRole = 'organizer';
+    } else {
+      // Default to delegate for 9876543210 and all other registered attendees
+>>>>>>> Stashed changes
       detectedRole = 'delegate';
     }
 
@@ -66,6 +81,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         setStatus('confirmed');
         setTimeout(() => {
           setHasAccessConfirmed(true);
+<<<<<<< Updated upstream
           onSuccess();
         }, 350);
       } catch (err) {
@@ -73,16 +89,27 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         setHasAccessConfirmed(true);
         setStatus('confirmed');
         onSuccess();
+=======
+          onSuccess?.();
+        }, 300);
+      } catch (err) {
+        console.error('Login error:', err);
+        setHasAccessConfirmed(true);
+        onSuccess?.();
+>>>>>>> Stashed changes
       }
     }, 400);
   };
 
+<<<<<<< Updated upstream
   const handleQuickSelect = (num: string) => {
     setMobile(num);
     setErrorMessage('');
     if (status === 'error') setStatus('idle');
   };
 
+=======
+>>>>>>> Stashed changes
   return (
     <div className="flex-1 flex flex-col bg-[#F6F4F0] min-h-[600px] select-none h-full relative overflow-y-auto">
       
@@ -238,8 +265,13 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             {/* Submit Action */}
             <button
               type="submit"
+<<<<<<< Updated upstream
               disabled={status === 'verifying' || status === 'confirmed' || !mobile.trim()}
               className="w-full h-[42px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+=======
+              disabled={status === 'verifying' || status === 'confirmed'}
+              className="w-full h-[42px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+>>>>>>> Stashed changes
             >
               {status === 'verifying' ? (
                 <>
