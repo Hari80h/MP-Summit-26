@@ -148,6 +148,99 @@ export const ExhibitorProducts: React.FC = () => {
     showToast('Interested visitors exported successfully ✓', 'success');
   };
 
+  const renderModals = () => (
+    <React.Fragment>
+      {/* Edit Product Modal */}
+      {showEditModal && editingProduct && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
+          <div className="bg-white rounded-[14px] w-full max-w-sm p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
+            <div className="flex items-center justify-between pb-2 border-b border-[#DEDCD7]">
+              <div>
+                <h3 className="text-[12px] font-bold text-[#181818]">Edit Product</h3>
+                <p className="text-[11px] text-[#6B6B6B]">Microsoft Booth B-14</p>
+              </div>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="p-1 text-[#6B6B6B] hover:text-[#181818] rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-3">
+              <div>
+                <label className="text-[11px] font-bold text-[#181818] block mb-1">Product Name</label>
+                <input
+                  type="text"
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
+                  placeholder="e.g. Azure OpenAI Service"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-[#181818] block mb-1">Tagline</label>
+                <input
+                  type="text"
+                  value={formTagline}
+                  onChange={(e) => setFormTagline(e.target.value)}
+                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
+                  placeholder="e.g. Advanced language models"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-[#181818] block mb-1">Category</label>
+                <select
+                  value={formCategory}
+                  onChange={(e) => setFormCategory(e.target.value)}
+                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] bg-white"
+                >
+                  <option value="Cloud & AI">Cloud & AI</option>
+                  <option value="Enterprise SaaS">Enterprise SaaS</option>
+                  <option value="Security & Compliance">Security & Compliance</option>
+                  <option value="Data & Analytics">Data & Analytics</option>
+                  <option value="Developer Tools">Developer Tools</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-[#181818] block mb-1">Overview</label>
+                <textarea
+                  value={formOverview}
+                  onChange={(e) => setFormOverview(e.target.value)}
+                  rows={3}
+                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] resize-none"
+                  placeholder="Brief overview of the product..."
+                />
+              </div>
+
+              <div className="pt-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg hover:bg-[#F6F4F0]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Save Changes</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+    </React.Fragment>
+  );
+
   // If a product is selected, render Product Detail
   if (activeProduct) {
     const productVisitors = interestedVisitors.filter((v) => v.productId === activeProduct.id);
@@ -193,44 +286,34 @@ export const ExhibitorProducts: React.FC = () => {
                   {activeProduct.category} · BOOTH {activeProduct.booth}
                 </span>
               </div>
-              <h2 className="text-[19px] font-bold text-[#111827] leading-snug mb-2">
-                {activeProduct.name}
-              </h2>
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <h2 className="text-[19px] font-bold text-[#111827] leading-snug">
+                  {activeProduct.name}
+                </h2>
+                <div className="shrink-0 pt-0.5">
+                  {activeProduct.resources && Object.keys(activeProduct.resources).length > 0 ? (
+                    <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#FCE8E8] text-[#D11E39] text-[10px] font-bold uppercase tracking-wider rounded-lg hover:bg-[#F9D5D5] transition-colors">
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>Brochure</span>
+                    </button>
+                  ) : (
+                    <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 text-[#6B6B6B] text-[10px] font-bold uppercase tracking-wider rounded-lg hover:bg-gray-200 transition-colors">
+                      <UploadCloud className="w-3.5 h-3.5" />
+                      <span>Upload</span>
+                    </button>
+                  )}
+                </div>
+              </div>
               <div className="text-[13px] text-[#4B5563] font-medium leading-relaxed">
                 {activeProduct.tagline}
               </div>
             </div>
 
-            {/* Metrics Row: Views, Enquiries, Interested Visitors */}
-            <div className="grid grid-cols-3 gap-3 pt-5 border-t border-[#E5E7EB] text-center">
-              <div className="p-3 bg-white/50 rounded-2xl border border-[#F3F4F6]">
-                <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Views</span>
-                <span className="text-xl font-light text-[#181818]">
-                  {activeProduct.views}
-                </span>
-              </div>
-              <div className="p-3 bg-white/50 rounded-2xl border border-[#F3F4F6]">
-                <span className="text-xs font-semibold text-[#6B6B6B] block mb-1">Enquiries</span>
-                <span className="text-xl font-light text-[#B51F32]">
-                  {activeProduct.enquiries}
-                </span>
-              </div>
-              <div
-                onClick={() => setShowVisitorsModal(true)}
-                className="p-3 bg-green-50/50 hover:bg-green-50 rounded-2xl border border-green-100 cursor-pointer transition-colors"
-              >
-                <span className="text-xs font-semibold text-[#2F7D58] block mb-1">Interested</span>
-                <span className="text-xl font-light text-[#2F7D58]">
-                  {activeProduct.interestedVisitorsCount}
-                </span>
-              </div>
-            </div>
-
             {/* Action Buttons */}
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center gap-3 pt-4 border-t border-[#E5E7EB]">
               <button
                 onClick={() => enquireProduct(activeProduct.id)}
-                className="flex-1 h-12 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
+                className="flex-[2] h-11 bg-gradient-to-r from-[#151515] to-[#2A080D] hover:from-black hover:to-[#151515] active:scale-[0.98] text-white font-semibold text-[13px] rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Product Enquiry</span>
@@ -238,7 +321,7 @@ export const ExhibitorProducts: React.FC = () => {
 
               <button
                 onClick={() => setShowVisitorsModal(true)}
-                className="h-12 px-4 bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-[#111827] font-semibold text-[13px] rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
+                className="flex-1 h-11 bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-[#111827] font-semibold text-[13px] rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
                 title="View Interested Visitors"
               >
                 <Users className="w-4 h-4" />
@@ -248,14 +331,13 @@ export const ExhibitorProducts: React.FC = () => {
           </div>
         </div>
 
-        {/* 5 Tabs: Overview | Features | Benefits | Use Cases | Resources */}
+        {/* 4 Tabs: Overview | Features | Benefits | Use Cases */}
         <div className="flex bg-white rounded-t-xl border border-b-0 border-[#E5E7EB] overflow-x-auto no-scrollbar mt-4 relative z-10 shadow-sm">
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'features', label: 'Features' },
             { id: 'benefits', label: 'Benefits' },
             { id: 'useCases', label: 'Use Cases' },
-            { id: 'resources', label: 'Resources' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -336,47 +418,6 @@ export const ExhibitorProducts: React.FC = () => {
             </div>
           )}
 
-          {detailSubTab === 'resources' && (
-            <div className="space-y-3">
-              <h3 className="font-semibold text-[#181818] mb-3 text-base">
-                Collateral & Links
-              </h3>
-
-              <div
-                onClick={() => showToast('Product Brochure downloaded ✓', 'success')}
-                className="p-4 bg-[#F6F4F0] rounded-2xl border border-[#DEDCD7] flex items-center justify-between cursor-pointer hover:bg-[#EFEEEA] transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <FileText className="w-5 h-5 text-[#B51F32]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#181818]">Executive Product Brochure</p>
-                    <p className="text-xs text-[#6B6B6B] mt-0.5">PDF · 3.2 MB</p>
-                  </div>
-                </div>
-                <Download className="w-5 h-5 text-[#6B6B6B]" />
-              </div>
-
-              <a
-                href={activeProduct.resources?.websiteUrl || 'https://azure.microsoft.com'}
-                target="_blank"
-                rel="noreferrer"
-                className="p-4 bg-[#F6F4F0] rounded-2xl border border-[#DEDCD7] flex items-center justify-between hover:bg-[#EFEEEA] transition-colors block"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <Globe className="w-5 h-5 text-[#00A4EF]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#181818]">Official Documentation & Specs</p>
-                    <p className="text-xs text-[#6B6B6B] mt-0.5">azure.microsoft.com</p>
-                  </div>
-                </div>
-                <ExternalLink className="w-5 h-5 text-[#6B6B6B]" />
-              </a>
-            </div>
-          )}
         </div>
 
         {/* Interested Visitors Modal */}
@@ -446,6 +487,8 @@ export const ExhibitorProducts: React.FC = () => {
             </div>
           </div>
         )}
+        {/* Modals */}
+        {renderModals()}
       </div>
     );
   }
@@ -539,93 +582,8 @@ export const ExhibitorProducts: React.FC = () => {
         )}
       </div>
 
-      {/* Edit Product Modal */}
-      {showEditModal && editingProduct && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-sm p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
-            <div className="flex items-center justify-between pb-2 border-b border-[#DEDCD7]">
-              <div>
-                <h3 className="text-[12px] font-bold text-[#181818]">Edit Product</h3>
-                <p className="text-[11px] text-[#6B6B6B]">Microsoft Booth B-14</p>
-              </div>
-              <button
-                onClick={() => setShowEditModal(false)}
-                className="p-1 text-[#6B6B6B] hover:text-[#181818] rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveEdit} className="space-y-3">
-              <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Product Name</label>
-                <input
-                  type="text"
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
-                  placeholder="e.g. Azure OpenAI Service"
-                />
-              </div>
-
-              <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Tagline</label>
-                <input
-                  type="text"
-                  value={formTagline}
-                  onChange={(e) => setFormTagline(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
-                  placeholder="e.g. Advanced language models"
-                />
-              </div>
-
-              <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Category</label>
-                <select
-                  value={formCategory}
-                  onChange={(e) => setFormCategory(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] bg-white"
-                >
-                  <option value="Cloud & AI">Cloud & AI</option>
-                  <option value="Enterprise SaaS">Enterprise SaaS</option>
-                  <option value="Security & Compliance">Security & Compliance</option>
-                  <option value="Data & Analytics">Data & Analytics</option>
-                  <option value="Developer Tools">Developer Tools</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Overview</label>
-                <textarea
-                  value={formOverview}
-                  onChange={(e) => setFormOverview(e.target.value)}
-                  rows={3}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] resize-none"
-                  placeholder="Brief overview of the product..."
-                />
-              </div>
-
-              <div className="pt-2 flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowEditModal(false)}
-                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg hover:bg-[#F6F4F0]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5"
-                >
-                  <Check className="w-3.5 h-3.5" />
-                  <span>Save Changes</span>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+{/* Modals */}
+      {renderModals()}
 
       {/* Add Product Modal */}
       {showAddModal && (

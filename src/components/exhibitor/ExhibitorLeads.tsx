@@ -186,6 +186,7 @@ export const ExhibitorLeads: React.FC = () => {
           ))
         )}
       </div>
+      </div>
 
       {/* Lead Detail Modal */}
       {selectedLead && (
@@ -313,7 +314,6 @@ export const ExhibitorLeads: React.FC = () => {
           </div>
         </div>
       )}
-      </div>
     </div>
   );
 };
