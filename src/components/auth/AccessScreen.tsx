@@ -31,17 +31,6 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
 
     if (status === 'verifying' || status === 'confirmed') return;
 
-<<<<<<< HEAD
-  const handleVerify = (e?: React.FormEvent | React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-    }
-    
-    const cleanMobile = (mobile || '').trim().replace(/[\s-]/g, '');
-    if (!cleanMobile) return;
-
-=======
->>>>>>> 127a886 (minor improvements)
     setErrorMessage('');
 
     // Read directly from state or input ref to guarantee value is never missed
@@ -57,74 +46,41 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
     setStatus('verifying');
 
     // Extract digits and normalize
-    const digits = rawMobile.replace(/\D/g, '');
-    const mobile10 = digits.length >= 10 ? digits.slice(-10) : digits;
+    let num = rawMobile.replace(/\D/g, '');
+    if (num.startsWith('91') && num.length > 10) num = num.slice(2);
+    if (num.startsWith('0')) num = num.slice(1);
 
-    let detectedRole: 'delegate' | 'exhibitor' | 'organizer' | null = null;
+    let detectedRole: 'delegate' | 'exhibitor' | 'organizer' = 'delegate';
 
-    if (mobile10 === '9876543211') {
+    if (num === '9876543211' || num.endsWith('43211') || num.endsWith('3211')) {
       detectedRole = 'exhibitor';
-    } else if (mobile10 === '90876543212' || digits.endsWith('90876543212')) {
+    } else if (num === '9876543212' || num === '90876543212' || num.endsWith('43212') || num.endsWith('3212')) {
       detectedRole = 'organizer';
-    } else if (mobile10 === '9876543210') {
-      detectedRole = 'delegate';
-    } else if (digits.length >= 10) {
-      // Default to delegate for any other 10-digit number
-      detectedRole = 'delegate';
     } else {
-      detectedRole = null;
+      detectedRole = 'delegate';
     }
 
     setTimeout(() => {
-<<<<<<< HEAD
       try {
-        let num = cleanMobile;
-        if (num.startsWith('+91')) num = num.slice(3);
-        if (num.startsWith('91') && num.length > 10) num = num.slice(2);
-        if (num.startsWith('0')) num = num.slice(1);
-
-        let detectedRole: 'delegate' | 'exhibitor' | 'organizer' = 'delegate';
-
-        if (num === '9876543211' || num === '98765211' || num === '987653211' || num.endsWith('43211') || num.endsWith('3211')) {
-          detectedRole = 'exhibitor';
-        } else if (num === '9876543212' || num === '90876543212' || num === '987653212' || num.endsWith('43212') || num.endsWith('3212')) {
-          detectedRole = 'organizer';
-        } else {
-          // Delegate is default for 9876543210, 987653210, and all other numbers
-          detectedRole = 'delegate';
-        }
-
-        setRole(detectedRole);
-        setStatus('confirmed');
-        setTimeout(() => {
-          onSuccess();
-        }, 400);
-      } catch (err) {
-        console.error('Login error:', err);
-        setStatus('confirmed');
-        onSuccess();
-      }
-    }, 400);
-=======
-      if (detectedRole) {
         setRole(detectedRole);
         setStatus('confirmed');
         setTimeout(() => {
           setHasAccessConfirmed(true);
-          onSuccess?.();
-        }, 300);
-      } else {
-        setStatus('error');
-        setErrorMessage('Please enter a valid 10-digit registered mobile number (e.g. 9876543211).');
+          onSuccess();
+        }, 350);
+      } catch (err) {
+        console.error('Login error:', err);
+        setHasAccessConfirmed(true);
+        setStatus('confirmed');
+        onSuccess();
       }
-    }, 300);
+    }, 400);
   };
 
   const handleQuickSelect = (num: string) => {
     setMobile(num);
     setErrorMessage('');
     if (status === 'error') setStatus('idle');
->>>>>>> 127a886 (minor improvements)
   };
 
   return (
@@ -282,13 +238,8 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             {/* Submit Action */}
             <button
               type="submit"
-<<<<<<< HEAD
               disabled={status === 'verifying' || status === 'confirmed' || !mobile.trim()}
-              className="w-full h-[40px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[12px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed"
-=======
-              disabled={status === 'verifying' || status === 'confirmed'}
-              className="w-full h-[42px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
->>>>>>> 127a886 (minor improvements)
+              className="w-full h-[42px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {status === 'verifying' ? (
                 <>
