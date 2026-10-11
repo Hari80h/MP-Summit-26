@@ -133,7 +133,7 @@ export const DelegateHome: React.FC = () => {
 
    {/* Carousel Posters */}
    <div 
-    className="relative rounded-[16px] shadow-sm overflow-hidden bg-[#18181B] pb-5"
+    className="relative rounded-[16px] shadow-sm overflow-hidden bg-[#18181B]"
     onTouchStart={onTouchStart}
     onTouchMove={onTouchMove}
     onTouchEnd={onTouchEnd}
@@ -143,7 +143,7 @@ export const DelegateHome: React.FC = () => {
      style={{ transform: `translateX(-${activeSlide * 100}%)` }}
     >
      {/* Poster 1: ITS26 LIVE */}
-     <div className="w-full flex-shrink-0 p-3 relative h-[140px]">
+     <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#242427] to-[#3A3A3D]">
       <div className="flex items-center justify-between mb-1">
        <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">
         {event.id}
@@ -167,7 +167,7 @@ export const DelegateHome: React.FC = () => {
         <span>{event.dates}</span>
        </div>
       </div>
-      <div className="mt-1.5 flex items-center gap-1.5 text-[11px] sm:text-[12px] whitespace-nowrap overflow-x-auto no-scrollbar pb-1">
+      <div className="mt-1.5 flex items-center gap-1.5 text-[11px] sm:text-[12px] whitespace-nowrap overflow-x-auto no-scrollbar pb-1 pr-14">
        <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
         <strong>{event.totalRegistered || attendees.length}</strong> attendees
        </span>
@@ -181,7 +181,7 @@ export const DelegateHome: React.FC = () => {
      </div>
 
      {/* Poster 2: Keynote */}
-     <div className="w-full flex-shrink-0 p-3 relative h-[140px] bg-gradient-to-br from-[#18181B] to-[#B51F32]/40">
+     <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#2E1218] to-[#801422]">
       <div className="flex items-center justify-between mb-1">
        <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">FEATURED</span>
        <div className="flex items-center gap-1 bg-[#B51F32] px-1.5 py-0.5 rounded-full">
@@ -193,14 +193,14 @@ export const DelegateHome: React.FC = () => {
         <Clock className="w-3.5 h-3.5" />
         Main Auditorium • 2:00 PM
       </div>
-      <div className="mt-3 flex items-center gap-2 bg-[#27272A]/50 w-fit pr-3 rounded-full border border-white/10">
+      <div className="mt-2.5 flex items-center gap-2 bg-[#27272A]/50 w-fit pr-3 rounded-full border border-white/10">
         <img src="https://i.pravatar.cc/150?img=11" className="w-7 h-7 rounded-full border border-white/20" alt="Speaker" />
         <span className="text-[11px] font-semibold text-white">Sriharsha Majety</span>
       </div>
      </div>
 
      {/* Poster 3: Networking Mixer */}
-     <div className="w-full flex-shrink-0 p-3 relative h-[140px] bg-gradient-to-br from-[#18181B] to-[#10B981]/20">
+     <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#10241B] to-[#064E3B]">
       <div className="flex items-center justify-between mb-1">
        <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">NETWORKING</span>
       </div>
@@ -209,13 +209,13 @@ export const DelegateHome: React.FC = () => {
         <MapPin className="w-3.5 h-3.5" />
         VIP Lounge • 6:00 PM
       </div>
-      <div className="mt-2.5 text-[11px] text-[#E5E5E5] leading-snug">
+      <div className="mt-2 text-[11px] text-[#E5E5E5] leading-snug pr-14">
         Join 50+ founders and investors for an exclusive evening of high-impact networking and drinks.
       </div>
      </div>
 
      {/* Poster 4: Contest */}
-     <div className="w-full flex-shrink-0 p-3 relative h-[140px] bg-gradient-to-br from-[#18181B] to-[#3B82F6]/30">
+     <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#111C2E] to-[#1E3A8A]">
       <div className="flex items-center justify-between mb-1">
        <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#B51F32] px-1.5 py-0.5 rounded-md">CONTEST</span>
       </div>
@@ -224,19 +224,19 @@ export const DelegateHome: React.FC = () => {
         <Check className="w-3.5 h-3.5" />
         Visit 10 Platinum Sponsors
       </div>
-      <div className="mt-2 text-[11px] text-[#E5E5E5] leading-snug">
+      <div className="mt-2 text-[11px] text-[#E5E5E5] leading-snug pr-14">
         Win exclusive ITS26 merch by scanning QR codes at participating sponsor booths today.
       </div>
      </div>
     </div>
     
-    {/* Dots */}
-    <div className="absolute bottom-2 right-3 flex gap-1.5 z-10">
+    {/* Dots overlay directly over poster */}
+    <div className="absolute bottom-2.5 right-3 flex gap-1.5 z-20 pointer-events-auto">
      {[0, 1, 2, 3].map(i => (
       <button 
        key={i} 
        onClick={() => setActiveSlide(i)}
-       className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSlide === i ? 'bg-white' : 'bg-white/30'}`} 
+       className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSlide === i ? 'bg-white shadow-xs' : 'bg-white/40'}`} 
        aria-label={`Go to slide ${i + 1}`}
       />
      ))}
