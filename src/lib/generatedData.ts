@@ -48,7 +48,6 @@ export function generateAttendees(count: number): Person[] {
       designation: designation,
       company: company,
       avatar: `https://i.pravatar.cc/150?u=${fn}+${ln}`,
-      role: 'delegate',
       interests: interests,
       relevanceScore: score,
       bio: `Professional at ${company} focusing on ${interests[0] || 'technology'}.`,

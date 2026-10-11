@@ -512,7 +512,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         company: currentUser.company,
         email: currentUser.privacy.shareEmail ? currentUser.email : 'Not shared',
         mobile: currentUser.privacy.sharePhone ? currentUser.mobile : 'Not shared',
-        linkedin: currentUser.privacy.shareLinkedIn ? currentUser.linkedin : 'Not shared',
+        linkedin: (currentUser.privacy.shareLinkedIn && currentUser.linkedin) ? currentUser.linkedin : 'Not shared',
         interactionType: 'enquiry',
         timestamp: 'Just now',
       };

@@ -37,7 +37,7 @@ export interface Person {
   skills: string[];
   email: string;
   mobile: string;
-  linkedin: string;
+  linkedin?: string;
   twitter?: string;
   relevanceScore?: number; // e.g., 94 for 94%
   boothNumber?: string;

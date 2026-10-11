@@ -45,7 +45,7 @@ export const ExhibitorScan: React.FC = () => {
     // Respect person's privacy consent
     const emailToUse = person.privacy.shareEmail ? person.email : 'Not shared';
     const mobileToUse = person.privacy.sharePhone ? person.mobile : 'Not shared';
-    const linkedinToUse = person.privacy.shareLinkedIn ? person.linkedin : 'Not shared';
+    const linkedinToUse = (person.privacy.shareLinkedIn && person.linkedin) ? person.linkedin : 'Not shared';
 
     setScannedLead({
       personId: person.id,
