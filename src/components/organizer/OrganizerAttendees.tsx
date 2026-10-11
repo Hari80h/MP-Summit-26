@@ -284,10 +284,10 @@ export const OrganizerAttendees: React.FC = () => {
                     {/* NAME */}
                     <td className="py-2 px-5">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[#E5DFD3] text-[#554D41] flex items-center justify-center font-bold text-[10px] flex-shrink-0">
+                        <div className="w-6 h-6 rounded-full bg-[#E5DFD3] text-[#554D41] flex items-center justify-center font-medium text-[10px] flex-shrink-0">
                           {initials}
                         </div>
-                        <span className="font-bold text-xs sm:text-sm text-[#1A1A1A]">
+                        <span className="font-normal text-xs sm:text-sm text-[#1A1A1A]">
                           {person.name}
                         </span>
                       </div>
@@ -417,7 +417,7 @@ export const OrganizerAttendees: React.FC = () => {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
                   Attendee Profile & Engagement Record
                 </span>
-                <h2 className="text-[12px] font-bold text-[#181818]">{selectedPerson.name}</h2>
+                <h2 className="text-[13px] font-normal text-[#181818]">{selectedPerson.name}</h2>
               </div>
               <button
                 onClick={() => setSelectedPerson(null)}
