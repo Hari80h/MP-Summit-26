@@ -579,7 +579,10 @@ export const GENERATED_PRODUCTS: Product[] = [
     ],
     "benefits": ["Improved Efficiency", "Cost Reduction", "Scalability"],
     "useCases": ["Enterprise IT", "Startups", "Digital Transformation"],
-    "resources": {"websiteUrl": "https://example.com"}
+    "resources": {
+      "websiteUrl": "https://example.com",
+      "brochureUrl": "https://github.com/features/copilot/copilot-enterprise-brochure.pdf"
+    }
   },
   {
     "id": "prod-microsoft-1",
