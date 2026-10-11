@@ -13,7 +13,8 @@ import {
   ShieldCheck,
   ChevronRight,
   ExternalLink,
-  Smartphone
+  Smartphone,
+  LogOut
 } from 'lucide-react';
 import { OrganizerOverview } from './OrganizerOverview';
 import { OrganizerAttendees } from './OrganizerAttendees';
@@ -29,6 +30,7 @@ export const OrganizerConsole: React.FC = () => {
     setActiveOrganizerTab,
     setRole,
     event,
+    setHasAccessConfirmed,
   } = useStore();
 
   const sidebarItems = [
@@ -108,6 +110,14 @@ export const OrganizerConsole: React.FC = () => {
           >
             <Smartphone className="w-3.5 h-3.5 text-[#B51F32]" />
             <span>Switch to Delegate App</span>
+          </button>
+
+          <button
+            onClick={() => setHasAccessConfirmed(false)}
+            className="w-full py-2 px-3 bg-white hover:bg-red-50 border border-[#DEDCD7] hover:border-red-200 rounded-lg text-xs font-semibold text-[#B51F32] transition-colors flex items-center justify-center gap-1.5"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Log out</span>
           </button>
         </div>
       </aside>

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { BarChart2, Briefcase, Building, Building2, Calendar, CheckCircle, CheckSquare, ChevronRight, Download, LineChart, Mic, Pencil, QrCode, Share2, Square, Star, User, Users } from 'lucide-react';
+import { BarChart2, Briefcase, Building, Building2, Calendar, CheckCircle, CheckSquare, ChevronRight, Download, LineChart, LogOut, Mic, Pencil, QrCode, Share2, Square, Star, User, Users } from 'lucide-react';
 
 import { useStore } from '../../lib/store';
 
@@ -25,7 +25,14 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
     setViewSavedPeopleOnly,
     setViewSavedCompaniesOnly,
     savedCompanyIds,
+    setHasAccessConfirmed,
   } = useStore();
+
+  const handleLogout = () => {
+    setHasAccessConfirmed(false);
+    setActiveDelegateTab('home');
+    showToast('Logged out successfully', 'info');
+  };
 
   const handleExportCSV = () => {
     // Generate real CSV content blob
@@ -91,9 +98,19 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
 
   return (
     <div className="flex-1 bg-[#F6F4F0] select-none overflow-y-auto px-4 pt-1 pb-24 space-y-2">
-      <div className="pt-1 pb-0.5">
-        <p className="text-[11px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0">ITS26 · DELEGATE</p>
-        <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">Profile</h1>
+      <div className="pt-1 pb-0.5 flex items-center justify-between">
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0">ITS26 · DELEGATE</p>
+          <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">Profile</h1>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#DEDCD7] bg-white hover:bg-red-50 hover:border-red-200 text-[#6B6B6B] hover:text-[#B51F32] transition-colors text-[12px] font-semibold shadow-xs active:scale-95"
+          title="Log out"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span>Log out</span>
+        </button>
       </div>
       
       {/* Identity Card */}
@@ -359,6 +376,17 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
             <span>Salesforce</span>
           </button>
         </div>
+      </div>
+
+      {/* Log out Action */}
+      <div className="pt-1 pb-4">
+        <button
+          onClick={handleLogout}
+          className="w-full py-2.5 bg-white hover:bg-red-50 border border-[#DEDCD7] hover:border-red-200 text-[#B51F32] font-semibold text-[13px] rounded-[14px] shadow-xs transition-colors flex items-center justify-center gap-2 active:scale-98"
+        >
+          <LogOut className="w-4 h-4" />
+          <span>Log out</span>
+        </button>
       </div>
     </div>
   );

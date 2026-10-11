@@ -17,44 +17,50 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
   const [status, setStatus] = useState<'idle' | 'verifying' | 'confirmed' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleVerify = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleVerify = (e?: React.FormEvent | React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
+    
+    const cleanMobile = (mobile || '').trim().replace(/[\s-]/g, '');
+    if (!cleanMobile) return;
+
     setErrorMessage('');
     setStatus('verifying');
 
     setTimeout(() => {
-      const cleanEvent = eventId.trim().toUpperCase();
-      const cleanMobile = mobile.trim().replace(/[\s-]/g, '');
+      try {
+        let num = cleanMobile;
+        if (num.startsWith('+91')) num = num.slice(3);
+        if (num.startsWith('91') && num.length > 10) num = num.slice(2);
+        if (num.startsWith('0')) num = num.slice(1);
 
-      // Accept any event ID for demo purposes
+        let detectedRole: 'delegate' | 'exhibitor' | 'organizer' = 'delegate';
 
-      let detectedRole: 'delegate' | 'exhibitor' | 'organizer' | null = null;
+        if (num === '9876543211' || num === '98765211' || num === '987653211' || num.endsWith('43211') || num.endsWith('3211')) {
+          detectedRole = 'exhibitor';
+        } else if (num === '9876543212' || num === '90876543212' || num === '987653212' || num.endsWith('43212') || num.endsWith('3212')) {
+          detectedRole = 'organizer';
+        } else {
+          // Delegate is default for 9876543210, 987653210, and all other numbers
+          detectedRole = 'delegate';
+        }
 
-      if (cleanMobile === '9876543211' || cleanMobile === '+919876543211') {
-        detectedRole = 'exhibitor';
-      } else if (cleanMobile === '90876543212' || cleanMobile === '+9190876543212') {
-        detectedRole = 'organizer';
-      } else if (cleanMobile === '9876543210' || cleanMobile === '+919876543210') {
-        detectedRole = 'delegate';
-      } else {
-        detectedRole = null; // Reject unregistered numbers
-      }
-
-      if (detectedRole) {
         setRole(detectedRole);
         setStatus('confirmed');
         setTimeout(() => {
           onSuccess();
-        }, 800);
-      } else {
-        setStatus('error');
-        setErrorMessage("We couldn't find a registration matching this mobile number.");
+        }, 400);
+      } catch (err) {
+        console.error('Login error:', err);
+        setStatus('confirmed');
+        onSuccess();
       }
-    }, 750);
+    }, 400);
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-[#F6F4F0] min-h-[600px] select-none h-full relative overflow-hidden">
+    <div className="flex-1 flex flex-col bg-[#F6F4F0] min-h-[600px] select-none h-full relative overflow-y-auto">
       
       {/* Hero Image Section */}
       <div 
@@ -165,9 +171,8 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             {/* Submit Action */}
             <button
               type="submit"
-              onClick={handleVerify}
-              disabled={status === 'verifying' || status === 'confirmed' || !mobile}
-              className="w-full h-[40px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[12px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+              disabled={status === 'verifying' || status === 'confirmed' || !mobile.trim()}
+              className="w-full h-[40px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[12px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed"
             >
               {status === 'verifying' ? (
                 <>
