@@ -6,7 +6,17 @@ import { AlertCircle, ArrowRight, BarChart2, Bookmark, BookmarkCheck, Briefcase,
 import { useStore } from '../../lib/store';
 
 import { Session } from '../../types';
-;
+
+const getSessionImage = (session: Session) => {
+  const stageImages = [
+    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=2070&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2000&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop',
+  ];
+  const charCode = session.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return stageImages[charCode % stageImages.length];
+};
 
 export const DelegateSchedule: React.FC = () => {
   const {
@@ -71,83 +81,70 @@ export const DelegateSchedule: React.FC = () => {
     const sessionQuestions = questions.filter((q) => q.sessionId === activeSession.id);
 
     return (
-      <div ref={scrollRef} className="flex-1 bg-[#F6F4F0] select-none overflow-y-auto px-2 pt-2 pb-16 space-y-2">
-        {/* Back Button & Header */}
-        <div className="flex items-center justify-between pb-1">
-          <button
-            onClick={() => {
-              setSelectedSessionId(null);
-              setPollVoteError(null);
-            }}
-            className="flex items-center gap-1.5 text-[15px] font-medium text-[#181818] transition-colors py-1 px-1 -ml-1 rounded-lg active:opacity-70"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            <span>Back to Schedule</span>
-          </button>
-          <button
-            onClick={() => toggleBookmarkSession(activeSession.id)}
-            className={`px-3 py-1.5 rounded-[8px] border text-[13px] font-bold flex items-center gap-1.5 transition-colors active:scale-95 ${
-              activeSession.isBookmarked
-                ? 'bg-[#F0FDF4] border-[#BBF7D0] text-[#166534]'
-                : 'bg-white border-[#E5E7EB] text-[#181818] shadow-sm'
-            }`}
-          >
-            {activeSession.isBookmarked ? (
-              <>
-                <BookmarkCheck className="w-[18px] h-[18px]" />
-                <span>Saved</span>
-              </>
-            ) : (
-              <>
-                <Bookmark className="w-[18px] h-[18px]" />
-                <span>Save</span>
-              </>
-            )}
-          </button>
-        </div>
+      <div ref={scrollRef} className="flex-1 bg-[#F6F4F0] select-none overflow-y-auto pb-16">
+        {/* Stage Hero Image Section */}
+        <div 
+          className="relative h-[210px] w-full bg-cover bg-center overflow-hidden flex flex-col justify-between p-3 select-none"
+          style={{ 
+            backgroundImage: `url("${getSessionImage(activeSession)}")` 
+          }}
+        >
+          {/* Multi-stop gradient overlay for crisp text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/35 pointer-events-none" />
 
-        {/* Session Card Info */}
-        <div className="p-4 rounded-[16px] shadow-sm relative overflow-hidden bg-white border border-[#F3F4F6]">
-          <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-[#FFF0F2] opacity-80 z-0"></div>
-          <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-[#FCE8E8] rounded-full blur-3xl z-0 pointer-events-none"></div>
-          
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D11E39] px-2.5 py-1 rounded-md">
-                {activeSession.track || 'SESSION'}
-              </span>
+          {/* Top Bar with round back button and optional LIVE NOW badge */}
+          <div className="relative z-10 flex items-center justify-between">
+            <button
+              onClick={() => {
+                setSelectedSessionId(null);
+                setPollVoteError(null);
+              }}
+              className="w-10 h-10 rounded-full bg-black/45 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-all shadow-md"
+              aria-label="Back to schedule"
+            >
+              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+            </button>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => toggleBookmarkSession(activeSession.id)}
+                className="w-10 h-10 rounded-full bg-black/45 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-all shadow-md"
+                aria-label={activeSession.isBookmarked ? 'Saved to schedule' : 'Save session'}
+              >
+                {activeSession.isBookmarked ? (
+                  <BookmarkCheck className="w-5 h-5 text-[#22C55E]" />
+                ) : (
+                  <Bookmark className="w-5 h-5 text-white" />
+                )}
+              </button>
+
+              {/* LIVE NOW badge: ONLY shown when session status is 'live' */}
               {activeSession.status === 'live' && (
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-red-50 text-[#B51F32] border border-red-200 px-2 py-0.5 rounded animate-pulse">
-                  Live Now
+                <span className="bg-[#DCFCE7] text-[#166534] font-bold text-[12px] px-3 py-1.5 rounded-lg shadow-sm tracking-wider uppercase backdrop-blur-sm animate-pulse">
+                  LIVE NOW
                 </span>
               )}
             </div>
+          </div>
 
-            <h1 className="text-[17px] font-bold text-[#181818] leading-[1.3] mb-4 pr-4">
+          {/* Bottom Title & Metadata */}
+          <div className="relative z-10 pt-2">
+            <p className="text-[12.5px] font-medium text-white/85 tracking-wide">
+              {activeSession.timeRange} · {activeSession.room || 'Main Hall'} · {activeSession.track || 'Keynote'}
+            </p>
+            <h1 className="text-[21px] font-serif font-bold text-white tracking-tight leading-tight mt-1">
               {activeSession.title}
             </h1>
-
-            <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#4B5563]">
-              <div className="flex items-center gap-1.5 font-medium">
-                <Clock className="w-[15px] h-[15px] text-[#181818]" />
-                <span>{activeSession.timeRange}</span>
-              </div>
-              <div className="w-[1px] h-3 bg-[#DEDCD7]"></div>
-              <div className="flex items-center gap-1.5 font-medium">
-                <MapPin className="w-[15px] h-[15px] text-[#181818]" />
-                <span>{activeSession.room}</span>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* 4 Detail Tabs: Overview | Speaker | Q&A | Poll */}
-        <div className="flex bg-[#F3F4F6] p-1 rounded-[12px]">
+        <div className="bg-[#F6F4F0] border-b border-[#DEDCD7] px-4 flex items-center justify-between">
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'speaker', label: 'Speaker' },
-            { id: 'qa', label: `Q&A (${sessionQuestions.length})` },
-            { id: 'poll', label: 'Live Poll' },
+            { id: 'qa', label: `Q&A · ${sessionQuestions.length}` },
+            { id: 'poll', label: 'Poll' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -155,16 +152,22 @@ export const DelegateSchedule: React.FC = () => {
                 setDetailSubTab(tab.id as any);
                 setPollVoteError(null);
               }}
-              className={`flex-1 py-2 text-[12.5px] font-bold transition-all rounded-[10px] ${
+              className={`py-3 px-1 text-[13.5px] transition-all relative ${
                 detailSubTab === tab.id
-                  ? 'bg-white text-[#D11E39] shadow-sm border-b-[2.5px] border-[#D11E39]'
-                  : 'text-[#6B6B6B] hover:text-[#181818]'
+                  ? 'font-bold text-[#181818]'
+                  : 'font-medium text-[#6B6B6B] hover:text-[#181818]'
               }`}
             >
-              {tab.label}
+              <span>{tab.label}</span>
+              {detailSubTab === tab.id && (
+                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#181818] rounded-full" />
+              )}
             </button>
           ))}
         </div>
+
+        {/* Tab Content Body */}
+        <div className="px-3 pt-3 space-y-2">
 
         {/* TAB 1: OVERVIEW */}
         {detailSubTab === 'overview' && (
@@ -425,6 +428,7 @@ export const DelegateSchedule: React.FC = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
     );
   }

@@ -1,9 +1,17 @@
 import React, { useEffect, useRef } from 'react';
-import { ChevronLeft, MapPin, Star } from 'lucide-react';
+import { ChevronLeft, MapPin, Star, Download } from 'lucide-react';
 import { useStore } from '@/lib/store';
 
 export const DelegateCompanyDetail: React.FC = () => {
-  const { setActiveDelegateTab, selectedCompanyId, exhibitors, products, savedCompanyIds, toggleSaveCompany } = useStore();
+  const { 
+    setActiveDelegateTab, 
+    selectedCompanyId, 
+    exhibitors, 
+    products, 
+    savedCompanyIds, 
+    toggleSaveCompany,
+    showToast 
+  } = useStore();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,19 +25,64 @@ export const DelegateCompanyDetail: React.FC = () => {
 
   if (!company) return null;
 
+  const handleDownloadBrochure = () => {
+    const content = `================================================
+${company.company.toUpperCase()} - OFFICIAL EXHIBITOR BROCHURE
+India Tech Summit 2026 (ITS26)
+================================================
+
+Booth: ${company.booth || 'TBA'}
+Location: Bengaluru International Exhibition Centre, Bengaluru
+Category: ${company.category || 'Technology'}
+
+ABOUT ${company.company.toUpperCase()}:
+${company.company} is showcasing cutting-edge innovations and solutions at ITS26.
+Visit Booth ${company.booth || 'TBA'} to explore live demonstrations and speak with company representatives.
+
+FEATURED PRODUCTS & SOLUTIONS:
+${companyProducts.length > 0 
+  ? companyProducts.map((p, idx) => `${idx + 1}. ${p.name} (${p.category})\n   ${p.overview || p.tagline || ''}`).join('\n\n')
+  : 'Detailed catalog available at the booth.'}
+
+------------------------------------------------
+Generated via EventSphere Official App (ITS26)
+`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${company.company.replace(/[^a-zA-Z0-9]/g, '_')}_Brochure_ITS26.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showToast(`Downloaded ${company.company} brochure ✓`, 'success');
+  };
+
   return (
     <div ref={scrollRef} className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-y-auto no-scrollbar">
       {/* Header */}
-      <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] sticky top-0 z-10 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] sticky top-0 z-10 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5 min-w-0 pr-1">
           <button 
             onClick={() => setActiveDelegateTab('companies')}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm shrink-0"
           >
             <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
-          <h1 className="text-[20px] font-bold text-[#181818] tracking-tight line-clamp-1">{company.company}</h1>
+          <h1 className="text-[19px] font-bold text-[#181818] tracking-tight truncate">{company.company}</h1>
         </div>
+
+        <button
+          onClick={handleDownloadBrochure}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white hover:bg-gray-50 text-[#181818] border border-[#DEDCD7] text-[12px] font-semibold transition-all active:scale-95 shadow-sm shrink-0 hover:border-[#181818]"
+          title="Download Brochure"
+        >
+          <Download className="w-3.5 h-3.5 text-[#B51F32]" />
+          <span>Brochure</span>
+        </button>
       </div>
 
       <div className="px-4 pb-16 space-y-3">
