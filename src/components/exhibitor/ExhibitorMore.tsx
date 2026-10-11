@@ -1,35 +1,51 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../../lib/store';
 import {
   Building2,
-  Users,
-  Download,
-  Settings,
   Info,
   HelpCircle,
   LogOut,
   ChevronRight,
   ShieldCheck,
   MapPin,
-  Wifi
+  Calendar,
+  Clock,
+  Wifi,
+  Phone,
+  Mail,
+  Globe,
+  X,
+  ExternalLink,
+  Sparkles,
+  Layers
 } from 'lucide-react';
 
 export const ExhibitorMore: React.FC = () => {
-  const { showToast, leads, setHasAccessConfirmed } = useStore();
+  const { showToast, setHasAccessConfirmed } = useStore();
 
-  const handleExportAllLeads = () => {
-    showToast(`Exported ${leads.length} booth leads as CSV ✓`, 'success');
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [modalTab, setModalTab] = useState<'event' | 'company'>('event');
+
+  const handleOpenModal = (tab: 'event' | 'company') => {
+    setModalTab(tab);
+    setIsInfoModalOpen(true);
   };
 
-  const handleNotImplemented = (feature: string) => {
-    showToast(`Opening ${feature}...`, 'success');
+  const handleLogout = () => {
+    setHasAccessConfirmed(false);
+    showToast('Logged out successfully', 'info');
+  };
+
+  const handleCallSupport = () => {
+    showToast('Connecting to Organizer Help Desk helpline (+91 80 2345 6789)...', 'info');
+    window.location.href = 'tel:+918023456789';
   };
 
   return (
     <div className="flex-1 bg-[#F6F4F0] select-none px-4 pt-4 pb-24 space-y-5">
-      {/* Header Profile */}
+      {/* Header Profile Card */}
       <div className="bg-white p-5 rounded-3xl border border-[#DEDCD7] shadow-sm flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-lg shadow-sm">
@@ -49,8 +65,9 @@ export const ExhibitorMore: React.FC = () => {
 
       {/* Menu List */}
       <div className="bg-white rounded-3xl border border-[#DEDCD7] shadow-sm divide-y divide-[#DEDCD7]/60 overflow-hidden text-sm">
+        {/* Company Profile */}
         <div 
-          onClick={() => handleNotImplemented('Company Profile')}
+          onClick={() => handleOpenModal('company')}
           className="p-4 flex items-center justify-between hover:bg-[#F6F4F0] cursor-pointer transition-colors"
         >
           <div className="flex items-center gap-3">
@@ -65,56 +82,9 @@ export const ExhibitorMore: React.FC = () => {
           <ChevronRight className="w-5 h-5 text-gray-400" />
         </div>
 
+        {/* Event Information */}
         <div 
-          onClick={() => handleNotImplemented('Team Members')}
-          className="p-4 flex items-center justify-between hover:bg-[#F6F4F0] cursor-pointer transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
-              <Users className="w-5 h-5 text-[#181818]" />
-            </div>
-            <div>
-              <span className="font-semibold text-[#181818] text-base">Team Members</span>
-              <p className="text-xs text-[#6B6B6B] mt-0.5">6 active staff badges assigned to B-14</p>
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 text-gray-400" />
-        </div>
-
-        <div
-          onClick={handleExportAllLeads}
-          className="p-4 flex items-center justify-between hover:bg-[#F6F4F0] cursor-pointer transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
-              <Download className="w-5 h-5 text-[#B51F32]" />
-            </div>
-            <div>
-              <span className="font-semibold text-[#181818] text-base">Lead Export</span>
-              <p className="text-xs text-[#6B6B6B] mt-0.5">Download all {leads.length} captured leads (CSV / JSON)</p>
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 text-gray-400" />
-        </div>
-
-        <div 
-          onClick={() => handleNotImplemented('Product Settings')}
-          className="p-4 flex items-center justify-between hover:bg-[#F6F4F0] cursor-pointer transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
-              <Settings className="w-5 h-5 text-[#181818]" />
-            </div>
-            <div>
-              <span className="font-semibold text-[#181818] text-base">Product Settings</span>
-              <p className="text-xs text-[#6B6B6B] mt-0.5">Manage catalog order and brochure downloads</p>
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 text-gray-400" />
-        </div>
-
-        <div 
-          onClick={() => handleNotImplemented('Event Information')}
+          onClick={() => handleOpenModal('event')}
           className="p-4 flex items-center justify-between hover:bg-[#F6F4F0] cursor-pointer transition-colors"
         >
           <div className="flex items-center gap-3">
@@ -123,39 +93,295 @@ export const ExhibitorMore: React.FC = () => {
             </div>
             <div>
               <span className="font-semibold text-[#181818] text-base">Event Information</span>
-              <p className="text-xs text-[#6B6B6B] mt-0.5">Exhibitor handbook, logistics & hall map</p>
+              <p className="text-xs text-[#6B6B6B] mt-0.5">Venue location, dates, booth logistics & map</p>
             </div>
           </div>
           <ChevronRight className="w-5 h-5 text-gray-400" />
         </div>
 
-        <div 
-          onClick={() => handleNotImplemented('Help & Support')}
-          className="p-4 flex items-center justify-between hover:bg-[#F6F4F0] cursor-pointer transition-colors"
+        {/* Help & Support (Redirects directly to call) */}
+        <a 
+          href="tel:+918023456789"
+          onClick={(e) => {
+            // Also trigger toast feedback
+            showToast('Calling Organizer Help Desk (+91 80 2345 6789)...', 'info');
+          }}
+          className="p-4 flex items-center justify-between hover:bg-[#F6F4F0] cursor-pointer transition-colors block text-inherit no-underline"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
-              <HelpCircle className="w-5 h-5 text-[#181818]" />
+            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
+              <HelpCircle className="w-5 h-5 text-[#B51F32]" />
             </div>
             <div>
-              <span className="font-semibold text-[#181818] text-base">Help & Support</span>
-              <p className="text-xs text-[#6B6B6B] mt-0.5">Live organizer help desk & tech support</p>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-[#181818] text-base">Help & Support</span>
+                <span className="text-[10px] bg-[#EBF5F0] text-[#2F7D58] font-bold px-1.5 py-0.5 rounded">Call Helpline</span>
+              </div>
+              <p className="text-xs text-[#6B6B6B] mt-0.5">Direct phone call to live organizer desk (+91 80 2345 6789)</p>
             </div>
           </div>
           <ChevronRight className="w-5 h-5 text-gray-400" />
-        </div>
+        </a>
       </div>
 
-      {/* Return Home Action */}
+      {/* Log Out Action */}
       <div className="pt-2">
         <button
-          onClick={() => setHasAccessConfirmed(false)}
-          className="w-full h-14 bg-red-50 hover:bg-red-100 border border-red-200 text-[#B51F32] font-semibold text-sm rounded-2xl shadow-sm transition-colors flex items-center justify-center gap-2"
+          onClick={handleLogout}
+          className="w-full h-14 bg-red-50 hover:bg-red-100 active:scale-[0.99] border border-red-200 text-[#B51F32] font-semibold text-[14px] rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
-          <LogOut className="w-5 h-5" />
-          <span>Return to Home Page</span>
+          <LogOut className="w-5 h-5 text-[#B51F32]" />
+          <span>Log Out</span>
         </button>
       </div>
+
+      {/* Information Modal (Event & Company details) */}
+      {isInfoModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-[#F6F4F0] rounded-[28px] w-full max-w-sm max-h-[86vh] flex flex-col shadow-2xl border border-[#DEDCD7] overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-4 bg-white border-b border-[#DEDCD7] flex items-center justify-between">
+              <div>
+                <h3 className="font-serif font-bold text-[#181818] text-[17px]">
+                  {modalTab === 'event' ? 'Event & Venue Guide' : 'Company Profile'}
+                </h3>
+                <p className="text-[12px] text-[#6B6B6B] mt-0.5">
+                  India Tech Summit 2026 · Booth B-14
+                </p>
+              </div>
+              <button
+                onClick={() => setIsInfoModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#F6F4F0] hover:bg-[#EAE7E0] text-[#181818] flex items-center justify-center transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Segmented Tab Switcher */}
+            <div className="px-4 pt-3 pb-1 bg-white">
+              <div className="bg-[#EFEEEA] p-1 rounded-xl flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => setModalTab('event')}
+                  className={`flex-1 py-1.5 text-[12.5px] rounded-lg font-medium transition-all ${
+                    modalTab === 'event'
+                      ? 'bg-white text-[#181818] font-bold shadow-sm'
+                      : 'text-[#6B6B6B] hover:text-[#181818]'
+                  }`}
+                >
+                  Event & Venue
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setModalTab('company')}
+                  className={`flex-1 py-1.5 text-[12.5px] rounded-lg font-medium transition-all ${
+                    modalTab === 'company'
+                      ? 'bg-white text-[#181818] font-bold shadow-sm'
+                      : 'text-[#6B6B6B] hover:text-[#181818]'
+                  }`}
+                >
+                  Company Details
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3.5 no-scrollbar">
+              {modalTab === 'event' ? (
+                <>
+                  {/* Event Banner */}
+                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#B51F32] bg-red-50 border border-red-200 px-2 py-0.5 rounded">
+                        ITS26 Official
+                      </span>
+                      <span className="text-[11.5px] font-semibold text-[#2F7D58] bg-[#EBF5F0] px-2 py-0.5 rounded">
+                        Live Event
+                      </span>
+                    </div>
+                    <h4 className="text-[18px] font-serif font-bold text-[#181818]">
+                      India Tech Summit 2026
+                    </h4>
+                    <p className="text-[12.5px] text-[#555555] leading-relaxed">
+                      South Asia&apos;s premier innovation and technology expo, convening 2,400+ enterprises, founders, and delegates across cloud, AI, and digital ecosystems.
+                    </p>
+                  </div>
+
+                  {/* Venue & Location Card */}
+                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <MapPin className="w-4 h-4 text-[#B51F32]" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373]">
+                          Venue Location
+                        </span>
+                        <p className="text-[13.5px] font-bold text-[#181818] mt-0.5">
+                          Bangalore International Exhibition Centre (BIEC)
+                        </p>
+                        <p className="text-[12px] text-[#6B6B6B] mt-0.5 leading-relaxed">
+                          10th Mile, Tumkur Road, Madavara Post, Bengaluru, Karnataka 562123
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-[#EAE7E0] pt-2.5 flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <Calendar className="w-4 h-4 text-[#181818]" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373]">
+                          Event Dates & Hours
+                        </span>
+                        <p className="text-[13.5px] font-bold text-[#181818] mt-0.5">
+                          12–14 February 2026
+                        </p>
+                        <p className="text-[12px] text-[#6B6B6B] mt-0.5">
+                          09:00 AM – 06:00 PM IST (Exhibitor hall access from 08:00 AM)
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-[#EAE7E0] pt-2.5 flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <Layers className="w-4 h-4 text-[#181818]" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373]">
+                          Exhibitor Hall & Zone
+                        </span>
+                        <p className="text-[13.5px] font-bold text-[#181818] mt-0.5">
+                          Hall B · Cloud, AI & DeepTech Pavilion
+                        </p>
+                        <p className="text-[12px] text-[#6B6B6B] mt-0.5">
+                          Booth B-14 (Prominent center-row aisle position)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Exhibitor Logistics & Connectivity */}
+                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <Wifi className="w-4 h-4 text-[#181818]" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373]">
+                          Exhibitor High-Speed Wi-Fi
+                        </span>
+                        <p className="text-[13px] font-semibold text-[#181818] mt-0.5">
+                          Network: <span className="font-mono text-[#B51F32]">ITS26_Exhibitor_5G</span>
+                        </p>
+                        <p className="text-[12px] text-[#6B6B6B]">
+                          Passkey: <span className="font-mono font-medium">EventSphere2026</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-[#EAE7E0] pt-2.5 flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <ShieldCheck className="w-4 h-4 text-[#2F7D58]" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373]">
+                          Fast-Track Entry Gate
+                        </span>
+                        <p className="text-[13px] font-semibold text-[#181818] mt-0.5">
+                          Gate 3 · Dedicated Exhibitor & Staff Turnstiles
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Company Profile Header */}
+                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-xl bg-[#181818] text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                        MS
+                      </div>
+                      <div>
+                        <h4 className="text-[18px] font-serif font-bold text-[#181818]">
+                          Microsoft India
+                        </h4>
+                        <span className="text-[11.5px] font-bold text-[#B51F32] bg-red-50 border border-red-200 px-2 py-0.5 rounded inline-block mt-0.5">
+                          Cloud & AI Tier 1 Partner
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[13px] text-[#555555] leading-relaxed">
+                      Microsoft India powers mission-critical enterprise cloud infrastructure, generative AI integration, and developer modernization across industry leaders and government institutions.
+                    </p>
+                  </div>
+
+                  {/* Booth Details Card */}
+                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-2.5">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373] block">
+                      Booth Showcase & Demos
+                    </span>
+                    <div className="space-y-2 text-[12.5px]">
+                      <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
+                        <span className="font-bold text-[#181818] block text-[13px]">Azure OpenAI Service</span>
+                        <p className="text-[#6B6B6B] mt-0.5">Enterprise LLMs, private embeddings, and secure vector databases with Indian data residency.</p>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
+                        <span className="font-bold text-[#181818] block text-[13px]">GitHub Copilot</span>
+                        <p className="text-[#6B6B6B] mt-0.5">Developer productivity tools, automated pull requests, and security code remediation.</p>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
+                        <span className="font-bold text-[#181818] block text-[13px]">Microsoft Fabric</span>
+                        <p className="text-[#6B6B6B] mt-0.5">Unified lakehouse analytics platform with real-time intelligence and Synapse integration.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Official Contact & Web Card */}
+                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-2.5">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373] block">
+                      Official Contacts
+                    </span>
+                    <div className="space-y-2 text-[12.5px]">
+                      <div className="flex items-center gap-2.5 text-[#181818]">
+                        <Globe className="w-4 h-4 text-[#737373] shrink-0" />
+                        <span className="font-medium">microsoft.com/en-in</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 text-[#181818]">
+                        <Mail className="w-4 h-4 text-[#737373] shrink-0" />
+                        <span className="font-medium">india-events@microsoft.com</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 text-[#181818]">
+                        <MapPin className="w-4 h-4 text-[#737373] shrink-0" />
+                        <span className="font-medium">Booth B-14, Hall B, BIEC Bengaluru</span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Modal Bottom Action */}
+            <div className="p-3 bg-white border-t border-[#DEDCD7] flex gap-2">
+              <a
+                href="tel:+918023456789"
+                className="flex-1 h-10 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-semibold text-[13px] rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors text-inherit no-underline"
+              >
+                <Phone className="w-4 h-4" />
+                <span>Call Helpdesk</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setIsInfoModalOpen(false)}
+                className="h-10 px-4 bg-[#EFEEEA] hover:bg-[#EAE7E0] text-[#181818] font-semibold text-[13px] rounded-xl transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

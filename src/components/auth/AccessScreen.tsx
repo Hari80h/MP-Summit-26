@@ -1,22 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../../lib/store';
 import { ShieldCheck, CheckCircle2, AlertCircle, ArrowRight, Loader2, Lock } from 'lucide-react';
-import { Suspense } from 'react';
 
 interface AccessScreenProps {
   onSuccess: () => void;
 }
 
-const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
-  const { setRole } = useStore();
+export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
+  const { setRole, setHasAccessConfirmed } = useStore();
   
   const [eventId, setEventId] = useState('ITS26');
   const [mobile, setMobile] = useState('');
   const [status, setStatus] = useState<'idle' | 'verifying' | 'confirmed' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const mobileInputRef = useRef<HTMLInputElement>(null);
 
+  // Sync with DOM value in case browser autofilled or restored the field
+  useEffect(() => {
+    if (mobileInputRef.current?.value && !mobile) {
+      setMobile(mobileInputRef.current.value);
+    }
+  }, [mobile]);
+
+  const handleVerify = (e?: React.FormEvent | React.MouseEvent) => {
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
+
+    if (status === 'verifying' || status === 'confirmed') return;
+
+<<<<<<< HEAD
   const handleVerify = (e?: React.FormEvent | React.MouseEvent) => {
     if (e) {
       e.preventDefault();
@@ -25,10 +40,43 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
     const cleanMobile = (mobile || '').trim().replace(/[\s-]/g, '');
     if (!cleanMobile) return;
 
+=======
+>>>>>>> 127a886 (minor improvements)
     setErrorMessage('');
+
+    // Read directly from state or input ref to guarantee value is never missed
+    const rawMobile = (mobile || mobileInputRef.current?.value || '').trim();
+
+    if (!rawMobile) {
+      setStatus('error');
+      setErrorMessage('Please enter your registered mobile number.');
+      mobileInputRef.current?.focus();
+      return;
+    }
+
     setStatus('verifying');
 
+    // Extract digits and normalize
+    const digits = rawMobile.replace(/\D/g, '');
+    const mobile10 = digits.length >= 10 ? digits.slice(-10) : digits;
+
+    let detectedRole: 'delegate' | 'exhibitor' | 'organizer' | null = null;
+
+    if (mobile10 === '9876543211') {
+      detectedRole = 'exhibitor';
+    } else if (mobile10 === '90876543212' || digits.endsWith('90876543212')) {
+      detectedRole = 'organizer';
+    } else if (mobile10 === '9876543210') {
+      detectedRole = 'delegate';
+    } else if (digits.length >= 10) {
+      // Default to delegate for any other 10-digit number
+      detectedRole = 'delegate';
+    } else {
+      detectedRole = null;
+    }
+
     setTimeout(() => {
+<<<<<<< HEAD
       try {
         let num = cleanMobile;
         if (num.startsWith('+91')) num = num.slice(3);
@@ -57,6 +105,26 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         onSuccess();
       }
     }, 400);
+=======
+      if (detectedRole) {
+        setRole(detectedRole);
+        setStatus('confirmed');
+        setTimeout(() => {
+          setHasAccessConfirmed(true);
+          onSuccess?.();
+        }, 300);
+      } else {
+        setStatus('error');
+        setErrorMessage('Please enter a valid 10-digit registered mobile number (e.g. 9876543211).');
+      }
+    }, 300);
+  };
+
+  const handleQuickSelect = (num: string) => {
+    setMobile(num);
+    setErrorMessage('');
+    if (status === 'error') setStatus('idle');
+>>>>>>> 127a886 (minor improvements)
   };
 
   return (
@@ -64,7 +132,7 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
       
       {/* Hero Image Section */}
       <div 
-        className="h-[42%] min-h-[300px] relative bg-cover bg-center"
+        className="h-[42%] min-h-[280px] relative bg-cover bg-center"
         style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop")' }}
       >
         {/* Gradient Overlay for text readability */}
@@ -84,9 +152,9 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         </div>
 
         {/* Bottom Text */}
-        <div className="absolute bottom-12 left-6 z-10 text-white">
+        <div className="absolute bottom-10 left-6 z-10 text-white">
           <p className="text-[12px] font-medium text-white/90 mb-0.5">Welcome to</p>
-          <h1 className="text-[28px] font-serif font-medium leading-tight tracking-tight mb-1.5">
+          <h1 className="text-[26px] font-serif font-medium leading-tight tracking-tight mb-1">
             India Tech Summit 2026
           </h1>
           <p className="text-[12px] font-medium text-white/80">
@@ -96,12 +164,12 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
       </div>
 
       {/* Form Section */}
-      <div className="flex-1 bg-[#F6F4F0] rounded-t-[28px] -mt-8 relative z-20 px-4 pt-6 pb-4 flex flex-col shadow-[0_-8px_30px_rgba(0,0,0,0.12)]">
+      <div className="flex-1 bg-[#F6F4F0] rounded-t-[28px] -mt-6 relative z-20 px-4 pt-5 pb-4 flex flex-col shadow-[0_-8px_30px_rgba(0,0,0,0.12)]">
         
-        <div className="mb-5">
+        <div className="mb-4">
           <div className="border-l-[3px] border-[#B51F32] pl-3">
             <h2 className="text-[15px] font-bold text-[#181818] tracking-tight">Enter your event</h2>
-            <p className="text-[11px] text-[#6B6B6B] mt-1 leading-relaxed">
+            <p className="text-[11px] text-[#6B6B6B] mt-0.5 leading-relaxed">
               Use the Event ID and mobile number used during event registration.
             </p>
           </div>
@@ -109,9 +177,9 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
 
         {/* Verification Form */}
         <form onSubmit={handleVerify} className="flex-1 flex flex-col">
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             <div>
-              <label className="block text-[11.5px] font-semibold text-[#181818] mb-1.5">
+              <label className="block text-[11.5px] font-semibold text-[#181818] mb-1">
                 Event ID
               </label>
               <div className="relative">
@@ -121,27 +189,70 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                   onChange={(e) => setEventId(e.target.value)}
                   placeholder="ITS26"
                   disabled={status === 'verifying' || status === 'confirmed'}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[12px] font-bold tracking-wider text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
-                  required
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[13px] font-bold tracking-wider text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
                 />
-                <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#181818]" />
+                <CheckCircle2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#2F7D58]" />
               </div>
             </div>
 
             <div>
-              <label className="block text-[11.5px] font-semibold text-[#181818] mb-1.5">
+              <label className="block text-[11.5px] font-semibold text-[#181818] mb-1">
                 Registered Mobile Number
               </label>
               <div className="relative">
                 <input
+                  ref={mobileInputRef}
                   type="tel"
                   value={mobile}
-                  onChange={(e) => setMobile(e.target.value)}
-                  placeholder="+91 98765 43210"
+                  onChange={(e) => {
+                    setMobile(e.target.value);
+                    if (status === 'error') setStatus('idle');
+                  }}
+                  placeholder="e.g. 9876543211"
                   disabled={status === 'verifying' || status === 'confirmed'}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[12px] font-medium text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
-                  required
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[13px] font-medium text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
+                  autoComplete="tel"
                 />
+              </div>
+            </div>
+
+            {/* Quick Demo Selector Chips */}
+            <div className="pt-0.5">
+              <p className="text-[10.5px] text-[#888888] font-medium mb-1.5">Quick Demo Logins:</p>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => handleQuickSelect('9876543211')}
+                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                    mobile === '9876543211'
+                      ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
+                      : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
+                  }`}
+                >
+                  Exhibitor (9876543211)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleQuickSelect('9876543210')}
+                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                    mobile === '9876543210'
+                      ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
+                      : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
+                  }`}
+                >
+                  Delegate (9876543210)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleQuickSelect('90876543212')}
+                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                    mobile === '90876543212'
+                      ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
+                      : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
+                  }`}
+                >
+                  Organizer (90876543212)
+                </button>
               </div>
             </div>
           </div>
@@ -167,20 +278,28 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             </div>
           )}
 
-          <div className="mt-auto pt-2">
+          <div className="mt-auto pt-3">
             {/* Submit Action */}
             <button
               type="submit"
+<<<<<<< HEAD
               disabled={status === 'verifying' || status === 'confirmed' || !mobile.trim()}
               className="w-full h-[40px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[12px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed"
+=======
+              disabled={status === 'verifying' || status === 'confirmed'}
+              className="w-full h-[42px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+>>>>>>> 127a886 (minor improvements)
             >
               {status === 'verifying' ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Verifying...</span>
                 </>
               ) : status === 'confirmed' ? (
-                <span>Access Confirmed ✓</span>
+                <>
+                  <CheckCircle2 className="w-4 h-4 text-white" />
+                  <span>Access Confirmed ✓</span>
+                </>
               ) : (
                 <>
                   <span>Continue</span>
@@ -190,7 +309,7 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             </button>
 
             {/* Footer Info */}
-            <div className="mt-3 flex items-center justify-center gap-2 text-[12px] font-medium text-[#6B6B6B]">
+            <div className="mt-3 flex items-center justify-center gap-3 text-[12px] font-medium text-[#6B6B6B]">
               <div className="flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5" />
                 <span>No passwords</span>
@@ -204,13 +323,5 @@ const AccessScreenContent: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         </form>
       </div>
     </div>
-  );
-};
-
-export const AccessScreen: React.FC<AccessScreenProps> = (props) => {
-  return (
-    <Suspense fallback={<div className="flex-1 flex items-center justify-center p-3 bg-[#F6F4F0] min-h-[600px]"><Loader2 className="w-8 h-8 animate-spin text-[#B51F32]" /></div>}>
-      <AccessScreenContent {...props} />
-    </Suspense>
   );
 };

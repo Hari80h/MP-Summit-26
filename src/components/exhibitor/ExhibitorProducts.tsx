@@ -44,6 +44,12 @@ export const ExhibitorProducts: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
+  // Brochure Viewer & Upload modal state
+  const [showBrochureModal, setShowBrochureModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [customBrochureUrl, setCustomBrochureUrl] = useState('');
+  const brochureFileInputRef = React.useRef<HTMLInputElement | null>(null);
+
   // Form fields
   const [formName, setFormName] = useState('');
   const [formTagline, setFormTagline] = useState('');
@@ -149,6 +155,144 @@ export const ExhibitorProducts: React.FC = () => {
     showToast('Interested visitors exported successfully ✓', 'success');
   };
 
+  const handleDownloadBrochure = (prod: Product) => {
+    if (prod.resources?.brochureUrl && prod.resources.brochureUrl.startsWith('data:')) {
+      const link = document.createElement('a');
+      link.href = prod.resources.brochureUrl;
+      link.download = `${prod.name.replace(/[^a-zA-Z0-9]+/g, '_')}_Brochure.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Brochure downloaded successfully ✓', 'success');
+      return;
+    }
+
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>${prod.name} — Product Brochure</title>
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 40px; color: #181818; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+              .header { border-bottom: 3px solid #B51F32; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+              .brand { font-size: 13px; font-weight: 700; color: #B51F32; text-transform: uppercase; letter-spacing: 1.5px; }
+              .title { font-size: 32px; font-weight: 800; margin: 8px 0 4px; color: #111; }
+              .tagline { font-size: 18px; color: #555; }
+              .badge { background: #FFF0F2; color: #B51F32; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+              .meta { background: #f7f7f7; padding: 12px 18px; border-radius: 8px; margin-bottom: 24px; display: flex; gap: 24px; font-size: 13px; font-weight: 600; }
+              .section { margin-bottom: 24px; }
+              .section h3 { font-size: 17px; border-bottom: 1px solid #eee; padding-bottom: 6px; margin-bottom: 12px; color: #111; }
+              ul { padding-left: 20px; }
+              li { margin-bottom: 8px; }
+              .footer { border-top: 1px solid #eee; padding-top: 16px; margin-top: 40px; font-size: 12px; color: #777; display: flex; justify-content: space-between; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <div>
+                <div class="brand">${prod.company} · Official Solutions Showcase</div>
+                <h1 class="title">${prod.name}</h1>
+                <div class="tagline">${prod.tagline}</div>
+              </div>
+              <div><span class="badge">BOOTH ${prod.booth}</span></div>
+            </div>
+            <div class="meta">
+              <div>Category: <strong>${prod.category}</strong></div>
+              <div>Event: <strong>India Tech Summit 2026</strong></div>
+            </div>
+            <div class="section">
+              <h3>Executive Overview</h3>
+              <p>${prod.overview}</p>
+            </div>
+            <div class="section">
+              <h3>Key Capabilities</h3>
+              <ul>${prod.features.map((f: string) => `<li><strong>${f}</strong></li>`).join('')}</ul>
+            </div>
+            <div class="section">
+              <h3>Enterprise Benefits</h3>
+              <ul>${prod.benefits.map((b: string) => `<li>${b}</li>`).join('')}</ul>
+            </div>
+            <div class="section">
+              <h3>Production Use Cases</h3>
+              <ul>${prod.useCases.map((u: string) => `<li>${u}</li>`).join('')}</ul>
+            </div>
+            <div class="footer">
+              <div>EventSphere Digital Experience Layer · India Tech Summit 2026</div>
+              <div>Microsoft Corporation · Booth ${prod.booth}</div>
+            </div>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 400);
+      showToast('Opening brochure print/save view ✓', 'success');
+    }
+  };
+
+  const handleRemoveBrochure = (prod: Product) => {
+    updateProduct(prod.id, {
+      resources: {
+        ...prod.resources,
+        brochureUrl: undefined,
+      },
+    });
+    setShowBrochureModal(false);
+    showToast('Brochure removed from product ✓', 'info');
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!activeProduct) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      updateProduct(activeProduct.id, {
+        resources: {
+          ...activeProduct.resources,
+          brochureUrl: dataUrl,
+        },
+      });
+      setShowUploadModal(false);
+      showToast(`Brochure "${file.name}" uploaded successfully ✓`, 'success');
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleAttachTemplateBrochure = () => {
+    if (!activeProduct) return;
+    const mockPdfName = `${activeProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-official-brochure.pdf`;
+    updateProduct(activeProduct.id, {
+      resources: {
+        ...activeProduct.resources,
+        brochureUrl: `https://eventsphere.blob.core.windows.net/brochures/${mockPdfName}`,
+      },
+    });
+    setShowUploadModal(false);
+    showToast('Official product brochure attached ✓', 'success');
+  };
+
+  const handleSaveCustomBrochureUrl = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!activeProduct || !customBrochureUrl.trim()) return;
+    updateProduct(activeProduct.id, {
+      resources: {
+        ...activeProduct.resources,
+        brochureUrl: customBrochureUrl.trim(),
+      },
+    });
+    setCustomBrochureUrl('');
+    setShowUploadModal(false);
+    showToast('Brochure URL saved ✓', 'success');
+  };
+
   const renderModals = () => (
     <React.Fragment>
       {/* Edit Product Modal */}
@@ -239,6 +383,226 @@ export const ExhibitorProducts: React.FC = () => {
         </div>
       )}
 
+      {/* Brochure Viewer Modal */}
+      {showBrochureModal && activeProduct && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in">
+          <div className="bg-white rounded-[20px] w-full max-w-sm max-h-[88vh] flex flex-col shadow-2xl border border-[#DEDCD7] overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[#DEDCD7] shrink-0 bg-[#FAFAF9]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#FFF0F2] border border-[#FAD2D7] flex items-center justify-center text-[#B51F32]">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-[15px] font-bold text-[#181818] leading-tight">Product Brochure</h3>
+                  <p className="text-[11px] text-[#6B6B6B] truncate max-w-[200px]">{activeProduct.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowBrochureModal(false)}
+                className="p-1.5 text-[#6B6B6B] hover:text-[#181818] rounded-lg transition-colors"
+                title="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Document Content */}
+            <div className="p-4 space-y-3 text-xs">
+              {/* File details pill */}
+              <div className="p-3.5 bg-[#F6F4F0] rounded-xl border border-[#DEDCD7] flex items-center justify-between">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-[#B51F32] border border-[#E5E7EB] shrink-0 font-bold text-[11px] shadow-2xs">
+                    PDF
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-bold text-[#181818] text-xs truncate">
+                      {activeProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-brochure.pdf
+                    </p>
+                    <p className="text-[11px] text-[#6B6B6B]">Official Exhibitor Collateral · 2.4 MB</p>
+                  </div>
+                </div>
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider bg-[#EBF5F0] text-[#2F7D58] px-2 py-0.5 rounded">
+                  Verified
+                </span>
+              </div>
+
+              <div className="p-3 bg-[#FAF9F6] rounded-xl border border-[#EBEBEB] text-xs text-[#6B6B6B] flex items-start gap-2.5">
+                <ShieldCheck className="w-4 h-4 text-[#2F7D58] shrink-0 mt-0.5" />
+                <p className="leading-relaxed">
+                  Brochure is attached to <strong className="text-[#181818]">{activeProduct.name}</strong> and available for all delegates visiting Booth {activeProduct.booth}.
+                </p>
+              </div>
+            </div>
+
+            {/* Actions Footer */}
+            <div className="p-3 border-t border-[#DEDCD7] bg-[#FAFAF9] space-y-2 shrink-0">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleDownloadBrochure(activeProduct)}
+                  className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-semibold text-xs rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download / Print PDF</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowBrochureModal(false);
+                    setShowUploadModal(true);
+                  }}
+                  className="px-3 py-2.5 bg-white border border-[#DEDCD7] hover:bg-[#F6F4F0] text-[#181818] font-semibold text-xs rounded-xl transition-colors flex items-center gap-1.5"
+                  title="Replace with new file"
+                >
+                  <UploadCloud className="w-3.5 h-3.5 text-[#6B6B6B]" />
+                  <span>Replace</span>
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between pt-1">
+                <button
+                  type="button"
+                  onClick={() => handleRemoveBrochure(activeProduct)}
+                  className="text-[11px] text-[#B51F32] hover:underline flex items-center gap-1 font-medium"
+                >
+                  <Trash2 className="w-3 h-3" />
+                  <span>Remove Brochure</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowBrochureModal(false)}
+                  className="text-xs font-semibold text-[#6B6B6B] hover:text-[#181818]"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Upload Brochure Modal */}
+      {showUploadModal && activeProduct && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in">
+          <div className="bg-white rounded-[20px] w-full max-w-sm max-h-[88vh] flex flex-col shadow-2xl border border-[#DEDCD7] overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[#DEDCD7] shrink-0 bg-[#FAFAF9]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#FFF0F2] border border-[#FAD2D7] flex items-center justify-center text-[#B51F32]">
+                  <UploadCloud className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-[15px] font-bold text-[#181818] leading-tight">Upload Brochure</h3>
+                  <p className="text-[11px] text-[#6B6B6B] truncate max-w-[200px]">{activeProduct.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowUploadModal(false)}
+                className="p-1.5 text-[#6B6B6B] hover:text-[#181818] rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Hidden file input */}
+            <input
+              type="file"
+              ref={brochureFileInputRef}
+              accept="application/pdf,image/*,.doc,.docx"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+
+            {/* Modal Body */}
+            <div className="p-4 space-y-3.5 overflow-y-auto">
+              {/* Option 1: Pick file from device */}
+              <div
+                onClick={() => brochureFileInputRef.current?.click()}
+                className="p-5 border-2 border-dashed border-[#DEDCD7] hover:border-[#B51F32] bg-[#FAF9F6] hover:bg-[#FFF5F6] rounded-2xl text-center cursor-pointer transition-all space-y-2 group"
+              >
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#B51F32] mx-auto shadow-xs group-hover:scale-105 transition-transform">
+                  <UploadCloud className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-[#181818]">Choose PDF / Document</p>
+                  <p className="text-[11px] text-[#6B6B6B] mt-0.5">Click to select file from your device</p>
+                </div>
+                <span className="inline-block px-3 py-1 bg-white text-[#B51F32] border border-[#FAD2D7] text-[11px] font-bold uppercase tracking-wider rounded-lg shadow-2xs">
+                  Browse Device
+                </span>
+              </div>
+
+              {/* Option 2: Generate Official Template */}
+              <div className="relative flex items-center justify-center">
+                <div className="border-t border-[#DEDCD7] w-full" />
+                <span className="bg-white px-2 text-[10px] font-bold text-[#8A8A8A] uppercase tracking-wider absolute">
+                  Or Instant Template
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleAttachTemplateBrochure}
+                className="w-full py-2.5 px-3 bg-white border border-[#DEDCD7] hover:border-[#B51F32] rounded-xl text-left flex items-center justify-between transition-colors group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-[#FFF0F2] text-[#B51F32] flex items-center justify-center shrink-0">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#181818]">Attach Official ITS26 PDF</p>
+                    <p className="text-[10px] text-[#6B6B6B]">Auto-formatted executive one-pager</p>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-[#B51F32] group-hover:underline shrink-0">
+                  Attach ✓
+                </span>
+              </button>
+
+              {/* Option 3: Document Link */}
+              <div className="relative flex items-center justify-center">
+                <div className="border-t border-[#DEDCD7] w-full" />
+                <span className="bg-white px-2 text-[10px] font-bold text-[#8A8A8A] uppercase tracking-wider absolute">
+                  Or Enter URL
+                </span>
+              </div>
+
+              <form onSubmit={handleSaveCustomBrochureUrl} className="space-y-2">
+                <label className="text-[11px] font-semibold text-[#181818] block">Brochure Web Link / Cloud URL</label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={customBrochureUrl}
+                    onChange={(e) => setCustomBrochureUrl(e.target.value)}
+                    placeholder="https://.../brochure.pdf"
+                    className="flex-1 px-3 py-2 text-xs border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32]"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!customBrochureUrl.trim()}
+                    className="px-3.5 py-2 bg-[#181818] hover:bg-black disabled:opacity-40 text-white text-xs font-semibold rounded-xl transition-colors shrink-0"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Footer */}
+            <div className="p-3 border-t border-[#DEDCD7] bg-[#FAFAF9] flex justify-end">
+              <button
+                type="button"
+                onClick={() => setShowUploadModal(false)}
+                className="py-2 px-4 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-xl hover:bg-[#F6F4F0] transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </React.Fragment>
   );
 
@@ -292,14 +656,22 @@ export const ExhibitorProducts: React.FC = () => {
                   {activeProduct.name}
                 </h2>
                 <div className="shrink-0 pt-0.5">
-                  {activeProduct.resources && Object.keys(activeProduct.resources).length > 0 ? (
-                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FCE8E8] text-[#D11E39] text-[11px] font-bold uppercase tracking-wider rounded-lg hover:bg-[#F9D5D5] transition-colors">
+                  {activeProduct.resources?.brochureUrl ? (
+                    <button
+                      onClick={() => setShowBrochureModal(true)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF0F2] text-[#B51F32] border border-[#FAD2D7] text-[11px] font-bold uppercase tracking-wider rounded-lg hover:bg-[#FCE8E8] transition-colors shadow-2xs"
+                      title="Open Product Brochure"
+                    >
                       <FileText className="w-3.5 h-3.5" />
                       <span>Brochure</span>
                     </button>
                   ) : (
-                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-[#6B6B6B] text-[11px] font-bold uppercase tracking-wider rounded-lg hover:bg-gray-200 transition-colors">
-                      <UploadCloud className="w-3.5 h-3.5" />
+                    <button
+                      onClick={() => setShowUploadModal(true)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-[#181818] border border-[#DEDCD7] text-[11px] font-bold uppercase tracking-wider rounded-lg hover:bg-[#F6F4F0] hover:border-[#B51F32] hover:text-[#B51F32] transition-colors shadow-2xs"
+                      title="Upload Product Brochure"
+                    >
+                      <UploadCloud className="w-3.5 h-3.5 text-[#B51F32]" />
                       <span>Upload</span>
                     </button>
                   )}
