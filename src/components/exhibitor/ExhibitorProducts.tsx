@@ -18,7 +18,8 @@ import {
   Pencil,
   Trash2,
   Plus,
-  Check
+  Check,
+  UploadCloud
 } from 'lucide-react';
 import { Product } from '../../types';
 
@@ -152,16 +153,16 @@ export const ExhibitorProducts: React.FC = () => {
     <React.Fragment>
       {/* Edit Product Modal */}
       {showEditModal && editingProduct && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-sm p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
-            <div className="flex items-center justify-between pb-2 border-b border-[#DEDCD7]">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in">
+          <div className="bg-white rounded-[18px] w-full max-w-sm p-4 space-y-3 shadow-2xl border border-[#DEDCD7]">
+            <div className="flex items-center justify-between pb-2.5 border-b border-[#DEDCD7]">
               <div>
-                <h3 className="text-[12px] font-bold text-[#181818]">Edit Product</h3>
-                <p className="text-[11px] text-[#6B6B6B]">Microsoft Booth B-14</p>
+                <h3 className="text-[17px] font-bold text-[#181818]">Edit Product</h3>
+                <p className="text-[13px] text-[#6B6B6B]">Microsoft Booth B-14</p>
               </div>
               <button
                 onClick={() => setShowEditModal(false)}
-                className="p-1 text-[#6B6B6B] hover:text-[#181818] rounded-lg"
+                className="p-1.5 text-[#6B6B6B] hover:text-[#181818] rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -169,34 +170,34 @@ export const ExhibitorProducts: React.FC = () => {
 
             <form onSubmit={handleSaveEdit} className="space-y-3">
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Product Name</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Product Name</label>
                 <input
                   type="text"
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   required
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] placeholder:text-[13px]"
                   placeholder="e.g. Azure OpenAI Service"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Tagline</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Tagline</label>
                 <input
                   type="text"
                   value={formTagline}
                   onChange={(e) => setFormTagline(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] placeholder:text-[13px]"
                   placeholder="e.g. Advanced language models"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Category</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Category</label>
                 <select
                   value={formCategory}
                   onChange={(e) => setFormCategory(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] bg-white"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] bg-white"
                 >
                   <option value="Cloud & AI">Cloud & AI</option>
                   <option value="Enterprise SaaS">Enterprise SaaS</option>
@@ -207,29 +208,29 @@ export const ExhibitorProducts: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Overview</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Overview</label>
                 <textarea
                   value={formOverview}
                   onChange={(e) => setFormOverview(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] resize-none"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] resize-none placeholder:text-[13px]"
                   placeholder="Brief overview of the product..."
                 />
               </div>
 
-              <div className="pt-2 flex items-center gap-2">
+              <div className="pt-2 flex items-center gap-2.5">
                 <button
                   type="button"
                   onClick={() => setShowEditModal(false)}
-                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg hover:bg-[#F6F4F0]"
+                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-sm rounded-xl hover:bg-[#F6F4F0] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-semibold text-sm rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <Check className="w-3.5 h-3.5" />
+                  <Check className="w-4 h-4" />
                   <span>Save Changes</span>
                 </button>
               </div>
@@ -281,30 +282,30 @@ export const ExhibitorProducts: React.FC = () => {
 
           <div className="relative z-10 space-y-5">
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D11E39] px-2.5 py-1 rounded-md">
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D11E39] px-2.5 py-1 rounded-md">
                   {activeProduct.category} · BOOTH {activeProduct.booth}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-3 mb-2">
-                <h2 className="text-[19px] font-bold text-[#111827] leading-snug">
+                <h2 className="text-[20px] font-bold text-[#111827] leading-snug">
                   {activeProduct.name}
                 </h2>
                 <div className="shrink-0 pt-0.5">
                   {activeProduct.resources && Object.keys(activeProduct.resources).length > 0 ? (
-                    <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#FCE8E8] text-[#D11E39] text-[10px] font-bold uppercase tracking-wider rounded-lg hover:bg-[#F9D5D5] transition-colors">
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FCE8E8] text-[#D11E39] text-[11px] font-bold uppercase tracking-wider rounded-lg hover:bg-[#F9D5D5] transition-colors">
                       <FileText className="w-3.5 h-3.5" />
                       <span>Brochure</span>
                     </button>
                   ) : (
-                    <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 text-[#6B6B6B] text-[10px] font-bold uppercase tracking-wider rounded-lg hover:bg-gray-200 transition-colors">
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-[#6B6B6B] text-[11px] font-bold uppercase tracking-wider rounded-lg hover:bg-gray-200 transition-colors">
                       <UploadCloud className="w-3.5 h-3.5" />
                       <span>Upload</span>
                     </button>
                   )}
                 </div>
               </div>
-              <div className="text-[13px] text-[#4B5563] font-medium leading-relaxed">
+              <div className="text-sm text-[#4B5563] font-medium leading-relaxed">
                 {activeProduct.tagline}
               </div>
             </div>
@@ -313,7 +314,7 @@ export const ExhibitorProducts: React.FC = () => {
             <div className="flex items-center gap-3 pt-4 border-t border-[#E5E7EB]">
               <button
                 onClick={() => enquireProduct(activeProduct.id)}
-                className="flex-[2] h-11 bg-gradient-to-r from-[#151515] to-[#2A080D] hover:from-black hover:to-[#151515] active:scale-[0.98] text-white font-semibold text-[13px] rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
+                className="flex-[2] h-11 bg-gradient-to-r from-[#151515] to-[#2A080D] hover:from-black hover:to-[#151515] active:scale-[0.98] text-white font-semibold text-sm rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Product Enquiry</span>
@@ -321,7 +322,7 @@ export const ExhibitorProducts: React.FC = () => {
 
               <button
                 onClick={() => setShowVisitorsModal(true)}
-                className="flex-1 h-11 bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-[#111827] font-semibold text-[13px] rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
+                className="flex-1 h-11 bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-[#111827] font-semibold text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
                 title="View Interested Visitors"
               >
                 <Users className="w-4 h-4" />
@@ -343,7 +344,7 @@ export const ExhibitorProducts: React.FC = () => {
               key={tab.id}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onClick={() => setDetailSubTab(tab.id as any)}
-              className={`flex-none px-4 py-3 text-[13px] font-bold text-center transition-colors relative ${
+              className={`flex-none px-4 py-3 text-sm font-semibold text-center transition-colors relative ${
                 detailSubTab === tab.id
                   ? 'text-[#B51F32]'
                   : 'text-[#6B7280] hover:text-[#374151]'
@@ -358,7 +359,7 @@ export const ExhibitorProducts: React.FC = () => {
         </div>
 
         {/* TAB CONTENT */}
-        <div className="bg-white border border-[#E5E7EB] rounded-xl rounded-t-none p-5 shadow-sm text-[13px] space-y-4 relative z-20 mt-[-16px]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl rounded-t-none p-5 shadow-sm text-sm space-y-4 relative z-20 mt-[-16px]">
           {detailSubTab === 'overview' && (
             <div>
               <h3 className="font-semibold text-[#181818] mb-2 text-base">
@@ -422,64 +423,64 @@ export const ExhibitorProducts: React.FC = () => {
 
         {/* Interested Visitors Modal */}
         {showVisitorsModal && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
-            <div className="bg-white rounded-[14px] w-full max-w-md max-h-[85vh] overflow-y-auto p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
-              <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-4 animate-in fade-in">
+            <div className="bg-white rounded-[18px] w-full max-w-md max-h-[85vh] overflow-y-auto p-4 space-y-3 shadow-xl border border-[#DEDCD7]">
+              <div className="flex items-center justify-between pb-2.5 border-b border-[#DEDCD7]">
                 <div>
-                  <h3 className="text-[12px] font-bold text-[#181818]">
+                  <h3 className="text-[17px] font-bold text-[#181818]">
                     Interested Visitors ({productVisitors.length})
                   </h3>
-                  <p className="text-[11px] text-[#6B6B6B]">{activeProduct.name}</p>
+                  <p className="text-[13px] text-[#6B6B6B]">{activeProduct.name}</p>
                 </div>
                 <button
                   onClick={() => setShowVisitorsModal(false)}
-                  className="p-1 rounded-lg text-[#6B6B6B] hover:text-[#181818]"
+                  className="p-1.5 rounded-lg text-[#6B6B6B] hover:text-[#181818] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="p-2.5 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7] text-[11px] text-[#6B6B6B] flex items-center gap-2">
+              <div className="p-3 bg-[#EFEEEA] rounded-xl border border-[#DEDCD7] text-xs text-[#555] flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#2F7D58] flex-shrink-0" />
                 <span>Contact visibility strictly respects individual delegate privacy settings.</span>
               </div>
 
               <div className="space-y-2.5">
                 {productVisitors.length === 0 ? (
-                  <p className="text-xs text-center text-[#6B6B6B] py-3">No enquiries logged yet.</p>
+                  <p className="text-sm text-center text-[#6B6B6B] py-4">No enquiries logged yet.</p>
                 ) : (
                   productVisitors.map((v) => (
                     <div
                       key={v.id}
-                      className="p-2.5 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7] text-xs space-y-1"
+                      className="p-3 bg-[#F6F4F0] rounded-xl border border-[#DEDCD7] space-y-1.5"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-[#181818]">{v.name}</span>
-                        <span className="text-[10px] font-mono text-[#6B6B6B]">{v.timestamp}</span>
+                        <span className="font-bold text-sm text-[#181818]">{v.name}</span>
+                        <span className="text-[11px] font-mono text-[#6B6B6B]">{v.timestamp}</span>
                       </div>
-                      <p className="text-[11px] text-[#6B6B6B]">
-                        {v.designation} · <strong className="text-[#181818]">{v.company}</strong>
+                      <p className="text-xs text-[#6B6B6B]">
+                        {v.designation} · <strong className="text-[#181818] font-semibold">{v.company}</strong>
                       </p>
-                      <div className="pt-1 flex items-center justify-between text-[10px] text-[#6B6B6B]">
-                        <span>Email: <strong className="text-[#181818]">{v.email}</strong></span>
-                        <span>Mobile: <strong className="text-[#181818]">{v.mobile}</strong></span>
+                      <div className="pt-1 flex items-center justify-between text-xs text-[#6B6B6B]">
+                        <span>Email: <strong className="text-[#181818] font-medium">{v.email}</strong></span>
+                        <span>Mobile: <strong className="text-[#181818] font-medium">{v.mobile}</strong></span>
                       </div>
                     </div>
                   ))
                 )}
               </div>
 
-              <div className="pt-2 flex items-center gap-2">
+              <div className="pt-2 flex items-center gap-2.5">
                 <button
                   onClick={() => handleExportVisitorsCSV(activeProduct)}
-                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg shadow-xs hover:bg-[#F6F4F0] transition-colors flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-sm rounded-xl shadow-xs hover:bg-[#F6F4F0] transition-colors flex items-center justify-center gap-1.5"
                 >
-                  <Download className="w-3.5 h-3.5" />
+                  <Download className="w-4 h-4" />
                   <span>Export CSV</span>
                 </button>
                 <button
                   onClick={() => setShowVisitorsModal(false)}
-                  className="flex-1 py-2.5 bg-[#181818] text-white font-semibold text-xs rounded-lg shadow-xs hover:bg-black transition-colors"
+                  className="flex-1 py-2.5 bg-[#181818] text-white font-semibold text-sm rounded-xl shadow-xs hover:bg-black transition-colors"
                 >
                   Done
                 </button>
@@ -506,7 +507,7 @@ export const ExhibitorProducts: React.FC = () => {
             <h1 className="text-[28px] font-serif tracking-tight text-white leading-tight mb-1">
               Showcase Products
             </h1>
-            <p className="text-[12px] text-gray-300 font-medium">
+            <p className="text-[13px] text-gray-300 font-medium">
               Microsoft Booth B-14 Featured Solutions
             </p>
           </div>
@@ -539,42 +540,42 @@ export const ExhibitorProducts: React.FC = () => {
             <div
               key={prod.id}
               onClick={() => setSelectedProductId(prod.id)}
-              className="bg-white p-3.5 rounded-2xl border border-[#EBEBEB] hover:shadow-md transition-shadow shadow-sm cursor-pointer flex justify-between gap-3 group"
+              className="bg-white p-4 rounded-2xl border border-[#EBEBEB] hover:shadow-md transition-shadow shadow-sm cursor-pointer flex justify-between gap-3 group"
             >
               {/* Left: Text Content */}
               <div className="flex-1 min-w-0 pr-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A8A8A] block mb-0.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373] block mb-1">
                   {prod.category} · Booth {prod.booth}
                 </span>
-                <h3 className="text-[16px] font-bold text-[#181818] leading-tight break-words mb-1">
+                <h3 className="text-[17px] font-bold text-[#181818] leading-tight break-words mb-1">
                   {prod.name}
                 </h3>
-                <p className="text-[12px] text-[#6B6B6B] leading-snug line-clamp-2">
+                <p className="text-[13px] text-[#555555] leading-relaxed line-clamp-2">
                   {prod.tagline}
                 </p>
               </div>
 
               {/* Right: Actions & Details Link */}
               <div className="flex flex-col items-end justify-between shrink-0 py-0.5">
-                <div className="flex items-center gap-0.5 -mr-1.5 -mt-1" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center gap-1 -mr-1.5 -mt-1" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => handleOpenEdit(prod)}
                     className="p-1.5 text-[#8A8A8A] hover:text-[#00A4EF] bg-transparent hover:bg-gray-50 rounded-md transition-colors"
                     title="Edit Product"
                   >
-                    <Pencil className="w-3.5 h-3.5" />
+                    <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setDeletingProductId(prod.id)}
                     className="p-1.5 text-[#8A8A8A] hover:text-[#B51F32] bg-transparent hover:bg-gray-50 rounded-md transition-colors"
                     title="Delete Product"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
                 
-                <span className="text-[10px] font-bold text-[#8A8A8A] flex items-center gap-0.5 group-hover:text-[#B51F32] transition-colors mt-2">
-                  View Details <ChevronRight className="w-3 h-3 -mr-0.5" />
+                <span className="text-[12px] font-semibold text-[#737373] flex items-center gap-0.5 group-hover:text-[#B51F32] transition-colors mt-2">
+                  View Details <ChevronRight className="w-3.5 h-3.5 -mr-0.5" />
                 </span>
               </div>
             </div>
@@ -587,16 +588,16 @@ export const ExhibitorProducts: React.FC = () => {
 
       {/* Add Product Modal */}
       {showAddModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-sm p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
-            <div className="flex items-center justify-between pb-2 border-b border-[#DEDCD7]">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in">
+          <div className="bg-white rounded-[18px] w-full max-w-sm p-4 space-y-3 shadow-2xl border border-[#DEDCD7]">
+            <div className="flex items-center justify-between pb-2.5 border-b border-[#DEDCD7]">
               <div>
-                <h3 className="text-[12px] font-bold text-[#181818]">Add Featured Product</h3>
-                <p className="text-[11px] text-[#6B6B6B]">Showcase to attendees at Booth B-14</p>
+                <h3 className="text-[17px] font-bold text-[#181818]">Add Featured Product</h3>
+                <p className="text-[13px] text-[#6B6B6B]">Showcase to attendees at Booth B-14</p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="p-1 text-[#6B6B6B] hover:text-[#181818] rounded-lg"
+                className="p-1.5 text-[#6B6B6B] hover:text-[#181818] rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -604,34 +605,34 @@ export const ExhibitorProducts: React.FC = () => {
 
             <form onSubmit={handleSaveAdd} className="space-y-3">
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Product Name</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Product Name</label>
                 <input
                   type="text"
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   required
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] placeholder:text-[13px]"
                   placeholder="e.g. Microsoft Copilot for Security"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Tagline</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Tagline</label>
                 <input
                   type="text"
                   value={formTagline}
                   onChange={(e) => setFormTagline(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32]"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] placeholder:text-[13px]"
                   placeholder="e.g. Generative AI-powered security analysis"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Category</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Category</label>
                 <select
                   value={formCategory}
                   onChange={(e) => setFormCategory(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] bg-white"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] bg-white"
                 >
                   <option value="Cloud & AI">Cloud & AI</option>
                   <option value="Enterprise SaaS">Enterprise SaaS</option>
@@ -642,29 +643,29 @@ export const ExhibitorProducts: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#181818] block mb-1">Overview</label>
+                <label className="text-[13px] font-semibold text-[#181818] block mb-1.5">Overview</label>
                 <textarea
                   value={formOverview}
                   onChange={(e) => setFormOverview(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 text-xs border border-[#DEDCD7] rounded-lg focus:outline-none focus:border-[#B51F32] resize-none"
+                  className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] resize-none placeholder:text-[13px]"
                   placeholder="Describe key benefits and capabilities..."
                 />
               </div>
 
-              <div className="pt-2 flex items-center gap-2">
+              <div className="pt-2 flex items-center gap-2.5">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg hover:bg-[#F6F4F0]"
+                  className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-sm rounded-xl hover:bg-[#F6F4F0] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-semibold text-sm rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="w-4 h-4" />
                   <span>Add Product</span>
                 </button>
               </div>
@@ -675,23 +676,23 @@ export const ExhibitorProducts: React.FC = () => {
 
       {/* Delete Confirmation Modal */}
       {deletingProductId && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-xs p-3 space-y-2 shadow-2xl border border-[#DEDCD7] text-center">
-            <div className="w-11 h-11 bg-red-100 rounded-full flex items-center justify-center text-[#B51F32] mx-auto">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in">
+          <div className="bg-white rounded-[18px] w-full max-w-xs p-5 space-y-3 shadow-2xl border border-[#DEDCD7] text-center">
+            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-[#B51F32] mx-auto">
               <Trash2 className="w-5 h-5" />
             </div>
 
             <div>
-              <h3 className="text-[12px] font-bold text-[#181818]">Delete Product?</h3>
-              <p className="text-xs text-[#6B6B6B] mt-1">
+              <h3 className="text-[17px] font-bold text-[#181818]">Delete Product?</h3>
+              <p className="text-[13px] text-[#6B6B6B] mt-1.5 leading-relaxed">
                 Are you sure you want to remove this product from your booth showcase?
               </p>
             </div>
 
-            <div className="flex items-center gap-2 pt-1">
+            <div className="flex items-center gap-2.5 pt-1">
               <button
                 onClick={() => setDeletingProductId(null)}
-                className="flex-1 py-2 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg hover:bg-[#F6F4F0]"
+                className="flex-1 py-2.5 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-sm rounded-xl hover:bg-[#F6F4F0] transition-colors"
               >
                 Cancel
               </button>
@@ -700,7 +701,7 @@ export const ExhibitorProducts: React.FC = () => {
                   const prod = products.find((p) => p.id === deletingProductId);
                   handleDelete(deletingProductId, prod?.name || 'Product');
                 }}
-                className="flex-1 py-2 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-bold text-xs rounded-lg shadow-xs"
+                className="flex-1 py-2.5 bg-[#B51F32] hover:bg-[#9C1A2B] text-white font-semibold text-sm rounded-xl shadow-xs transition-colors"
               >
                 Delete
               </button>
