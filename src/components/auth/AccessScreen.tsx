@@ -28,6 +28,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
     setMobile(num);
     setErrorMessage('');
     if (status === 'error') setStatus('idle');
+    mobileInputRef.current?.focus();
   };
 
   const handleVerify = (e?: React.FormEvent | React.MouseEvent) => {
@@ -58,20 +59,11 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
 
     let detectedRole: 'delegate' | 'exhibitor' | 'organizer' = 'delegate';
 
-<<<<<<< Updated upstream
     if (num === '9876543211' || num.endsWith('43211') || num.endsWith('3211')) {
       detectedRole = 'exhibitor';
     } else if (num === '9876543212' || num === '90876543212' || num.endsWith('43212') || num.endsWith('3212')) {
       detectedRole = 'organizer';
     } else {
-=======
-    if (mobile10 === '9876543211' || digits.endsWith('43211') || digits.endsWith('3211')) {
-      detectedRole = 'exhibitor';
-    } else if (mobile10 === '90876543212' || digits.endsWith('43212') || digits.endsWith('3212')) {
-      detectedRole = 'organizer';
-    } else {
-      // Default to delegate for 9876543210 and all other registered attendees
->>>>>>> Stashed changes
       detectedRole = 'delegate';
     }
 
@@ -81,7 +73,6 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         setStatus('confirmed');
         setTimeout(() => {
           setHasAccessConfirmed(true);
-<<<<<<< Updated upstream
           onSuccess();
         }, 350);
       } catch (err) {
@@ -89,27 +80,10 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         setHasAccessConfirmed(true);
         setStatus('confirmed');
         onSuccess();
-=======
-          onSuccess?.();
-        }, 300);
-      } catch (err) {
-        console.error('Login error:', err);
-        setHasAccessConfirmed(true);
-        onSuccess?.();
->>>>>>> Stashed changes
       }
     }, 400);
   };
 
-<<<<<<< Updated upstream
-  const handleQuickSelect = (num: string) => {
-    setMobile(num);
-    setErrorMessage('');
-    if (status === 'error') setStatus('idle');
-  };
-
-=======
->>>>>>> Stashed changes
   return (
     <div className="flex-1 flex flex-col bg-[#F6F4F0] min-h-[600px] select-none h-full relative overflow-y-auto">
       
@@ -174,7 +148,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                   disabled={status === 'verifying' || status === 'confirmed'}
                   className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[13px] font-bold tracking-wider text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
                 />
-                <CheckCircle2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#2F7D58]" />
+                <CheckCircle2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#B51F32]" />
               </div>
             </div>
 
@@ -206,7 +180,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                 <button
                   type="button"
                   onClick={() => handleQuickSelect('9876543211')}
-                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
                     mobile === '9876543211'
                       ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
                       : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
@@ -217,7 +191,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                 <button
                   type="button"
                   onClick={() => handleQuickSelect('9876543210')}
-                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
                     mobile === '9876543210'
                       ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
                       : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
@@ -228,7 +202,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                 <button
                   type="button"
                   onClick={() => handleQuickSelect('90876543212')}
-                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
                     mobile === '90876543212'
                       ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
                       : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
@@ -252,11 +226,11 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
 
           {/* Success Confirmation State */}
           {status === 'confirmed' && (
-            <div className="p-2.5 bg-[#EBF5F0] border border-[#2F7D58]/30 rounded-lg text-xs text-[#2F7D58] flex items-center gap-2 animate-in fade-in mt-3">
-              <CheckCircle2 className="w-5 h-5 text-[#2F7D58] flex-shrink-0" />
+            <div className="p-2.5 bg-red-50 border border-[#B51F32]/30 rounded-lg text-xs text-[#B51F32] flex items-center gap-2 animate-in fade-in mt-3">
+              <CheckCircle2 className="w-5 h-5 text-[#B51F32] flex-shrink-0" />
               <div>
                 <p className="font-bold text-[12px]">Access confirmed ✓</p>
-                <p className="text-[11px] text-[#2F7D58]/80">Loading your personalized dashboard...</p>
+                <p className="text-[11px] text-[#B51F32]/80">Loading your personalized dashboard...</p>
               </div>
             </div>
           )}
@@ -265,13 +239,8 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             {/* Submit Action */}
             <button
               type="submit"
-<<<<<<< Updated upstream
-              disabled={status === 'verifying' || status === 'confirmed' || !mobile.trim()}
-              className="w-full h-[42px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
-=======
               disabled={status === 'verifying' || status === 'confirmed'}
               className="w-full h-[42px] bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-[0.98] text-white font-semibold text-[13px] rounded-lg shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
->>>>>>> Stashed changes
             >
               {status === 'verifying' ? (
                 <>
