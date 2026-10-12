@@ -53,7 +53,7 @@ export const OrganizerExhibitors: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `eventsphere-its26-exhibitor-metrics.csv`);
+    link.setAttribute('download', `eventsphere-mpss26-exhibitor-metrics.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -66,7 +66,7 @@ export const OrganizerExhibitors: React.FC = () => {
       <div className="flex flex-wrap items-center justify-between gap-2.5">
         <div className="pt-2 pb-1 px-1 flex justify-between items-start">
         <div>
-          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · ORGANIZER</p>
+          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · ORGANIZER</p>
           <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">Exhibitors</h1>
         </div>
         

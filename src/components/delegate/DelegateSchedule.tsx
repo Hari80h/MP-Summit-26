@@ -25,7 +25,8 @@ import {
 } from 'lucide-react';
 
 import { useStore } from '../../lib/store';
-import { Session } from '../../types';
+import { INITIAL_ATTENDEES } from '../../lib/mockData';
+import { Session, Person } from '../../types';
 
 const getSessionImage = (session: Session) => {
   const stageImages = [
@@ -76,6 +77,10 @@ const getBreakIcon = (title: string) => {
 export const DelegateSchedule: React.FC = () => {
   const {
     sessions,
+    attendees,
+    setAttendees,
+    selectedPersonId,
+    setSelectedPersonId,
     toggleBookmarkSession,
     selectedSessionId,
     setSelectedSessionId,
@@ -92,6 +97,84 @@ export const DelegateSchedule: React.FC = () => {
   const [detailSubTab, setDetailSubTab] = useState<'overview' | 'speaker' | 'qa' | 'poll'>('overview');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Helper to resolve all distinct speaker profiles for a session
+  const resolveSessionSpeakers = (session: Session): Person[] => {
+    if (!session) return [];
+
+    const speakerPool = [...attendees, ...INITIAL_ATTENDEES];
+
+    if (session.speakerIds && session.speakerIds.length > 0) {
+      const matched = session.speakerIds
+        .map((id) => speakerPool.find((a) => a.id === id))
+        .filter(Boolean) as Person[];
+      if (matched.length > 0) return matched;
+    }
+
+    if (session.speakerId) {
+      const single = speakerPool.find((a) => a.id === session.speakerId);
+      if (single) return [single];
+    }
+
+    if (session.speakerName) {
+      const rawNames = session.speakerName
+        .split(/[,&]/)
+        .map((n) => n.trim().replace(/^and\s+/i, ''))
+        .filter(
+          (n) =>
+            n.length > 1 &&
+            !n.toLowerCase().includes('committee') &&
+            !n.toLowerCase().includes('panel') &&
+            !n.toLowerCase().includes('ensemble')
+        );
+
+      const found: Person[] = [];
+      for (const name of rawNames) {
+        const norm = name.toLowerCase();
+        const match = speakerPool.find(
+          (a) =>
+            a.name.toLowerCase() === norm ||
+            a.name.toLowerCase().includes(norm) ||
+            norm.includes(a.name.toLowerCase())
+        );
+        if (match && !found.some((f) => f.id === match.id)) {
+          found.push(match);
+        }
+      }
+      if (found.length > 0) return found;
+
+      if (
+        !session.speakerName.toLowerCase().includes('committee') &&
+        !session.speakerName.toLowerCase().includes('ensemble')
+      ) {
+        return [
+          {
+            id: session.speakerId || `spk-${session.id}`,
+            name: session.speakerName,
+            designation: session.speakerDesignation || 'Speaker',
+            company: session.speakerCompany || 'MP Semiconductor Summit',
+            role: 'speaker',
+            bio: 'Keynote voice driving the Madhya Pradesh semiconductor ecosystem, national fab supply chain initiatives, and industry-academia collaborations.',
+            interests: ['Semiconductors', 'Chip Design'],
+            skills: [],
+            email: '',
+            mobile: '',
+            privacy: {
+              preset: 'Private',
+              shareEmail: false,
+              sharePhone: false,
+              shareLinkedIn: false,
+              shareTwitter: false,
+            },
+            checkedIn: true,
+            ticketType: 'Speaker',
+          } as Person,
+        ];
+      }
+    }
+
+    return [];
+  };
 
   // Q&A state
   const [questionText, setQuestionText] = useState('');
@@ -149,6 +232,7 @@ export const DelegateSchedule: React.FC = () => {
   // If viewing session detail
   if (activeSession) {
     const sessionQuestions = questions.filter((q) => q.sessionId === activeSession.id);
+    const sessionSpeakers = resolveSessionSpeakers(activeSession);
 
     return (
       <div ref={scrollRef} className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto pb-16">
@@ -207,11 +291,14 @@ export const DelegateSchedule: React.FC = () => {
           </div>
         </div>
 
-        {/* 4 Detail Tabs: Overview | Speaker | Q&A | Poll */}
+        {/* 4 Detail Tabs: Overview | Speaker(s) | Q&A | Poll */}
         <div className="bg-white border-b border-[#E5E7EB] px-4 flex items-center justify-between sticky top-0 z-20 shadow-xs">
           {[
             { id: 'overview', label: 'Overview' },
-            { id: 'speaker', label: 'Speaker' },
+            {
+              id: 'speaker',
+              label: sessionSpeakers.length > 1 ? `Speakers · ${sessionSpeakers.length}` : 'Speaker',
+            },
             { id: 'qa', label: `Q&A · ${sessionQuestions.length}` },
             { id: 'poll', label: 'Poll' },
           ].map((tab) => (
@@ -272,33 +359,81 @@ export const DelegateSchedule: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 2: SPEAKER */}
+          {/* TAB 2: SPEAKERS - CLICKABLE TO OPEN FULL PROFILE, NO DESCRIPTION IN LIST */}
           {detailSubTab === 'speaker' && (
-            <div className="bg-white p-3.5 rounded-[16px] border border-[#E5E7EB] space-y-3 shadow-xs">
-              <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-full bg-[#FEE2E2] border border-[#FECACA] flex items-center justify-center font-bold text-[14px] text-[#DC2626] flex-shrink-0">
-                  {activeSession.speakerName
-                    ? activeSession.speakerName
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')
-                    : 'SP'}
+            <div className="space-y-2.5">
+              {sessionSpeakers.length === 0 ? (
+                <div className="bg-white p-6 rounded-[16px] border border-[#E5E7EB] text-center text-xs text-[#6B7280]">
+                  No speaker profiles published for this session.
                 </div>
-                <div>
-                  <h3 className="text-[14px] font-bold text-[#111827]">{activeSession.speakerName || 'Distinguished Speaker'}</h3>
-                  <p className="text-[12px] text-[#4B5563] mt-0.5">
-                    {activeSession.speakerDesignation} ·{' '}
-                    <strong className="text-[#111827]">{activeSession.speakerCompany}</strong>
-                  </p>
-                  <span className="inline-block mt-1 text-[10px] font-semibold text-[#DC2626] bg-[#FEF2F2] border border-[#FEE2E2] px-2 py-0.5 rounded-md">
-                    Featured Summit Speaker
-                  </span>
-                </div>
-              </div>
+              ) : (
+                sessionSpeakers.map((spk, idx) => (
+                  <div
+                    key={spk.id || idx}
+                    onClick={() => {
+                      if (spk.id) {
+                        if (!attendees.some((a) => a.id === spk.id)) {
+                          setAttendees((prev) => [...prev, spk]);
+                        }
+                        setSelectedPersonId(spk.id);
+                      } else if (spk.name) {
+                        setSelectedPersonId(spk.name);
+                      }
+                    }}
+                    className="group bg-white p-3 sm:p-3.5 rounded-[16px] border border-[#E5E7EB] hover:border-[#DC2626]/40 shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center justify-between gap-3 active:scale-[0.99]"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      {spk.avatar ? (
+                        <img
+                          src={spk.avatar}
+                          alt={spk.name}
+                          className="w-12 h-12 rounded-full object-cover border border-[#E5E7EB] flex-shrink-0 shadow-xs group-hover:ring-2 group-hover:ring-[#DC2626]/20 transition-all"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-[#FEE2E2] border border-[#FECACA] flex items-center justify-center font-bold text-[14px] text-[#DC2626] flex-shrink-0">
+                          {spk.name
+                            .split(' ')
+                            .map((n) => n[0])
+                            .join('')
+                            .slice(0, 2)}
+                        </div>
+                      )}
 
-              <p className="text-[12px] text-[#4B5563] leading-relaxed pt-2 border-t border-[#E5E7EB]">
-                Keynote voice driving the Madhya Pradesh semiconductor ecosystem, national fab supply chain initiatives, and industry-academia collaborations.
-              </p>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-[13.5px] sm:text-[14px] font-bold text-[#111827] group-hover:text-[#DC2626] transition-colors truncate">
+                            {spk.name}
+                          </h3>
+                          <span className="inline-block text-[9.5px] font-semibold text-[#DC2626] bg-[#FEF2F2] border border-[#FEE2E2] px-1.5 py-0.5 rounded-md flex-shrink-0">
+                            {sessionSpeakers.length > 1 ? 'Panelist' : 'Keynote Speaker'}
+                          </span>
+                        </div>
+
+                        <p className="text-[11.5px] sm:text-[12px] text-[#4B5563] mt-0.5 truncate">
+                          {spk.designation} · <strong className="text-[#111827]">{spk.company}</strong>
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Right side: LinkedIn shortcut & Arrow to open profile */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      {spk.linkedin && (
+                        <a
+                          href={spk.linkedin.startsWith('http') ? spk.linkedin : `https://${spk.linkedin}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-[10.5px] font-bold text-[#0A66C2] bg-[#E8F3FF] hover:bg-[#D0E8FF] px-2.5 py-1 rounded-full transition-colors"
+                          title={`View ${spk.name} on LinkedIn`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <span>LinkedIn</span>
+                        </a>
+                      )}
+                      <ChevronRight className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#DC2626] group-hover:translate-x-0.5 transition-all" />
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           )}
 
@@ -492,15 +627,15 @@ export const DelegateSchedule: React.FC = () => {
 
   // SCHEDULE LIST VIEW
   return (
-    <div ref={scrollRef} className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto pb-24">
+    <div ref={scrollRef} className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto px-3 pt-2 pb-24">
       {/* Header section matching reference mockup */}
-      <div className="px-3 pt-3 pb-2">
+      <div className="pt-2 pb-1">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold tracking-[0.16em] uppercase text-[#6B7280]">
-              MP SEMICONDUCTOR SUMMIT 2026
+            <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+              MPSS26 · PROGRAMME
             </p>
-            <h1 className="text-[28px] sm:text-[32px] font-serif font-bold text-[#111827] tracking-tight leading-none mt-0.5">
+            <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
               Schedule
             </h1>
           </div>
@@ -545,25 +680,25 @@ export const DelegateSchedule: React.FC = () => {
         )}
       </div>
 
-      {/* Segmented Top Toggle: All Sessions (10) | My Schedule (0) */}
-      <div className="px-3 pt-1 pb-2">
-        <div className="flex bg-[#EAE8E3] p-1 rounded-full border border-[#DEDCD7]">
+      {/* Segmented Top Toggle: All Sessions (X) | My Schedule (Y) */}
+      <div className="pt-2 pb-2">
+        <div className="flex bg-[#F1EFEA] p-1 rounded-xl border border-[#E2DFD8]">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-1.5 rounded-full text-[12px] font-semibold transition-all ${
+            className={`flex-1 py-2 rounded-lg text-[13px] font-semibold transition-all ${
               activeTab === 'all'
-                ? 'bg-white text-[#111827] shadow-xs'
-                : 'text-[#6B7280] hover:text-[#111827]'
+                ? 'bg-white text-[#111827] shadow-xs border border-black/5'
+                : 'text-[#64748B] hover:text-[#111827]'
             }`}
           >
             All Sessions ({daySessions.length})
           </button>
           <button
             onClick={() => setActiveTab('saved')}
-            className={`flex-1 py-1.5 rounded-full text-[12px] font-semibold transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 rounded-lg text-[13px] font-medium transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'saved'
-                ? 'bg-white text-[#111827] shadow-xs'
-                : 'text-[#6B7280] hover:text-[#111827]'
+                ? 'bg-white text-[#111827] font-semibold shadow-xs border border-black/5'
+                : 'text-[#64748B] hover:text-[#111827]'
             }`}
           >
             <Bookmark className="w-3.5 h-3.5" />
@@ -573,7 +708,7 @@ export const DelegateSchedule: React.FC = () => {
       </div>
 
       {/* Day Selector Tabs: Day 1: Oct 23, 2026 | Day 2: Oct 24, 2026 */}
-      <div className="border-b border-[#E5E7EB] bg-[#F8F7F4] sticky top-0 z-10 px-3">
+      <div className="border-b border-[#E5E7EB] bg-[#F8F7F4] sticky top-0 z-10 -mx-3 px-3">
         <div className="flex -mb-[1px]">
           {[
             { day: 1, label: 'Day 1: Oct 23, 2026' },
@@ -595,7 +730,7 @@ export const DelegateSchedule: React.FC = () => {
       </div>
 
       {/* Timeline Section */}
-      <div className="px-2.5 sm:px-3 pt-3">
+      <div className="pt-3">
         {filteredSessions.length === 0 ? (
           <div className="p-8 text-center bg-white rounded-[16px] border border-[#E5E7EB] shadow-xs my-4">
             <Bookmark className="w-8 h-8 text-[#D1D5DB] mx-auto mb-2" />
@@ -707,17 +842,86 @@ export const DelegateSchedule: React.FC = () => {
                         </h3>
 
                         {/* Speaker info */}
-                        {session.speakerName && (
-                          <div className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-[11.5px] text-[#475569]">
-                            <User className="w-3 h-3 text-[#94A3B8] flex-shrink-0" />
-                            <span className="font-semibold text-[#1E293B] truncate">
-                              {session.speakerName}
-                            </span>
-                            {session.speakerCompany && (
-                              <span className="text-[#64748B] truncate">· {session.speakerCompany}</span>
-                            )}
-                          </div>
-                        )}
+                        {(() => {
+                          const spks = resolveSessionSpeakers(session);
+                          if (spks.length > 1) {
+                            return (
+                              <div className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-[11.5px] text-[#475569] flex-wrap">
+                                <Users className="w-3 h-3 text-[#94A3B8] flex-shrink-0" />
+                                {spks.map((s, sIdx) => (
+                                  <span
+                                    key={s.id || sIdx}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (s.id) {
+                                        if (!attendees.some((a) => a.id === s.id)) {
+                                          setAttendees((prev) => [...prev, s]);
+                                        }
+                                        setSelectedPersonId(s.id);
+                                      } else if (s.name) {
+                                        setSelectedPersonId(s.name);
+                                      }
+                                    }}
+                                    className="font-semibold text-[#1E293B] hover:text-[#DC2626] hover:underline cursor-pointer"
+                                  >
+                                    {s.name}{sIdx < spks.length - 1 ? ',' : ''}
+                                  </span>
+                                ))}
+                              </div>
+                            );
+                          }
+                          if (spks.length === 1) {
+                            const spk = spks[0];
+                            return (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (spk.id) {
+                                    if (!attendees.some((a) => a.id === spk.id)) {
+                                      setAttendees((prev) => [...prev, spk]);
+                                    }
+                                    setSelectedPersonId(spk.id);
+                                  } else if (spk.name) {
+                                    setSelectedPersonId(spk.name);
+                                  }
+                                }}
+                                className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-[11.5px] text-[#475569] cursor-pointer group/spk"
+                              >
+                                <User className="w-3 h-3 text-[#94A3B8] flex-shrink-0 group-hover/spk:text-[#DC2626]" />
+                                <span className="font-semibold text-[#1E293B] group-hover/spk:text-[#DC2626] group-hover/spk:underline truncate">
+                                  {spk.name}
+                                </span>
+                                {spk.company && (
+                                  <span className="text-[#64748B] truncate">· {spk.company}</span>
+                                )}
+                              </div>
+                            );
+                          }
+                          if (session.speakerName) {
+                            return (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (session.speakerId) {
+                                    setSelectedPersonId(session.speakerId);
+                                  } else {
+                                    setSelectedPersonId(session.speakerName);
+                                  }
+                                }}
+                                className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-[11.5px] text-[#475569] cursor-pointer group/spk"
+                              >
+                                <User className="w-3 h-3 text-[#94A3B8] flex-shrink-0 group-hover/spk:text-[#DC2626]" />
+                                <span className="font-semibold text-[#1E293B] group-hover/spk:text-[#DC2626] group-hover/spk:underline truncate">
+                                  {session.speakerName}
+                                </span>
+                                {session.speakerCompany && (
+                                  <span className="text-[#64748B] truncate">· {session.speakerCompany}</span>
+                                )}
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
 
                         {/* Location / Room */}
                         {session.room && (

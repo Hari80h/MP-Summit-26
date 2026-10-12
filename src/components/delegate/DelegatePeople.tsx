@@ -86,10 +86,10 @@ export const DelegatePeople: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] px-2 pt-2 pb-16 space-y-2">
+    <div className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto px-3 pt-2 pb-24 space-y-2">
       {/* Header */}
       {viewSavedPeopleOnly ? (
-        <div className="pt-2 pb-2 px-2 mb-2 flex items-center gap-3">
+        <div className="pt-2 pb-1 mb-2 flex items-center gap-3">
           <button 
             onClick={() => {
               setViewSavedPeopleOnly(false);
@@ -102,8 +102,8 @@ export const DelegatePeople: React.FC = () => {
           <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Saved People</h1>
         </div>
       ) : (
-        <div className="pt-2 pb-1 px-1">
-          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · NETWORKING</p>
+        <div className="pt-2 pb-1">
+          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · NETWORKING</p>
           <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">People</h1>
         </div>
       )}

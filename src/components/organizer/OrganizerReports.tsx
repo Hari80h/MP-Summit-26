@@ -59,7 +59,7 @@ export const OrganizerReports: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `eventsphere-its26-executive-report.csv`);
+    link.setAttribute('download', `eventsphere-mpss26-executive-report.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -263,7 +263,7 @@ export const OrganizerReports: React.FC = () => {
             <span className="w-2.5 h-2.5 rounded-full bg-[#2F7D58]" />
             <span>Generated dynamically by EventSphere Digital Experience Engine</span>
           </div>
-          <span className="font-mono">Document ID: ES-ITS26-AUDIT-{Date.now().toString().slice(-6)}</span>
+          <span className="font-mono">Document ID: ES-MPSS26-AUDIT-{Date.now().toString().slice(-6)}</span>
         </div>
       </div>
     </div>

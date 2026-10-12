@@ -90,6 +90,7 @@ interface StoreContextType {
   updateCurrentUser: (data: Partial<Person>) => void;
   updateCurrentUserPrivacy: (newPrivacy: Partial<PrivacyConsent>) => void;
   attendees: Person[];
+  setAttendees: React.Dispatch<React.SetStateAction<Person[]>>;
   connections: Connection[];
   leads: Lead[];
   products: Product[];
@@ -130,7 +131,7 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'eventsphere_mpss26_store_v4';
+const STORAGE_KEY = 'eventsphere_mpss26_store_v9';
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation & Role
@@ -222,7 +223,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setCurrentUser(u);
         }
         if (parsed.attendees) {
-          const sanitized = parsed.attendees.map((a: Person) => {
+          const existingIds = new Set(parsed.attendees.map((a: Person) => a.id));
+          const missingSpeakers = INITIAL_ATTENDEES.filter((a) => !existingIds.has(a.id));
+          const allAttendees = [...parsed.attendees, ...missingSpeakers];
+          const sanitized = allAttendees.map((a: Person) => {
             if (!a.registrationId || a.registrationId.toLowerCase().includes('not public') || a.registrationId.toLowerCase().includes('unlisted')) {
               const num = String(Math.abs(a.id.split('').reduce((acc: number, c: string) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 9000 + 1000).padStart(4, '0');
               return { ...a, registrationId: `#${num}` };
@@ -230,12 +234,23 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             return a;
           });
           setAttendees(sanitized);
+        } else {
+          setAttendees(INITIAL_ATTENDEES);
         }
         if (parsed.connections) setConnections(parsed.connections);
         if (parsed.leads && parsed.leads.length > 0) setLeads(parsed.leads);
         else setLeads(INITIAL_LEADS);
         if (parsed.products) setProducts(parsed.products);
-        if (parsed.sessions) setSessions(parsed.sessions);
+        if (parsed.sessions) {
+          const userBookmarks = new Map(parsed.sessions.map((s: Session) => [s.id, s.isBookmarked]));
+          const freshSessions = INITIAL_SESSIONS.map((s) => ({
+            ...s,
+            isBookmarked: userBookmarks.get(s.id) ?? s.isBookmarked ?? false,
+          }));
+          setSessions(freshSessions);
+        } else {
+          setSessions(INITIAL_SESSIONS);
+        }
         if (parsed.questions) setQuestions(parsed.questions);
         if (parsed.poll) setPoll(parsed.poll);
         if (parsed.exhibitors) setExhibitors(parsed.exhibitors);
@@ -717,9 +732,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       interests: ['General Tech', 'Networking'],
       skills: [],
       linkedin: '',
-      registrationId: `REG-ITS26-${Math.floor(1000 + Math.random() * 9000)}`,
+      registrationId: `REG-MPSS26-${Math.floor(1000 + Math.random() * 9000)}`,
       checkedIn: true,
-      checkInTime: '12 Feb 2026, Just now',
+      checkInTime: '23 Oct 2026, Just now',
       privacy: {
         preset: 'Connections Only',
         shareEmail: true,
@@ -825,6 +840,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateCurrentUser,
         updateCurrentUserPrivacy,
         attendees,
+        setAttendees,
         connections,
         leads,
         products,

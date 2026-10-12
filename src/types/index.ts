@@ -3,11 +3,11 @@ export type RoleType = 'delegate' | 'speaker' | 'vip' | 'guest' | 'exhibitor_sta
 export type DemoRole = 'delegate' | 'exhibitor' | 'organizer';
 
 export interface EventMetadata {
-  id: string; // 'ITS26'
-  name: string; // 'India Tech Summit 2026'
-  dates: string; // '12–14 Feb 2026'
-  city: string; // 'Bengaluru'
-  venue: string; // 'Bengaluru International Centre'
+  id: string; // 'MPSS26'
+  name: string; // 'MP Semiconductor Summit 2026'
+  dates: string; // '23–24 Oct 2026'
+  city: string; // 'Indore / Bhopal'
+  venue: string; // 'Brilliant Convention Centre'
   status: 'LIVE' | 'UPCOMING' | 'COMPLETED';
   totalRegistered: number; // 2438
   totalCheckedIn: number; // 1120
@@ -156,6 +156,7 @@ export interface Session {
   speakerDesignation: string;
   speakerCompany: string;
   speakerId: string;
+  speakerIds?: string[];
   description: string;
   takeaways: string[];
   status: 'live' | 'upcoming' | 'completed';

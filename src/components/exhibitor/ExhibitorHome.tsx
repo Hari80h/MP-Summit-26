@@ -71,7 +71,7 @@ export const ExhibitorHome: React.FC = () => {
         {/* Title */}
         <div className="mb-6 relative z-10">
           <h1 className="text-3xl font-serif mb-1 tracking-tight text-white">Microsoft</h1>
-          <p className="text-[11px] text-gray-400">ITS26 · Hall B · {msft.teamSize} team members on floor</p>
+          <p className="text-[11px] text-gray-400">MPSS26 · Hall B · {msft.teamSize} team members on floor</p>
         </div>
 
         {/* 4 Core Metrics Grid */}

@@ -137,7 +137,7 @@ export const OrganizerAttendees: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `eventsphere-its26-attendees.csv`);
+    link.setAttribute('download', `eventsphere-mpss26-attendees.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -514,7 +514,7 @@ export const OrganizerAttendees: React.FC = () => {
                   <FileSpreadsheet className="w-8 h-8 text-[#B51F32] mx-auto mb-2" />
                   <p className="text-xs font-bold text-[#181818]">Click to select CSV File</p>
                   <p className="text-[11px] text-[#6B6B6B] mt-1">
-                    Simulating: <strong className="text-[#181818]">its26_external_registrations_batch2.csv</strong> (120 rows)
+                    Simulating: <strong className="text-[#181818]">mpss26_external_registrations_batch2.csv</strong> (120 rows)
                   </p>
                 </div>
                 <button

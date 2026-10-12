@@ -59,7 +59,7 @@ export const ExhibitorMore: React.FC = () => {
           </div>
         </div>
         <span className="text-[10px] font-mono font-bold bg-[#EFEEEA] px-2.5 py-1 rounded-md text-[#181818]">
-          ITS26
+          MPSS26
         </span>
       </div>
 
@@ -193,17 +193,17 @@ export const ExhibitorMore: React.FC = () => {
                   <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold uppercase tracking-wider text-[#B51F32] bg-red-50 border border-red-200 px-2 py-0.5 rounded">
-                        ITS26 Official
+                        MPSS26 Official
                       </span>
                       <span className="text-[11.5px] font-semibold text-[#2F7D58] bg-[#EBF5F0] px-2 py-0.5 rounded">
                         Live Event
                       </span>
                     </div>
                     <h4 className="text-[18px] font-serif font-bold text-[#181818]">
-                      India Tech Summit 2026
+                      MP Semiconductor Summit 2026
                     </h4>
                     <p className="text-[12.5px] text-[#555555] leading-relaxed">
-                      South Asia&apos;s premier innovation and technology expo, convening 2,400+ enterprises, founders, and delegates across cloud, AI, and digital ecosystems.
+                      Madhya Pradesh&apos;s premier semiconductor and chip manufacturing summit, convening global chipmakers, fab leaders, founders, and policy makers.
                     </p>
                   </div>
 
@@ -218,10 +218,10 @@ export const ExhibitorMore: React.FC = () => {
                           Venue Location
                         </span>
                         <p className="text-[13.5px] font-bold text-[#181818] mt-0.5">
-                          Bangalore International Exhibition Centre (BIEC)
+                          Brilliant Convention Centre, Indore / RCVP Noronha Academy, Bhopal
                         </p>
                         <p className="text-[12px] text-[#6B6B6B] mt-0.5 leading-relaxed">
-                          10th Mile, Tumkur Road, Madavara Post, Bengaluru, Karnataka 562123
+                          Indore / Bhopal, Madhya Pradesh, India
                         </p>
                       </div>
                     </div>
@@ -235,7 +235,7 @@ export const ExhibitorMore: React.FC = () => {
                           Event Dates & Hours
                         </span>
                         <p className="text-[13.5px] font-bold text-[#181818] mt-0.5">
-                          12–14 February 2026
+                          23–24 October 2026
                         </p>
                         <p className="text-[12px] text-[#6B6B6B] mt-0.5">
                           09:00 AM – 06:00 PM IST (Exhibitor hall access from 08:00 AM)
@@ -252,7 +252,7 @@ export const ExhibitorMore: React.FC = () => {
                           Exhibitor Hall & Zone
                         </span>
                         <p className="text-[13.5px] font-bold text-[#181818] mt-0.5">
-                          Hall B · Cloud, AI & DeepTech Pavilion
+                          Hall B · Semiconductor Ecosystem Pavilion
                         </p>
                         <p className="text-[12px] text-[#6B6B6B] mt-0.5">
                           Booth B-14 (Prominent center-row aisle position)
@@ -272,7 +272,7 @@ export const ExhibitorMore: React.FC = () => {
                           Exhibitor High-Speed Wi-Fi
                         </span>
                         <p className="text-[13px] font-semibold text-[#181818] mt-0.5">
-                          Network: <span className="font-mono text-[#B51F32]">ITS26_Exhibitor_5G</span>
+                          Network: <span className="font-mono text-[#B51F32]">MPSS26_Exhibitor_5G</span>
                         </p>
                         <p className="text-[12px] text-[#6B6B6B]">
                           Passkey: <span className="font-mono font-medium">EventSphere2026</span>

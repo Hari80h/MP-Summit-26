@@ -5,7 +5,7 @@ import { useStore } from '../../lib/store';
 import { Home, Users, QrCode, Calendar, User } from 'lucide-react';
 
 export const DelegateBottomNav: React.FC = () => {
-  const { activeDelegateTab, setActiveDelegateTab, connections } = useStore();
+  const { activeDelegateTab, setActiveDelegateTab, setSelectedSessionId, connections } = useStore();
 
   const navItems = [
     { id: 'home' as const, label: 'Home', icon: Home },
@@ -56,7 +56,12 @@ export const DelegateBottomNav: React.FC = () => {
           return (
             <button
               key={item.id}
-              onClick={() => setActiveDelegateTab(item.id)}
+              onClick={() => {
+                if (item.id === 'schedule') {
+                  setSelectedSessionId(null);
+                }
+                setActiveDelegateTab(item.id);
+              }}
               className={`flex-1 flex flex-col items-center justify-center min-h-[36px] py-1 transition-colors relative ${
                 isActive ? 'text-[#D11E39]' : 'text-[#6B6B6B] hover:text-[#181818]'
               }`}

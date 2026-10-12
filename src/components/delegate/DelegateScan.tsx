@@ -40,10 +40,10 @@ export const DelegateScan: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none h-full overflow-hidden flex flex-col px-2 pt-1.5 pb-2 gap-2">
+    <div className="flex-1 bg-[#F8F7F4] select-none h-full overflow-hidden flex flex-col px-3 pt-2 pb-2 gap-2">
       {/* Header exactly matching Schedule & People natural style */}
-      <div className="pt-1 pb-0.5 px-1 shrink-0">
-        <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · SCANNER</p>
+      <div className="pt-2 pb-1 shrink-0">
+        <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · SCANNER</p>
         <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">My Badge</h1>
       </div>
 

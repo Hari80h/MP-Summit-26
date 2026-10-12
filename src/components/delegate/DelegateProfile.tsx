@@ -20,6 +20,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
     sessions,
     showToast,
     setActiveDelegateTab,
+    setSelectedSessionId,
     updateCurrentUserPrivacy,
     updateCurrentUser,
     setViewSavedPeopleOnly,
@@ -48,7 +49,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `eventsphere-connections-its26.csv`);
+    link.setAttribute('download', `eventsphere-connections-mpss26.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -60,13 +61,13 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
     // Generate vCard format
     let vCardContent = '';
     connections.forEach((c) => {
-      vCardContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${c.personName}\nORG:${c.company}\nTITLE:${c.designation}\nNOTE:Connected at India Tech Summit 2026 via EventSphere\nEND:VCARD\n`;
+      vCardContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${c.personName}\nORG:${c.company}\nTITLE:${c.designation}\nNOTE:Connected at MP Semiconductor Summit 2026 via EventSphere\nEND:VCARD\n`;
     });
     const blob = new Blob([vCardContent], { type: 'text/vcard' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `its26-contacts.vcf`;
+    link.download = `mpss26-contacts.vcf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -97,10 +98,10 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
   };
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] select-none overflow-y-auto px-4 pt-1 pb-24 space-y-2">
-      <div className="pt-1 pb-0.5 flex items-center justify-between">
+    <div className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto px-3 pt-2 pb-24 space-y-2">
+      <div className="pt-2 pb-1 flex items-center justify-between">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0">ITS26 · DELEGATE</p>
+          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · DELEGATE</p>
           <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">Profile</h1>
         </div>
         <button
@@ -202,7 +203,10 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
         </button>
 
         <button
-          onClick={() => setActiveDelegateTab('schedule')}
+          onClick={() => {
+            setSelectedSessionId(null);
+            setActiveDelegateTab('schedule');
+          }}
           className="w-full py-2.5 px-3.5 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
         >
           <div className="flex items-center gap-3">

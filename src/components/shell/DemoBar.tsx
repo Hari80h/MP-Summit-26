@@ -29,9 +29,9 @@ export const DemoBar: React.FC = () => {
           </div>
           <span className="text-[#888888] hidden sm:inline">|</span>
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#CCCCCC] bg-[#282828] px-2 py-0.5 rounded border border-[#3A3A3A]">
-            <span className="font-semibold text-white">ITS26</span>
+            <span className="font-semibold text-white">MPSS26</span>
             <span>·</span>
-            <span>Bengaluru</span>
+            <span>Indore/Bhopal</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#2F7D58]" />
             <span className="text-[10px] text-[#2F7D58] font-bold uppercase">Live</span>
           </div>

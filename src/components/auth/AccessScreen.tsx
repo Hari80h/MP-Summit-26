@@ -11,7 +11,7 @@ interface AccessScreenProps {
 export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
   const { setRole, setHasAccessConfirmed } = useStore();
   
-  const [eventId, setEventId] = useState('ITS26');
+  const [eventId, setEventId] = useState('MPSS26');
   const [mobile, setMobile] = useState('');
   const [status, setStatus] = useState<'idle' | 'verifying' | 'confirmed' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -104,7 +104,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             <span className="font-bold text-[12px] tracking-[0.15em] text-white">EVENTSPHERE</span>
           </div>
           <span className="text-[11px] font-medium tracking-widest text-white border border-white/40 px-2 py-0.5 rounded backdrop-blur-sm bg-black/20">
-            ITS26
+            MPSS26
           </span>
         </div>
 
@@ -112,10 +112,10 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
         <div className="absolute bottom-10 left-6 z-10 text-white">
           <p className="text-[12px] font-medium text-white/90 mb-0.5">Welcome to</p>
           <h1 className="text-[26px] font-serif font-medium leading-tight tracking-tight mb-1">
-            India Tech Summit 2026
+            MP Semiconductor Summit 2026
           </h1>
           <p className="text-[12px] font-medium text-white/80">
-            12–14 Feb · Bengaluru · 2,438 attending
+            23–24 Oct 2026 · Bhopal / Indore · 2,400 attending
           </p>
         </div>
       </div>
@@ -144,7 +144,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                   type="text"
                   value={eventId}
                   onChange={(e) => setEventId(e.target.value)}
-                  placeholder="ITS26"
+                  placeholder="MPSS26"
                   disabled={status === 'verifying' || status === 'confirmed'}
                   className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[13px] font-bold tracking-wider text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
                 />

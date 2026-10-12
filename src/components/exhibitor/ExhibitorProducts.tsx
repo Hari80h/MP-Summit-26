@@ -219,7 +219,7 @@ export const ExhibitorProducts: React.FC = () => {
               <ul>${prod.useCases.map((u: string) => `<li>${u}</li>`).join('')}</ul>
             </div>
             <div class="footer">
-              <div>EventSphere Digital Experience Layer · India Tech Summit 2026</div>
+              <div>EventSphere Digital Experience Layer · MP Semiconductor Summit 2026 (MPSS26)</div>
               <div>Microsoft Corporation · Booth ${prod.booth}</div>
             </div>
           </body>
@@ -551,7 +551,7 @@ export const ExhibitorProducts: React.FC = () => {
                     <FileText className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-[#181818]">Attach Official ITS26 PDF</p>
+                    <p className="text-xs font-bold text-[#181818]">Attach Official MPSS26 PDF</p>
                     <p className="text-[10px] text-[#6B6B6B]">Auto-formatted executive one-pager</p>
                   </div>
                 </div>

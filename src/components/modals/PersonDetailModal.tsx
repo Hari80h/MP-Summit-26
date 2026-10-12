@@ -1,7 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useStore } from '../../lib/store';
+import { INITIAL_ATTENDEES } from '../../lib/mockData';
+import { Person } from '../../types';
 import { X, Check, UserPlus, Mail, Phone, Linkedin, Twitter, ShieldCheck, Tag, Clock, Lock, Star } from 'lucide-react';
 
 export const PersonDetailModal: React.FC = () => {
@@ -9,6 +11,7 @@ export const PersonDetailModal: React.FC = () => {
     selectedPersonId,
     setSelectedPersonId,
     attendees,
+    sessions,
     connections,
     connectWith,
     disconnectFrom,
@@ -16,9 +19,65 @@ export const PersonDetailModal: React.FC = () => {
     toggleSavePerson
   } = useStore();
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedPersonId(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setSelectedPersonId]);
+
   if (!selectedPersonId) return null;
 
-  const person = attendees.find((a) => a.id === selectedPersonId);
+  const normalizedSearch = (selectedPersonId || '').toLowerCase().trim();
+
+  // Multi-tier robust resolution:
+  const person: Person | null =
+    attendees.find((a) => a.id === selectedPersonId) ||
+    INITIAL_ATTENDEES.find((a) => a.id === selectedPersonId) ||
+    attendees.find((a) => a.name.toLowerCase() === normalizedSearch) ||
+    INITIAL_ATTENDEES.find((a) => a.name.toLowerCase() === normalizedSearch) ||
+    attendees.find((a) => a.id.toLowerCase().includes(normalizedSearch)) ||
+    INITIAL_ATTENDEES.find((a) => a.id.toLowerCase().includes(normalizedSearch)) ||
+    (() => {
+      // Find matching session
+      for (const s of (sessions || [])) {
+        const matches =
+          s.speakerId === selectedPersonId ||
+          `spk-${s.id}` === selectedPersonId ||
+          (s.speakerIds && s.speakerIds.includes(selectedPersonId)) ||
+          s.speakerName?.toLowerCase() === normalizedSearch ||
+          (s.speakerName && normalizedSearch.includes(s.speakerName.toLowerCase()));
+
+        if (matches) {
+          return {
+            id: selectedPersonId,
+            name: s.speakerName,
+            designation: s.speakerDesignation || 'Keynote Speaker',
+            company: s.speakerCompany || 'MP Semiconductor Summit',
+            role: 'speaker' as const,
+            bio: `${s.speakerName} is a distinguished keynote speaker at the Madhya Pradesh Semiconductor Summit 2026, presenting "${s.title}". Leading national semiconductor ecosystem, fab enablement, and industry initiatives.`,
+            interests: ['Semiconductors', 'Wafer Fabs', 'ATMP / OSAT', 'Chip Design', 'Ecosystem Strategy'],
+            skills: ['Semiconductor Engineering', 'Executive Leadership', 'Strategic Roadmap'],
+            email: 'speaker@mpss2026.org',
+            mobile: 'Not publicly listed',
+            linkedin: 'https://linkedin.com',
+            privacy: {
+              preset: 'Open' as const,
+              shareEmail: false,
+              sharePhone: false,
+              shareLinkedIn: true,
+              shareTwitter: false,
+            },
+            checkedIn: true,
+            ticketType: 'Speaker',
+            relevanceScore: 98,
+          } as Person;
+        }
+      }
+      return null;
+    })();
+
   if (!person) return null;
 
   const isConnected = connections.some((c) => c.personId === person.id && c.status === 'connected');
@@ -34,12 +93,18 @@ export const PersonDetailModal: React.FC = () => {
   };
 
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-in fade-in select-none">
-      <div className="bg-white rounded-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto p-3 space-y-2 shadow-2xl border border-[#DEDCD7]">
+    <div
+      onClick={() => setSelectedPersonId(null)}
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 animate-in fade-in select-none"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto p-4 space-y-3 shadow-2xl border border-[#DEDCD7]"
+      >
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
-            Attendee Profile
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#DC2626]">
+            {person.role === 'speaker' || person.ticketType === 'Speaker' ? 'Featured Speaker Profile' : 'Attendee Profile'}
           </span>
           <button
             onClick={() => setSelectedPersonId(null)}
@@ -94,7 +159,7 @@ export const PersonDetailModal: React.FC = () => {
             Focus Areas & Skills
           </h3>
           <div className="flex flex-wrap gap-1.5">
-            {person.interests.map((interest, idx) => (
+            {(person.interests || []).map((interest, idx) => (
               <span key={idx} className="text-[11px] bg-[#F3F4F6] text-[#4B5563] px-2.5 py-1 rounded-md font-medium">
                 {interest}
               </span>
@@ -112,7 +177,7 @@ export const PersonDetailModal: React.FC = () => {
             <span className="text-[#181818] font-medium">
               {!isConnected ? (
                 <span className="text-[#9CA3AF] italic font-normal flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Hidden until connected</span>
-              ) : person.privacy.shareEmail ? (
+              ) : person.privacy?.shareEmail ? (
                 person.email
               ) : (
                 <span className="text-[#9CA3AF] italic font-normal">Not shared</span>
@@ -128,7 +193,7 @@ export const PersonDetailModal: React.FC = () => {
             <span className="text-[#181818] font-medium">
               {!isConnected ? (
                 <span className="text-[#9CA3AF] italic font-normal flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Hidden until connected</span>
-              ) : person.privacy.sharePhone ? (
+              ) : person.privacy?.sharePhone ? (
                 person.mobile
               ) : (
                 <span className="text-[#9CA3AF] italic font-normal">Not shared</span>
@@ -163,7 +228,7 @@ export const PersonDetailModal: React.FC = () => {
               Twitter / X
             </span>
             <span>
-              {person.privacy.shareTwitter && person.twitter ? (
+              {person.privacy?.shareTwitter && person.twitter ? (
                 <a href={`https://twitter.com/${person.twitter}`} target="_blank" rel="noreferrer" className="text-[#1DA1F2] font-medium hover:underline">
                   @{person.twitter}
                 </a>

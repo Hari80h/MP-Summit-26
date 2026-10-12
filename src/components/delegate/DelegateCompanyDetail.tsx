@@ -28,15 +28,15 @@ export const DelegateCompanyDetail: React.FC = () => {
   const handleDownloadBrochure = () => {
     const content = `================================================
 ${company.company.toUpperCase()} - OFFICIAL EXHIBITOR BROCHURE
-India Tech Summit 2026 (ITS26)
+MP Semiconductor Summit 2026 (MPSS26)
 ================================================
 
 Booth: ${company.booth || 'TBA'}
-Location: Bengaluru International Exhibition Centre, Bengaluru
+Location: Brilliant Convention Centre, Indore / Bhopal, Madhya Pradesh
 Category: ${company.category || 'Technology'}
 
 ABOUT ${company.company.toUpperCase()}:
-${company.company} is showcasing cutting-edge innovations and solutions at ITS26.
+${company.company} is showcasing cutting-edge semiconductor innovations and solutions at MPSS26.
 Visit Booth ${company.booth || 'TBA'} to explore live demonstrations and speak with company representatives.
 
 FEATURED PRODUCTS & SOLUTIONS:
@@ -45,14 +45,14 @@ ${companyProducts.length > 0
   : 'Detailed catalog available at the booth.'}
 
 ------------------------------------------------
-Generated via EventSphere Official App (ITS26)
+Generated via EventSphere Official App (MPSS26)
 `;
 
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${company.company.replace(/[^a-zA-Z0-9]/g, '_')}_Brochure_ITS26.txt`;
+    link.download = `${company.company.replace(/[^a-zA-Z0-9]/g, '_')}_Brochure_MPSS26.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -112,11 +112,11 @@ Generated via EventSphere Official App (ITS26)
           <h2 className="text-[12px] font-bold text-[#181818] mb-1.5">{company.company}</h2>
           <div className="flex items-start gap-1 text-[#6B6B6B] mb-2">
             <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-            <p className="text-[12px]">Bengaluru International Exhibition Centre, Bengaluru</p>
+            <p className="text-[12px]">Brilliant Convention Centre, Indore / Bhopal, MP</p>
           </div>
 
           <p className="text-[12px] text-[#181818] leading-relaxed mb-2">
-            {company.company} is showcasing their latest innovations in the {company.category} space. Visit Booth {company.booth} at ITS26 to explore their products and engage with their experts.
+            {company.company} is showcasing their latest innovations in the {company.category} space. Visit Booth {company.booth} at MPSS26 to explore their products and engage with their experts.
           </p>
 
           <button 

@@ -14,7 +14,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDismiss }) => {
     >
       <div className="w-full flex justify-end">
         <span className="text-xs text-[#6B6B6B] border border-[#DEDCD7] px-2.5 py-1 rounded-full bg-white">
-          ITS26 · Official Digital Layer
+          MPSS26 · Official Digital Layer
         </span>
       </div>
 

@@ -77,7 +77,7 @@ export const OrganizerSettings: React.FC = () => {
         <div className="p-2.5 bg-[#F6F4F0] rounded-lg border border-[#DEDCD7] flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#2F7D58]" />
-            <span className="font-mono text-[#181818]">https://api.eventsphere.io/v2/webhook/ITS26</span>
+            <span className="font-mono text-[#181818]">https://api.eventsphere.io/v2/webhook/MPSS26</span>
           </div>
           <button
             onClick={handleTestWebhook}

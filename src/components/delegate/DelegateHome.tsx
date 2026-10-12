@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../../lib/store';
+import { INITIAL_ATTENDEES } from '../../lib/mockData';
 import {
   Calendar,
   CalendarPlus,
@@ -37,17 +38,49 @@ export const DelegateHome: React.FC = () => {
 
   const upcomingSessions = sessions.filter((s) => s.status === 'upcoming' || s.status === 'live');
 
-  // Featured "Up next" session matching the design
+  // Featured "Up next" session for MPSS 2026: Day 1 Opening Keynote at 10:00 AM – 10:30 AM
   const featuredSession =
-    sessions.find((s) => s.title.toLowerCase().includes('future of ai')) || {
-      id: 'bts26-future-ai',
-      title: 'The Future of AI & Cloud',
-      timeRange: '2:00 PM – 2:45 PM',
+    sessions.find((s) => s.id === 'mpss26-d1-02') ||
+    sessions.find((s) => s.title.toLowerCase().includes('global semiconductor industry')) ||
+    sessions[1] ||
+    sessions[0] || {
+      id: 'mpss26-d1-02',
+      title: 'Keynote on Global Semiconductor Industry & Technology Trends',
+      timeRange: '10:00 AM – 10:30 AM',
       room: 'Main Auditorium',
       day: 1,
-      speakerName: 'Harshil Mathur & Panel',
+      speakerName: 'Jaswinder Ahuja',
+      speakerDesignation: 'Advisor',
+      speakerCompany: 'India Semiconductor Mission',
+      speakerId: 'speaker-jaswinder-ahuja',
       isBookmarked: false,
     };
+
+  const featuredSpeakers = (() => {
+    const list: { id?: string; name: string; avatar?: string; designation?: string; company?: string }[] = [];
+    const pool = [...attendees, ...INITIAL_ATTENDEES];
+    if (featuredSession.speakerId) {
+      const match = pool.find((a) => a.id === featuredSession.speakerId);
+      if (match) list.push(match);
+    }
+    if (list.length === 0 && featuredSession.speakerName) {
+      const match = pool.find((a) =>
+        a.name.toLowerCase().includes(featuredSession.speakerName.toLowerCase()) ||
+        featuredSession.speakerName.toLowerCase().includes(a.name.toLowerCase())
+      );
+      if (match) list.push(match);
+      else {
+        list.push({
+          id: featuredSession.speakerId || 'speaker-jaswinder-ahuja',
+          name: featuredSession.speakerName,
+          avatar: '/images/speakers/jaswinder-ahuja.png',
+          designation: featuredSession.speakerDesignation,
+          company: featuredSession.speakerCompany,
+        });
+      }
+    }
+    return list;
+  })();
 
   const isFeaturedBookmarked = sessions.some(
     (s) => s.id === featuredSession.id && s.isBookmarked
@@ -122,45 +155,47 @@ export const DelegateHome: React.FC = () => {
 
   // Up next overlapping avatars
   const upNextAvatars = [
-    'https://www.bengalurutechsummit.com/img/speakers/Harshil_Mathur.jpg',
-    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80',
+    '/images/speakers/manish-hooda.png',
+    '/images/speakers/jaswinder-ahuja.png',
+    '/images/speakers/satya-gupta.png',
   ];
 
   return (
     <div className="flex-1 px-3 pt-2 pb-24 space-y-3 bg-[#F8F7F4] overflow-y-auto select-none">
       {/* Top Greeting & Attendee Identity Header */}
-      <div className="flex items-center justify-between pt-0.5 pb-0">
-        <div className="flex flex-col">
-          <span className="text-[10.5px] uppercase tracking-wider font-semibold text-[#6B7280]">
-            {getGreetingIST()}
-          </span>
-          <h1 className="text-[21px] font-bold text-[#111827] leading-tight mt-0.5">
-            {currentUser.name}
-          </h1>
-          <p className="text-[12.5px] text-[#4B5563] mt-0.5">
-            {currentUser.designation} <span className="opacity-60">·</span> {currentUser.company}
-          </p>
-        </div>
+      <div className="pt-2 pb-1">
+        <div className="flex items-center justify-between">
+          <div className="min-w-0 pr-2">
+            <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+              MPSS26 · DELEGATE
+            </p>
+            <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none truncate">
+              {currentUser.name}
+            </h1>
+            <p className="text-[12px] text-[#6B6B6B] font-medium mt-1 truncate">
+              {currentUser.designation} · {currentUser.company}
+            </p>
+          </div>
 
-        <button
-          onClick={() => setActiveDelegateTab('profile')}
-          className="relative group focus:outline-none flex-shrink-0 ml-3"
-          aria-label="View Profile"
-        >
-          {currentUser.avatar ? (
-            <img
-              src={currentUser.avatar}
-              alt={currentUser.name}
-              className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
-            />
-          ) : (
-            <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-base border-2 border-white shadow-sm">
-              {currentUser.name.split(' ').map((n) => n[0]).join('')}
-            </div>
-          )}
-          <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#22C55E] border-2 border-white rounded-full shadow-xs" />
-        </button>
+          <button
+            onClick={() => setActiveDelegateTab('profile')}
+            className="relative group focus:outline-none flex-shrink-0 ml-2"
+            aria-label="View Profile"
+          >
+            {currentUser.avatar ? (
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-base border-2 border-white shadow-sm">
+                {currentUser.name.split(' ').map((n) => n[0]).join('')}
+              </div>
+            )}
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#22C55E] border-2 border-white rounded-full shadow-xs" />
+          </button>
+        </div>
       </div>
 
       {/* Hero Carousel Banner Card */}
@@ -267,7 +302,7 @@ export const DelegateHome: React.FC = () => {
               </span>
               <span className="text-[9.5px] font-bold text-[#93C5FD] uppercase tracking-wider">REWARDS</span>
             </div>
-            <h2 className="text-[15px] font-bold text-white tracking-tight mt-0.5">Scan Booths & Win BTS26 Merch!</h2>
+            <h2 className="text-[15px] font-bold text-white tracking-tight mt-0.5">Scan Booths & Win MPSS26 Merch!</h2>
             <div className="mt-1.5 text-[11.5px] text-[#BFDBFE] flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5" />
               Visit 10 Exhibitors & Scan Booth Badges
@@ -298,7 +333,10 @@ export const DelegateHome: React.FC = () => {
         <div className="flex items-center justify-between px-0.5">
           <h3 className="text-[16px] font-bold text-[#111827] tracking-tight">Up next</h3>
           <button
-            onClick={() => setActiveDelegateTab('schedule')}
+            onClick={() => {
+              setSelectedSessionId(null);
+              setActiveDelegateTab('schedule');
+            }}
             className="text-[12px] font-semibold text-[#DC2626] flex items-center gap-0.5 hover:underline"
           >
             <span>View full agenda</span>
@@ -316,7 +354,11 @@ export const DelegateHome: React.FC = () => {
         >
           <div className="flex items-center justify-between">
             <span className="text-[12.5px] font-bold text-[#111827]">
-              {featuredSession.timeRange || '2:00 PM – 2:45 PM'}
+              {featuredSession.timeRange
+                ? (featuredSession.timeRange.includes('AM') || featuredSession.timeRange.includes('PM')
+                    ? featuredSession.timeRange
+                    : `${featuredSession.timeRange.replace('–', ' AM – ')} AM`)
+                : '10:00 AM – 10:30 AM'}
             </span>
             <button
               onClick={(e) => {
@@ -336,26 +378,62 @@ export const DelegateHome: React.FC = () => {
 
           <div className="flex items-center justify-between mt-1 gap-2.5">
             <div className="min-w-0 flex-1">
-              <h4 className="text-[15px] font-bold text-[#111827] tracking-tight leading-snug truncate">
-                {featuredSession.title || 'The Future of AI & Cloud'}
+              <h4 className="text-[14.5px] font-bold text-[#111827] tracking-tight leading-snug truncate">
+                {featuredSession.title || 'Keynote on Global Semiconductor Industry & Technology Trends'}
               </h4>
-              <div className="flex items-center gap-1 text-[11.5px] text-[#6B7280] mt-0.5">
-                <MapPin className="w-3.5 h-3.5 text-[#9CA3AF] flex-shrink-0" />
-                <span className="truncate">{featuredSession.room || 'Main Auditorium'}</span>
+              <div className="flex items-center gap-1.5 text-[11.5px] text-[#6B7280] mt-0.5 truncate">
+                <span className="flex items-center gap-1 flex-shrink-0">
+                  <MapPin className="w-3.5 h-3.5 text-[#9CA3AF]" />
+                  <span>{featuredSession.room || 'Main Auditorium'}</span>
+                </span>
+                {featuredSession.speakerName && (
+                  <span className="truncate text-[#4B5563]">
+                    · <strong className="text-[#111827] font-medium">{featuredSession.speakerName}</strong>
+                  </span>
+                )}
               </div>
             </div>
 
             {/* Overlapping Speaker Avatars */}
             <div className="flex -space-x-2 overflow-hidden flex-shrink-0 items-center">
-              {upNextAvatars.map((src, idx) => (
+              {featuredSpeakers.length > 0 ? (
+                featuredSpeakers.map((spk, idx) => (
+                  spk.avatar ? (
+                    <img
+                      key={spk.id || idx}
+                      src={spk.avatar}
+                      alt={spk.name}
+                      onClick={(e) => {
+                        if (spk.id) {
+                          e.stopPropagation();
+                          setSelectedPersonId(spk.id);
+                        }
+                      }}
+                      title={`${spk.name} (View profile)`}
+                      className="w-8 h-8 rounded-full ring-2 ring-white object-cover shadow-xs flex-shrink-0 hover:scale-105 transition-transform cursor-pointer"
+                    />
+                  ) : (
+                    <div
+                      key={spk.id || idx}
+                      onClick={(e) => {
+                        if (spk.id) {
+                          e.stopPropagation();
+                          setSelectedPersonId(spk.id);
+                        }
+                      }}
+                      className="w-8 h-8 rounded-full ring-2 ring-white bg-[#FEE2E2] text-[#DC2626] font-bold text-xs flex items-center justify-center shadow-xs flex-shrink-0 cursor-pointer"
+                    >
+                      {spk.name.slice(0, 2)}
+                    </div>
+                  )
+                ))
+              ) : (
                 <img
-                  key={idx}
-                  src={src}
-                  alt="Speaker"
-                  className="w-7 h-7 min-w-[28px] min-h-[28px] max-w-[28px] max-h-[28px] rounded-full ring-2 ring-white object-cover shadow-xs flex-shrink-0"
-                  style={{ width: '28px', height: '28px', objectFit: 'cover' }}
+                  src="/images/speakers/jaswinder-ahuja.png"
+                  alt="Jaswinder Ahuja"
+                  className="w-8 h-8 rounded-full ring-2 ring-white object-cover shadow-xs flex-shrink-0"
                 />
-              ))}
+              )}
             </div>
           </div>
 
