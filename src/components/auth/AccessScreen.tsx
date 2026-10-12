@@ -11,7 +11,7 @@ interface AccessScreenProps {
 export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
   const { setRole, setHasAccessConfirmed } = useStore();
   
-  const [eventId, setEventId] = useState('ITS26');
+  const [eventId, setEventId] = useState('MPSS26');
   const [mobile, setMobile] = useState('');
   const [status, setStatus] = useState<'idle' | 'verifying' | 'confirmed' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -104,18 +104,18 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             <span className="font-bold text-[12px] tracking-[0.15em] text-white">EVENTSPHERE</span>
           </div>
           <span className="text-[11px] font-medium tracking-widest text-white border border-white/40 px-2 py-0.5 rounded backdrop-blur-sm bg-black/20">
-            ITS26
+            MPSS26
           </span>
         </div>
 
         {/* Bottom Text */}
         <div className="absolute bottom-10 left-6 z-10 text-white">
           <p className="text-[12px] font-medium text-white/90 mb-0.5">Welcome to</p>
-          <h1 className="text-[26px] font-serif font-medium leading-tight tracking-tight mb-1">
-            India Tech Summit 2026
+          <h1 className="text-[23px] font-serif font-medium leading-tight tracking-tight mb-1">
+            Madhya Pradesh Semiconductor Summit 2026
           </h1>
           <p className="text-[12px] font-medium text-white/80">
-            12–14 Feb · Bengaluru · 2,438 attending
+            23–24 Oct · Indore, MP · 2,850 attending
           </p>
         </div>
       </div>

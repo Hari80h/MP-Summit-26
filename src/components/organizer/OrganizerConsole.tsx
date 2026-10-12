@@ -44,30 +44,30 @@ export const OrganizerConsole: React.FC = () => {
   return (
     <div className="h-screen w-full bg-[#FAF7F2] flex flex-col md:flex-row overflow-hidden">
       {/* Sidebar Navigation */}
-      <aside className="no-print w-full md:w-64 h-full bg-[#101012] text-white flex flex-col justify-between p-4 flex-shrink-0 border-r border-[#B51F32]/30 shadow-[4px_0_25px_rgba(181,31,50,0.16)] z-20">
-        <div className="space-y-4">
+      <aside className="no-print w-full md:w-72 h-full bg-[#101012] text-white flex flex-col justify-between p-5 flex-shrink-0 border-r border-[#B51F32]/30 shadow-[4px_0_25px_rgba(181,31,50,0.16)] z-20">
+        <div className="space-y-5">
           {/* Console Header & Brand */}
-          <div className="space-y-3">
+          <div className="pt-1">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[#C87D55] text-white flex items-center justify-center font-serif text-xl font-bold shadow-xs">
+              <div className="w-11 h-11 rounded-xl bg-[#C87D55] text-white flex items-center justify-center font-serif text-2xl font-bold shadow-sm flex-shrink-0">
                 E
               </div>
-              <div>
-                <h2 className="text-xs font-black tracking-widest uppercase text-white leading-none">
+              <div className="min-w-0">
+                <h2 className="text-base sm:text-[17px] font-extrabold tracking-wider uppercase text-white leading-tight">
                   EventSphere
                 </h2>
-                <p className="text-[11px] text-white/50 mt-1 font-medium">
+                <p className="text-xs text-white/60 font-medium tracking-normal mt-0.5">
                   Organizer Console
                 </p>
               </div>
             </div>
 
             {/* Event pill badge / box */}
-            <div className="p-2.5 bg-[#17171A] rounded-xl border border-[#B51F32]/40 shadow-[0_2px_12px_rgba(181,31,50,0.18)]">
+            <div className="mt-4 p-3 bg-gradient-to-b from-[#0F1B35] to-[#0A1224] rounded-xl border border-[#1E3560]/70 shadow-[0_4px_16px_rgba(10,24,56,0.35)]">
               <p className="text-xs font-semibold text-white truncate">
                 {event.name}
               </p>
-              <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-white/60 font-mono">
+              <div className="flex items-center gap-1.5 mt-1 text-[10px] text-blue-200/70 font-mono">
                 <span>{event.id} · LIVE</span>
                 <span className="w-2 h-2 rounded-full bg-[#22C55E] inline-block animate-pulse" />
               </div>
@@ -75,7 +75,7 @@ export const OrganizerConsole: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1 pt-1">
+          <nav className="space-y-1.5 pt-1">
             {sidebarItems.map((item) => {
               const isActive = activeOrganizerTab === item.id;
               const Icon = item.icon;

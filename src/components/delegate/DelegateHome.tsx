@@ -38,6 +38,7 @@ export const DelegateHome: React.FC = () => {
   .slice(0, 15);
 
  const [activeSlide, setActiveSlide] = useState(0);
+ const [homeAgendaDay, setHomeAgendaDay] = useState<1 | 2>(1);
  const totalSlides = 4;
 
  useEffect(() => {
@@ -131,6 +132,127 @@ export const DelegateHome: React.FC = () => {
     </button>
    </div>
 
+   {/* Official MP Semiconductor Summit Poster Hero */}
+   <div className="relative rounded-[20px] shadow-sm overflow-hidden bg-[#070D1B] border border-[#1E3A68]/40">
+    <div className="relative w-full overflow-hidden bg-black">
+     <img 
+      src="/images/mp-semiconductor-summit-2026.png" 
+      alt="Madhya Pradesh Semiconductor Summit 2026" 
+      className="w-full h-auto object-cover block"
+     />
+    </div>
+
+    {/* Summit Meta Bar */}
+    <div className="p-3 bg-gradient-to-r from-[#0B152B] via-[#0E1A36] to-[#0A1224] flex flex-col gap-2 border-t border-[#1E3A68]/30">
+     <div className="flex items-center justify-between gap-2">
+      <span className="text-[10px] font-bold text-[#60A5FA] bg-[#1E3A8A]/40 border border-[#3B82F6]/30 px-2 py-0.5 rounded-md tracking-wider uppercase truncate">
+       Conference · Knowledge · Partnerships · Investment
+      </span>
+      <span className="text-[11px] font-mono text-emerald-400 font-bold flex items-center gap-1.5 shrink-0">
+       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+       23–24 OCT 2026
+      </span>
+     </div>
+
+     <div className="flex items-center justify-between text-xs text-slate-300">
+      <span className="flex items-center gap-1.5 text-[11px] text-slate-300 truncate">
+       <MapPin className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
+       Brilliant Convention Centre, Indore, MP
+      </span>
+      <button 
+       onClick={() => setActiveDelegateTab('schedule')}
+       className="text-[11px] font-bold text-[#38BDF8] hover:underline flex items-center gap-1 shrink-0 ml-2"
+      >
+       Full Agenda <ArrowRight className="w-3 h-3" />
+      </button>
+     </div>
+    </div>
+   </div>
+
+   {/* Two-Day Agenda Section */}
+   <div className="bg-white rounded-[20px] p-3.5 shadow-sm border border-[#E8E4DA] space-y-2.5">
+    <div className="flex items-center justify-between gap-2">
+     <div className="min-w-0">
+      <span className="text-[9.5px] uppercase tracking-widest font-extrabold text-[#8C8983] block truncate">
+       Conference · Knowledge · Partnerships · Investment
+      </span>
+      <h2 className="text-[16px] font-serif font-bold text-[#181818] tracking-tight">
+       Two-Day Agenda
+      </h2>
+     </div>
+
+     {/* Day 1 / Day 2 Selector */}
+     <div className="flex bg-[#F3F4F6] p-0.5 rounded-lg border border-[#E5E7EB] shrink-0">
+      <button
+       onClick={() => setHomeAgendaDay(1)}
+       className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all ${
+        homeAgendaDay === 1 ? 'bg-[#181818] text-white shadow-xs' : 'text-[#6B6B6B] hover:text-[#181818]'
+       }`}
+      >
+       Day 1 (23 Oct)
+      </button>
+      <button
+       onClick={() => setHomeAgendaDay(2)}
+       className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all ${
+        homeAgendaDay === 2 ? 'bg-[#181818] text-white shadow-xs' : 'text-[#6B6B6B] hover:text-[#181818]'
+       }`}
+      >
+       Day 2 (24 Oct)
+      </button>
+     </div>
+    </div>
+
+    {/* Agenda Sessions List */}
+    <div className="space-y-1.5 max-h-[350px] overflow-y-auto pr-0.5">
+     {sessions.filter(s => s.day === homeAgendaDay).map((item) => (
+      <div
+       key={item.id}
+       onClick={() => {
+        setSelectedSessionId(item.id);
+        setActiveDelegateTab('schedule');
+       }}
+       className="p-2.5 rounded-xl border border-[#F0ECE1] bg-[#FAF8F5] hover:bg-white hover:border-[#DEDCD7] transition-all cursor-pointer flex items-start gap-2.5"
+      >
+       <div className="shrink-0 w-24">
+        <span className="text-[11px] font-mono font-bold text-[#181818] block leading-tight">
+         {item.timeRange}
+        </span>
+        <span className="text-[9.5px] text-[#8C8983] truncate block mt-0.5">
+         {item.room || 'Main Hall'}
+        </span>
+       </div>
+
+       <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5">
+         {item.status === 'live' && (
+          <span className="px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-red-100 text-[#B51F32] flex items-center gap-1">
+           <span className="w-1 h-1 rounded-full bg-[#B51F32] animate-pulse" />
+           LIVE
+          </span>
+         )}
+         <span className="text-[9.5px] font-semibold uppercase tracking-wider text-[#C87D55]">
+          {item.track}
+         </span>
+        </div>
+        <p className="text-[12px] font-bold text-[#181818] leading-snug mt-0.5">
+         {item.title}
+        </p>
+       </div>
+
+       <ChevronRight className="w-3.5 h-3.5 text-[#8C8983] shrink-0 self-center" />
+      </div>
+     ))}
+    </div>
+
+    <button
+     onClick={() => setActiveDelegateTab('schedule')}
+     className="w-full py-2 bg-[#F6F4F0] hover:bg-[#EFEBE5] text-[#181818] text-xs font-bold rounded-xl border border-[#DEDCD7] transition-colors flex items-center justify-center gap-1.5"
+    >
+     <span>View Full Interactive Schedule ({sessions.length} Sessions)</span>
+     <ArrowRight className="w-3.5 h-3.5" />
+    </button>
+   </div>
+
    {/* Carousel Posters */}
    <div 
     className="relative rounded-[16px] shadow-sm overflow-hidden bg-[#18181B]"
@@ -142,25 +264,25 @@ export const DelegateHome: React.FC = () => {
      className="flex transition-transform duration-500 ease-in-out" 
      style={{ transform: `translateX(-${activeSlide * 100}%)` }}
     >
-     {/* Poster 1: ITS26 LIVE */}
-     <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#242427] to-[#3A3A3D]">
+     {/* Poster 1: MPSS26 LIVE */}
+     <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#0F1B35] via-[#16274E] to-[#0A1224]">
       <div className="flex items-center justify-between mb-1">
-       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#1E3A8A] px-1.5 py-0.5 rounded-md">
         {event.id}
        </span>
-       <div className="flex items-center gap-1.5 bg-[#B51F32] px-1.5 py-0.5 rounded-full">
+       <div className="flex items-center gap-1.5 bg-[#10B981] px-1.5 py-0.5 rounded-full">
         <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
         <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-         LIVE
+         SUMMIT LIVE
         </span>
        </div>
       </div>
       <h2 className="text-[13.5px] font-bold text-white tracking-tight">
        {event.name}
       </h2>
-      <div className="mt-1.5 text-[11px] text-[#A1A1AA] space-y-1">
+      <div className="mt-1.5 text-[11px] text-[#CBD5E1] space-y-1">
        <div className="flex items-center gap-1.5">
-        <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+        <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-[#38BDF8]" />
         <span className="truncate">{event.venue}, {event.city}</span>
        </div>
        <div className="pl-[20px]">
@@ -168,64 +290,66 @@ export const DelegateHome: React.FC = () => {
        </div>
       </div>
       <div className="mt-1.5 flex items-center gap-1.5 text-[11px] sm:text-[12px] whitespace-nowrap overflow-x-auto no-scrollbar pb-1 pr-14">
-       <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
-        <strong>{event.totalRegistered || attendees.length}</strong> attendees
+       <span className="bg-[#1E293B] text-[#E2E8F0] px-1.5 py-0.5 rounded-md shrink-0">
+        <strong>{event.totalRegistered || attendees.length}</strong> delegates
        </span>
-       <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
-        <strong>{event.totalSpeakers || attendees.filter(a => a.role === 'speaker').length}</strong> speakers
+       <span className="bg-[#1E293B] text-[#E2E8F0] px-1.5 py-0.5 rounded-md shrink-0">
+        <strong>{event.totalSpeakers || 48}</strong> speakers
        </span>
-       <span className="bg-[#27272A] text-[#E5E5E5] px-1.5 py-0.5 rounded-md shrink-0">
-        <strong>{event.totalExhibitors || exhibitors.length}</strong> exhibitors
+       <span className="bg-[#1E293B] text-[#E2E8F0] px-1.5 py-0.5 rounded-md shrink-0">
+        <strong>{event.totalExhibitors || 94}</strong> exhibitors
        </span>
       </div>
      </div>
 
-     {/* Poster 2: Keynote */}
+     {/* Poster 2: Keynote ISM 1.0 */}
      <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#2E1218] to-[#801422]">
       <div className="flex items-center justify-between mb-1">
-       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">FEATURED</span>
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">KEYNOTE</span>
        <div className="flex items-center gap-1 bg-[#B51F32] px-1.5 py-0.5 rounded-full">
-        <span className="text-[10px] font-bold text-white uppercase tracking-wider">UPCOMING</span>
+        <span className="text-[10px] font-bold text-white uppercase tracking-wider">FEATURED</span>
        </div>
       </div>
-      <h2 className="text-[13.5px] font-bold text-white tracking-tight">The Future of AI & Cloud</h2>
+      <h2 className="text-[13.5px] font-bold text-white tracking-tight">Journey of India Semiconductor Mission (ISM 1.0)</h2>
       <div className="mt-1.5 text-[11px] text-[#A1A1AA] flex items-center gap-1.5">
         <Clock className="w-3.5 h-3.5" />
-        Main Auditorium • 2:00 PM
+        Main Plenary Hall • 10:30 AM (Day 1)
       </div>
       <div className="mt-2.5 flex items-center gap-2 bg-[#27272A]/50 w-fit pr-3 rounded-full border border-white/10">
-        <img src="https://i.pravatar.cc/150?img=11" className="w-7 h-7 rounded-full border border-white/20" alt="Speaker" />
-        <span className="text-[11px] font-semibold text-white">Sriharsha Majety</span>
+        <div className="w-7 h-7 rounded-full bg-[#C87D55] text-white flex items-center justify-center font-bold text-xs">
+          ISM
+        </div>
+        <span className="text-[11px] font-semibold text-white">India Semiconductor Mission</span>
       </div>
      </div>
 
-     {/* Poster 3: Networking Mixer */}
+     {/* Poster 3: Advanced Packaging Hub */}
      <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#10241B] to-[#064E3B]">
       <div className="flex items-center justify-between mb-1">
-       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">NETWORKING</span>
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-1.5 py-0.5 rounded-md">PANEL</span>
       </div>
-      <h2 className="text-[13.5px] font-bold text-white tracking-tight mt-1">Tech Founders Mixer</h2>
+      <h2 className="text-[13.5px] font-bold text-white tracking-tight mt-1">Making Madhya Pradesh Advance Packaging Hub</h2>
       <div className="mt-1.5 text-[11px] text-[#A1A1AA] flex items-center gap-1.5">
         <MapPin className="w-3.5 h-3.5" />
-        VIP Lounge • 6:00 PM
+        Plenary Hall A • 15:00 PM (Day 1)
       </div>
       <div className="mt-2 text-[11px] text-[#E5E5E5] leading-snug pr-14">
-        Join 50+ founders and investors for an exclusive evening of high-impact networking and drinks.
+        ATMP and OSAT capacity, chiplet integration, and state-level incentives in Indore & Bhopal.
       </div>
      </div>
 
-     {/* Poster 4: Contest */}
+     {/* Poster 4: AI for Chips */}
      <div className="w-full flex-shrink-0 p-3 pb-3.5 relative min-h-[142px] bg-gradient-to-br from-[#18181B] via-[#111C2E] to-[#1E3A8A]">
       <div className="flex items-center justify-between mb-1">
-       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#B51F32] px-1.5 py-0.5 rounded-md">CONTEST</span>
+       <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#3B82F6] px-1.5 py-0.5 rounded-md">INNOVATION</span>
       </div>
-      <h2 className="text-[13.5px] font-bold text-white tracking-tight mt-1">Scan & Win!</h2>
+      <h2 className="text-[13.5px] font-bold text-white tracking-tight mt-1">AI for Chip & Chips for AI</h2>
       <div className="mt-1.5 text-[11px] text-[#A1A1AA] flex items-center gap-1.5">
-        <Check className="w-3.5 h-3.5" />
-        Visit 10 Platinum Sponsors
+        <Clock className="w-3.5 h-3.5" />
+        Main Plenary Hall • 10:00 AM (Day 2)
       </div>
       <div className="mt-2 text-[11px] text-[#E5E5E5] leading-snug pr-14">
-        Win exclusive ITS26 merch by scanning QR codes at participating sponsor booths today.
+        Generative AI for EDA layout and novel NPU architectures for next-gen silicon.
       </div>
      </div>
     </div>

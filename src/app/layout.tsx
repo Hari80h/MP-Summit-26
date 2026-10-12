@@ -3,8 +3,8 @@ import './globals.css';
 import { StoreProvider } from '../lib/store';
 
 export const metadata: Metadata = {
-  title: 'EventSphere — Digital Experience Layer | India Tech Summit 2026 (ITS26)',
-  description: 'The digital networking & engagement layer for professional events. Experience India Tech Summit 2026.',
+  title: 'EventSphere — Digital Experience Layer | Madhya Pradesh Semiconductor Summit 2026 (MPSS26)',
+  description: 'Official digital networking & engagement layer for Madhya Pradesh Semiconductor Summit 2026. Brilliant Convention Centre, Indore.',
   manifest: '/manifest.json',
   icons: {
     icon: '/icon-192.png',
