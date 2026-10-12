@@ -437,8 +437,8 @@ export const DelegateSchedule: React.FC = () => {
   return (
     <div ref={scrollRef} className="flex-1 bg-[#F6F4F0] select-none overflow-y-auto px-2 pt-2 pb-16 space-y-2">
       <div className="pt-2 pb-1 px-1">
-        <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · TWO-DAY AGENDA</p>
-        <h1 className="text-[28px] font-serif font-medium text-[#181818] tracking-tight leading-none">Summit Agenda</h1>
+        <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">ITS26 · PROGRAMME</p>
+        <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">Schedule</h1>
       </div>
 
       {/* Main Tabs: All | My Schedule */}
@@ -462,16 +462,17 @@ export const DelegateSchedule: React.FC = () => {
         </button>
       </div>
 
-      {/* Day Selector Tabs (Two-Day Agenda: 23 & 24 October 2026) */}
+      {/* Day Selector Tabs */}
       <div className="flex gap-2.5">
         {[
-          { day: 1, label: 'Day 1 (23 Oct)' },
-          { day: 2, label: 'Day 2 (24 Oct)' },
+          { day: 1, label: 'Day 1 (12 Feb)' },
+          { day: 2, label: 'Day 2 (13 Feb)' },
+          { day: 3, label: 'Day 3 (14 Feb)' },
         ].map((d) => (
           <button
             key={d.day}
             onClick={() => setActiveDay(d.day)}
-            className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all shadow-sm ${
+            className={`flex-1 py-1.5 rounded-lg text-[11px] font-semibold border transition-all shadow-sm ${
               activeDay === d.day
                 ? 'bg-[#181818] text-white border-[#181818]'
                 : 'bg-white text-[#4B5563] border-[#E5E7EB] hover:bg-gray-50'

@@ -42,7 +42,7 @@ export const OrganizerOverview: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <span className="text-xs uppercase tracking-widest font-semibold text-[#8C8983] block select-text">
-            {event.id} · {event.city.toUpperCase()} · DAY 1 OF 2
+            {event.id} · {event.city.toUpperCase()} · DAY 1 OF 3
           </span>
           <h1 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] tracking-tight mt-1 select-text">
             {event.name}
@@ -222,12 +222,12 @@ export const OrganizerOverview: React.FC = () => {
               {/* Item 1 */}
               <div className="flex items-start gap-3 text-xs">
                 <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
-                  10:00
+                  09:30
                 </span>
                 <div>
-                  <p className="text-sm font-bold text-[#1A1A1A]">Global Semiconductor Trends</p>
+                  <p className="text-sm font-bold text-[#1A1A1A]">Opening Keynote</p>
                   <p className="text-xs text-[#8C8983] mt-0.5">
-                    Main Plenary Hall · 1,680 attending ·{' '}
+                    Main Hall · 842 attending ·{' '}
                     <span className="text-[#16A34A] font-semibold">LIVE</span>
                   </p>
                 </div>
@@ -236,26 +236,26 @@ export const OrganizerOverview: React.FC = () => {
               {/* Item 2 */}
               <div className="flex items-start gap-3 text-xs">
                 <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
-                  11:00
+                  10:45
                 </span>
                 <div>
                   <p className="text-sm font-bold text-[#1A1A1A]">
-                    Inaugural Session — MP Semi Ecosystem
+                    Production RAG at Scale
                   </p>
-                  <p className="text-xs text-[#8C8983] mt-0.5">Grand Plenary Auditorium · 2,200 attending</p>
+                  <p className="text-xs text-[#8C8983] mt-0.5">Hall B · 412 saved</p>
                 </div>
               </div>
 
               {/* Item 3 */}
               <div className="flex items-start gap-3 text-xs">
                 <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
-                  14:00
+                  12:00
                 </span>
                 <div>
                   <p className="text-sm font-bold text-[#1A1A1A]">
-                    Fab, Manufacturing & Supply Chain
+                    Design Systems for AI
                   </p>
-                  <p className="text-xs text-[#8C8983] mt-0.5">Hall A · 1,250 attending</p>
+                  <p className="text-xs text-[#8C8983] mt-0.5">Hall C · 268 saved</p>
                 </div>
               </div>
             </div>
