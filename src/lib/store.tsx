@@ -130,7 +130,7 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'eventsphere_its26_store_v8';
+const STORAGE_KEY = 'eventsphere_mpss26_store_v4';
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation & Role

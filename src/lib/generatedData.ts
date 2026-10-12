@@ -63,8 +63,8 @@ export function generateAttendees(count: number): Person[] {
       },
       checkedIn: i < 1115,
       registrationId: `#${String(1000 + i).padStart(4, '0')}`,
-      ticketType: (i % 12 === 0 ? 'VIP' : i % 8 === 0 ? 'Exhibitor' : i % 15 === 0 ? 'Speaker' : 'Delegate'),
-      role: (i % 12 === 0 ? 'vip' : i % 8 === 0 ? 'exhibitor_staff' : i % 15 === 0 ? 'speaker' : 'delegate'),
+      ticketType: (i % 12 === 0 ? 'VIP' : i % 8 === 0 ? 'Exhibitor' : 'Delegate'),
+      role: (i % 12 === 0 ? 'vip' : i % 8 === 0 ? 'exhibitor_staff' : 'delegate'),
     });
   }
   return attendees;

@@ -208,7 +208,7 @@ export const DelegateHome: React.FC = () => {
                 <strong>{event.totalRegistered || attendees.length}</strong> attendees
               </span>
               <span className="bg-[#27272A] text-[#E5E7EB] px-2 py-0.5 rounded-md shrink-0">
-                <strong>{event.totalSpeakers || 42}</strong> speakers
+                <strong>{event.totalSpeakers || 40}</strong> speakers
               </span>
               <span className="bg-[#27272A] text-[#E5E7EB] px-2 py-0.5 rounded-md shrink-0">
                 <strong>{event.totalExhibitors || 86}</strong> exhibitors
@@ -400,23 +400,23 @@ export const DelegateHome: React.FC = () => {
         </div>
       </div>
 
-      {/* My AI Recommendations (People Profiles) - Text visible at bottom, profiles reveal on scroll */}
+      {/* My AI Recommendations (People Profiles) - Matching reference design */}
       {recommendedPeople.length > 0 && (
         <div className="space-y-2 pt-1">
           <div className="flex items-center justify-between px-0.5">
-            <h3 className="text-[16px] font-bold text-[#111827] tracking-tight">
+            <h3 className="text-[17px] font-bold text-[#111827] tracking-tight">
               My AI Recommendations
             </h3>
             <button
               onClick={() => setActiveDelegateTab('people')}
-              className="text-[12px] font-semibold text-[#DC2626] flex items-center gap-1 hover:underline"
+              className="text-[13px] font-semibold text-[#111827] flex items-center gap-0.5 hover:underline"
             >
               <span>View all</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ChevronRight className="w-4 h-4 stroke-[2]" />
             </button>
           </div>
 
-          <div className="overflow-x-auto no-scrollbar -mx-3 px-3 pb-1 pt-2">
+          <div className="overflow-x-auto no-scrollbar -mx-3 px-3 pb-1 pt-1.5">
             <div className="flex gap-3 w-max">
               {recommendedPeople.map((person) => {
                 const connected = isConnected(person.id);
@@ -425,18 +425,18 @@ export const DelegateHome: React.FC = () => {
                   <div
                     key={person.id}
                     onClick={() => setSelectedPersonId(person.id)}
-                    className="bg-white p-3 rounded-2xl border border-[#E5E7EB] flex-shrink-0 w-[190px] flex flex-col justify-between gap-3 cursor-pointer shadow-xs hover:border-gray-400 transition-all"
+                    className="bg-white p-2.5 rounded-[15px] border border-[#E5E7EB] flex-shrink-0 w-[178px] flex flex-col justify-between gap-2 cursor-pointer shadow-xs hover:border-gray-400 transition-all"
                   >
                     <div>
-                      <div className="flex items-center gap-2.5 mb-1.5">
+                      <div className="flex items-center gap-2.5">
                         {person.avatar ? (
                           <img
                             src={person.avatar}
                             alt={person.name}
-                            className="w-9 h-9 rounded-full object-cover flex-shrink-0 ring-1 ring-gray-100"
+                            className="w-[34px] h-[34px] rounded-full object-cover flex-shrink-0"
                           />
                         ) : (
-                          <div className="w-9 h-9 rounded-full bg-[#EFEBE5] flex items-center justify-center font-bold text-xs text-[#181818] flex-shrink-0 border border-[#DEDCD7]">
+                          <div className="w-[34px] h-[34px] rounded-full bg-[#EFEBE5] flex items-center justify-center font-bold text-xs text-[#181818] flex-shrink-0 border border-[#DEDCD7]">
                             {person.name
                               .split(' ')
                               .map((n) => n[0])
@@ -444,15 +444,14 @@ export const DelegateHome: React.FC = () => {
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-[12.5px] font-bold text-[#181818] truncate leading-tight">
+                          <h4 className="text-[13px] font-bold text-[#111827] truncate leading-tight">
                             {person.name}
                           </h4>
-                          <p className="text-[10.5px] text-[#6B6B6B] truncate mt-0.5">
+                          <p className="text-[11px] text-[#6B7280] truncate mt-0.5">
                             {person.designation}
                           </p>
                         </div>
                       </div>
-                      <p className="text-[10px] text-[#9CA3AF] truncate">{person.company}</p>
                     </div>
 
                     <button
@@ -465,28 +464,26 @@ export const DelegateHome: React.FC = () => {
                           handleConnect(person.id, e);
                         }
                       }}
-                      className={`w-full py-1.5 rounded-xl text-[11px] font-bold transition-all active:scale-95 border ${
+                      className={`w-full py-1.5 rounded-lg text-[12px] font-bold transition-all active:scale-95 border text-center flex items-center justify-center ${
                         connected
                           ? 'bg-[#F0FDF4] text-[#166534] border-[#BBF7D0]'
                           : pending
                           ? 'bg-[#F3F4F6] text-[#4B5563] border-[#E5E7EB]'
-                          : 'bg-[#181818] text-white border-[#181818] hover:bg-black'
+                          : 'bg-white text-[#111827] border-[#111827] hover:bg-gray-50'
                       }`}
                     >
                       {connected ? (
-                        <span className="flex items-center justify-center gap-1.5">
-                          <Check className="w-3.5 h-3.5" />
+                        <span className="flex items-center justify-center gap-1">
+                          <Check className="w-3 h-3" />
                           Connected
                         </span>
                       ) : pending ? (
-                        <span className="flex items-center justify-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5" />
+                        <span className="flex items-center justify-center gap-1">
+                          <Clock className="w-3 h-3" />
                           Pending
                         </span>
                       ) : (
-                        <span className="flex items-center justify-center gap-1.5">
-                          Connect
-                        </span>
+                        'Connect'
                       )}
                     </button>
                   </div>

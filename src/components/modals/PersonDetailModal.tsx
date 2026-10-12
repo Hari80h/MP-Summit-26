@@ -142,9 +142,14 @@ export const PersonDetailModal: React.FC = () => {
               LinkedIn
             </span>
             <span>
-              {person.privacy.shareLinkedIn && person.linkedin ? (
-                <a href={`https://${person.linkedin}`} target="_blank" rel="noreferrer" className="text-[#0A66C2] font-medium hover:underline">
-                  {person.linkedin}
+              {person.linkedin ? (
+                <a
+                  href={person.linkedin.startsWith('http') ? person.linkedin : `https://${person.linkedin}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[#0A66C2] font-medium hover:underline flex items-center gap-1"
+                >
+                  {person.name} on LinkedIn
                 </a>
               ) : (
                 <span className="text-[#9CA3AF] italic">Not shared</span>

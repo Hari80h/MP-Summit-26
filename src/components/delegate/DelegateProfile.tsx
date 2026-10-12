@@ -141,7 +141,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
               {currentUser.designation} · {currentUser.company}
             </p>
             <p className="text-[12.5px] text-[#8BA5CD]">
-              · {currentUser.ticketType} · 3-day
+              · {currentUser.ticketType} · 2-day
             </p>
           </div>
         </div>
