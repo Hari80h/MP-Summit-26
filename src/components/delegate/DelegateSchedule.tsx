@@ -168,6 +168,7 @@ export const DelegateSchedule: React.FC = () => {
             },
             checkedIn: true,
             ticketType: 'Speaker',
+            registrationId: session.speakerId ? `#SPK-${session.speakerId.slice(-4).toUpperCase()}` : `#SPK-${session.id.slice(-3).toUpperCase()}`,
           } as Person,
         ];
       }

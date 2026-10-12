@@ -71,6 +71,7 @@ export const PersonDetailModal: React.FC = () => {
             },
             checkedIn: true,
             ticketType: 'Speaker',
+            registrationId: `#SPK-${selectedPersonId.slice(-4).toUpperCase()}`,
             relevanceScore: 98,
           } as Person;
         }
