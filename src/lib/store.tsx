@@ -241,11 +241,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (parsed.leads && parsed.leads.length > 0) setLeads(parsed.leads);
         else setLeads(INITIAL_LEADS);
         if (parsed.products) setProducts(parsed.products);
-        if (parsed.sessions) {
-          const userBookmarks = new Map(parsed.sessions.map((s: Session) => [s.id, s.isBookmarked]));
-          const freshSessions = INITIAL_SESSIONS.map((s) => ({
+        if (parsed.sessions && Array.isArray(parsed.sessions)) {
+          const bookmarkSet = new Set<string>(
+            parsed.sessions
+              .filter((s: Session) => Boolean(s && s.isBookmarked))
+              .map((s: Session) => s.id)
+          );
+          const freshSessions: Session[] = INITIAL_SESSIONS.map((s) => ({
             ...s,
-            isBookmarked: userBookmarks.get(s.id) ?? s.isBookmarked ?? false,
+            isBookmarked: bookmarkSet.has(s.id) || Boolean(s.isBookmarked),
           }));
           setSessions(freshSessions);
         } else {
