@@ -2,21 +2,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  AlertCircle,
   ArrowRight,
   Bookmark,
   BookmarkCheck,
-  Check,
-  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Coffee,
   MapPin,
-  MessageSquare,
   Music,
-  Send,
   Sparkles,
-  ThumbsUp,
   Utensils,
 } from 'lucide-react';
 
@@ -80,11 +74,6 @@ export const DelegateSchedule: React.FC = () => {
     toggleBookmarkSession,
     selectedSessionId,
     setSelectedSessionId,
-    questions,
-    submitQuestion,
-    upvoteQuestion,
-    poll,
-    votePoll,
     currentUser,
     scheduleSubTab,
     setScheduleSubTab,
@@ -94,7 +83,7 @@ export const DelegateSchedule: React.FC = () => {
   const activeTab = scheduleSubTab;
   const setActiveTab = setScheduleSubTab;
   const [activeDay, setActiveDay] = useState<number>(1);
-  const [detailSubTab, setDetailSubTab] = useState<'overview' | 'speaker' | 'qa' | 'poll'>('overview');
+  const [detailSubTab, setDetailSubTab] = useState<'overview' | 'speaker'>('overview');
 
   // Auto-switch to day with saved sessions if user opens My Schedule
   useEffect(() => {
@@ -188,11 +177,6 @@ export const DelegateSchedule: React.FC = () => {
     return [];
   };
 
-  // Q&A state
-  const [questionText, setQuestionText] = useState('');
-  const [isAnonymous, setIsAnonymous] = useState(false);
-  const [pollVoteError, setPollVoteError] = useState<string | null>(null);
-
   // If a session is selected, render Session Detail Screen
   const activeSession = sessions.find((s) => s.id === selectedSessionId);
 
@@ -207,23 +191,6 @@ export const DelegateSchedule: React.FC = () => {
     return true;
   });
 
-  const handleQuestionSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!activeSession || !questionText.trim()) return;
-    submitQuestion(activeSession.id, questionText, isAnonymous);
-    setQuestionText('');
-  };
-
-  const handlePollVote = (optionId: string) => {
-    setPollVoteError(null);
-    const result = votePoll(optionId);
-    if (!result.success) {
-      setPollVoteError(result.message);
-    }
-  };
-
-  const hasUserVotedInPoll = poll.voterIds.includes(currentUser.id);
-
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -234,7 +201,6 @@ export const DelegateSchedule: React.FC = () => {
 
   // If viewing session detail
   if (activeSession) {
-    const sessionQuestions = questions.filter((q) => q.sessionId === activeSession.id);
     const sessionSpeakers = resolveSessionSpeakers(activeSession);
 
     return (
@@ -254,7 +220,6 @@ export const DelegateSchedule: React.FC = () => {
             <button
               onClick={() => {
                 setSelectedSessionId(null);
-                setPollVoteError(null);
               }}
               className="w-10 h-10 rounded-full bg-black/45 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-all shadow-md"
               aria-label="Back to schedule"
@@ -294,22 +259,19 @@ export const DelegateSchedule: React.FC = () => {
           </div>
         </div>
 
-        {/* 4 Detail Tabs: Overview | Speaker(s) | Q&A | Poll */}
-        <div className="bg-white border-b border-[#E5E7EB] grid grid-cols-4 sticky top-0 z-20 shadow-xs">
+        {/* 2 Detail Tabs: Overview | Speaker(s) */}
+        <div className="bg-white border-b border-[#E5E7EB] grid grid-cols-2 sticky top-0 z-20 shadow-xs">
           {[
-            { id: 'overview', label: 'Overview' },
+            { id: 'overview' as const, label: 'Overview' },
             {
-              id: 'speaker',
+              id: 'speaker' as const,
               label: sessionSpeakers.length > 1 ? `Speakers · ${sessionSpeakers.length}` : 'Speaker',
             },
-            { id: 'qa', label: `Q&A · ${sessionQuestions.length}` },
-            { id: 'poll', label: 'Poll' },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => {
-                setDetailSubTab(tab.id as any);
-                setPollVoteError(null);
+                setDetailSubTab(tab.id);
               }}
               className={`text-[13px] transition-all flex items-center justify-center relative ${
                 detailSubTab === tab.id
@@ -435,190 +397,6 @@ export const DelegateSchedule: React.FC = () => {
                   </div>
                 ))
               )}
-            </div>
-          )}
-
-          {/* TAB 3: Q&A */}
-          {detailSubTab === 'qa' && (
-            <div className="space-y-3">
-              {/* Submit Question Box */}
-              <form onSubmit={handleQuestionSubmit} className="bg-white p-3.5 rounded-[16px] border border-[#E5E7EB] shadow-xs space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[13.5px] font-bold text-[#111827]">Ask the Speaker</span>
-                  <label className="flex items-center gap-1.5 text-[12px] text-[#6B7280] cursor-pointer">
-                    <div
-                      className={`w-3.5 h-3.5 rounded-[3px] border ${
-                        isAnonymous ? 'bg-[#DC2626] border-[#DC2626]' : 'border-[#9CA3AF] bg-white'
-                      } flex items-center justify-center transition-colors`}
-                    >
-                      {isAnonymous && <Check className="w-2.5 h-2.5 text-white stroke-[3]" />}
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={isAnonymous}
-                      onChange={(e) => setIsAnonymous(e.target.checked)}
-                      className="hidden"
-                    />
-                    <span>Ask anonymously</span>
-                  </label>
-                </div>
-
-                <textarea
-                  value={questionText}
-                  onChange={(e) => setQuestionText(e.target.value)}
-                  placeholder="Pose your query to the panel or keynote speaker..."
-                  rows={3}
-                  className="w-full p-2.5 rounded-[10px] bg-[#F9FAFB] border border-[#E5E7EB] text-[13px] text-[#111827] focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] transition-all resize-none placeholder:text-[#9CA3AF]"
-                />
-
-                <div className="flex justify-between items-center pt-0.5">
-                  <span className="text-[11px] text-[#6B7280] flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" /> Moderated live in session
-                  </span>
-                  <button
-                    type="submit"
-                    disabled={!questionText.trim()}
-                    className="px-3.5 py-2 bg-[#DC2626] hover:bg-[#B91C1C] active:scale-95 text-white font-bold text-[12.5px] rounded-[8px] shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:active:scale-100"
-                  >
-                    <Send className="w-3.5 h-3.5" />
-                    <span>Submit</span>
-                  </button>
-                </div>
-              </form>
-
-              {/* Questions List */}
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between px-1 text-[#6B7280]">
-                  <h3 className="text-[13.5px] font-bold text-[#111827]">Submitted Questions</h3>
-                  <span className="text-[11.5px]">Sorted by votes</span>
-                </div>
-
-                {sessionQuestions.length === 0 ? (
-                  <div className="bg-white rounded-[16px] border border-dashed border-[#E5E7EB] p-7 flex flex-col items-center justify-center text-center space-y-2">
-                    <MessageSquare className="w-10 h-10 text-[#FEE2E2]" />
-                    <p className="font-bold text-[#111827] text-[14px]">No questions yet</p>
-                    <p className="text-[12px] text-[#6B7280]">Be the first to submit a question to the speaker!</p>
-                  </div>
-                ) : (
-                  sessionQuestions.map((q) => {
-                    const hasUpvoted = q.upvotedBy.includes(currentUser.id);
-                    return (
-                      <div
-                        key={q.id}
-                        className="p-3 bg-white rounded-[12px] border border-[#E5E7EB] shadow-xs flex items-start justify-between gap-2.5"
-                      >
-                        <div className="flex-1 space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[11.5px] font-bold text-[#111827]">{q.authorName}</span>
-                            <span className="text-[10px] text-[#6B7280]">{q.createdAt}</span>
-                            <span
-                              className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
-                                q.status === 'Answered'
-                                  ? 'bg-[#EBF5F0] text-[#2F7D58]'
-                                  : 'bg-blue-50 text-blue-700'
-                              }`}
-                            >
-                              {q.status}
-                            </span>
-                          </div>
-                          <p className="text-[12px] text-[#111827] leading-relaxed">{q.text}</p>
-                        </div>
-
-                        <button
-                          onClick={() => upvoteQuestion(q.id)}
-                          className={`min-w-[40px] h-9 px-2 rounded-lg border text-xs font-bold flex flex-col items-center justify-center transition-all active:scale-95 ${
-                            hasUpvoted
-                              ? 'bg-[#DC2626] border-[#DC2626] text-white shadow-xs'
-                              : 'bg-[#F9FAFB] border-[#E5E7EB] text-[#111827] hover:border-[#DC2626]'
-                          }`}
-                        >
-                          <ThumbsUp className="w-3.5 h-3.5 mb-0.5" />
-                          <span>{q.upvotes}</span>
-                        </button>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: POLL */}
-          {detailSubTab === 'poll' && (
-            <div className="bg-white p-3.5 rounded-[16px] border border-[#E5E7EB] shadow-xs space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#DC2626] bg-[#FEF2F2] border border-[#FEE2E2] px-2 py-0.5 rounded">
-                  Official Live Poll
-                </span>
-                <span
-                  className={`text-[11px] font-bold px-2 py-0.5 rounded ${
-                    poll.status === 'open'
-                      ? 'bg-[#EBF5F0] text-[#2F7D58]'
-                      : 'bg-gray-100 text-gray-500'
-                  }`}
-                >
-                  {poll.status === 'open' ? 'Open for Votes' : 'Closed'}
-                </span>
-              </div>
-
-              <h2 className="text-[13px] font-bold text-[#111827] leading-snug">
-                {poll.question}
-              </h2>
-
-              {pollVoteError && (
-                <div className="p-2 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 flex items-center gap-1.5">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>{pollVoteError}</span>
-                </div>
-              )}
-
-              <div className="space-y-2 pt-1">
-                {poll.options.map((option) => {
-                  const percentage =
-                    poll.totalVotes > 0 ? Math.round((option.votes / poll.totalVotes) * 100) : 0;
-
-                  return (
-                    <button
-                      key={option.id}
-                      onClick={() => handlePollVote(option.id)}
-                      disabled={poll.status === 'closed'}
-                      className={`w-full p-2.5 rounded-lg border text-left transition-all relative overflow-hidden active:scale-[0.99] ${
-                        hasUserVotedInPoll
-                          ? 'border-[#E5E7EB] bg-[#F9FAFB]'
-                          : 'border-[#E5E7EB] hover:border-[#DC2626] bg-white hover:bg-red-50/20'
-                      }`}
-                    >
-                      {hasUserVotedInPoll && (
-                        <div
-                          className="absolute inset-y-0 left-0 bg-[#FEE2E2] opacity-60 transition-all duration-500"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      )}
-
-                      <div className="relative z-10 flex items-center justify-between text-xs font-semibold text-[#111827]">
-                        <span>{option.text}</span>
-                        {hasUserVotedInPoll && (
-                          <span className="font-mono font-bold text-[#111827]">
-                            {percentage}% ({option.votes})
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="pt-2 border-t border-[#E5E7EB] flex items-center justify-between text-xs text-[#6B7280]">
-                <span>{poll.totalVotes} responses recorded</span>
-                {hasUserVotedInPoll ? (
-                  <span className="text-[#2F7D58] font-bold flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Vote recorded
-                  </span>
-                ) : (
-                  <span className="text-[#111827] font-medium">1 vote per attendee</span>
-                )}
-              </div>
             </div>
           )}
         </div>
