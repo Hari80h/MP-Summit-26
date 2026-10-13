@@ -23,6 +23,7 @@ import { DelegateSpeakers } from '../components/delegate/DelegateSpeakers';
 import { DelegatePolls } from '../components/delegate/DelegatePolls';
 import { DelegateMap } from '../components/delegate/DelegateMap';
 import { DelegateSponsors } from "../components/delegate/DelegateSponsors";
+import { DelegateSupport } from '../components/delegate/DelegateSupport';
 
 // Exhibitor views
 import { ExhibitorHome } from '../components/exhibitor/ExhibitorHome';
@@ -153,6 +154,7 @@ export default function App() {
                   {activeDelegateTab === 'polls' && <DelegatePolls />}
                   {activeDelegateTab === 'map' && <DelegateMap />}
                   {activeDelegateTab === "sponsors" && <DelegateSponsors />}
+                  {activeDelegateTab === 'support' && <DelegateSupport />}
                   {activeDelegateTab === 'profile' && (
                     <DelegateProfile
                       onOpenPrivacyModal={() => setIsPrivacyModalOpen(true)}

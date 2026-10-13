@@ -144,14 +144,15 @@ export const DelegateScan: React.FC = () => {
 
             {/* Attendee Details Card */}
             <div className="bg-[#F6F4F0] p-3 rounded-[14px] border border-[#E5E7EB] mb-3 flex items-center gap-3">
-              {scannedPerson.avatar ? (
-                <img src={scannedPerson.avatar} alt={scannedPerson.name} className="w-10 h-10 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0" />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center font-medium text-[13px] text-[#181818] flex-shrink-0 shadow-sm">
-                  {scannedPerson.name.split(' ').map((n) => n[0]).join('')}
-                </div>
-              )}
-              <div className="flex flex-col gap-0.5">
+              <img
+                src={scannedPerson.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(scannedPerson.name)}&background=181818&color=ffffff&bold=true`}
+                alt={scannedPerson.name}
+                className="w-11 h-11 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0"
+                onError={(e) => {
+                  e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(scannedPerson.name)}&background=181818&color=ffffff&bold=true`;
+                }}
+              />
+              <div className="flex flex-col gap-0.5 min-w-0 flex-1">
                 <h3 className="text-[13.5px] font-bold text-[#181818] leading-tight">{scannedPerson.name}</h3>
                 <p className="text-[11.5px] text-[#6B6B6B]">
                   {scannedPerson.designation} <span className="opacity-60">·</span> <strong className="text-[#181818] font-medium">{scannedPerson.company}</strong>

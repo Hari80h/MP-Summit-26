@@ -14,12 +14,10 @@ import {
   MapPin,
   MessageSquare,
   Music,
-  Search,
   Send,
   Sparkles,
   ThumbsUp,
   Utensils,
-  X,
 } from 'lucide-react';
 
 import { useStore } from '../../lib/store';
@@ -93,8 +91,6 @@ export const DelegateSchedule: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'saved'>('all');
   const [activeDay, setActiveDay] = useState<number>(1);
   const [detailSubTab, setDetailSubTab] = useState<'overview' | 'speaker' | 'qa' | 'poll'>('overview');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
 
   // Helper to resolve all distinct speaker profiles for a session
   const resolveSessionSpeakers = (session: Session): Person[] => {
@@ -187,19 +183,10 @@ export const DelegateSchedule: React.FC = () => {
   const daySessions = sessions.filter((s) => s.day === activeDay);
   const daySavedSessions = daySessions.filter((s) => s.isBookmarked);
 
-  // Filter sessions by Day, Tab, and Search Query
+  // Filter sessions by Day and Tab
   const filteredSessions = sessions.filter((s) => {
     if (s.day !== activeDay) return false;
     if (activeTab === 'saved' && !s.isBookmarked) return false;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      const matchTitle = s.title.toLowerCase().includes(q);
-      const matchSpeaker = (s.speakerName || '').toLowerCase().includes(q);
-      const matchCompany = (s.speakerCompany || '').toLowerCase().includes(q);
-      const matchRoom = (s.room || '').toLowerCase().includes(q);
-      const matchTrack = (s.track || '').toLowerCase().includes(q);
-      return matchTitle || matchSpeaker || matchCompany || matchRoom || matchTrack;
-    }
     return true;
   });
 
@@ -353,10 +340,6 @@ export const DelegateSchedule: React.FC = () => {
                 </div>
               )}
 
-              <div className="pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-[#6B7280] text-[12px]">
-                <span>Registered Attendance:</span>
-                <strong className="text-[#111827] font-mono">{activeSession.attendanceCount} Attendees</strong>
-              </div>
             </div>
           )}
 
@@ -633,54 +616,12 @@ export const DelegateSchedule: React.FC = () => {
       <div className="shrink-0 bg-[#F8F7F4] px-3 z-10 border-b border-[#E5E7EB]">
         {/* Header section matching reference mockup */}
         <div className="pt-2 pb-1">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
-                MPSS26 · PROGRAMME
-              </p>
-              <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
-                Schedule
-              </h1>
-            </div>
-
-            <button
-              onClick={() => {
-                setIsSearchOpen((prev) => !prev);
-                if (isSearchOpen) setSearchQuery('');
-              }}
-              className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all ${
-                isSearchOpen || searchQuery
-                  ? 'bg-[#DC2626] border-[#DC2626] text-white shadow-xs'
-                  : 'bg-white border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] shadow-xs'
-              }`}
-              aria-label="Toggle search"
-            >
-              {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
-            </button>
-          </div>
-
-          {/* Expandable Search Input */}
-          {isSearchOpen && (
-            <div className="mt-2.5 relative animate-in fade-in slide-in-from-top-2 duration-150">
-              <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                autoFocus
-                placeholder="Search sessions, speakers, rooms, topics..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-8 py-2 rounded-xl bg-white border border-[#E5E7EB] text-[13px] text-[#111827] focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] shadow-xs placeholder:text-[#9CA3AF]"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#111827]"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-          )}
+          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+            MPSS26 · PROGRAMME
+          </p>
+          <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
+            Schedule
+          </h1>
         </div>
 
         {/* Segmented Top Toggle: All Sessions (X) | My Schedule (Y) */}
@@ -856,14 +797,10 @@ export const DelegateSchedule: React.FC = () => {
                         {/* Bottom row: Live badge / info & Details button */}
                         <div className="mt-2 pt-1.5 border-t border-[#F1F5F9] flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            {session.status === 'live' ? (
+                            {session.status === 'live' && (
                               <span className="flex items-center gap-1 text-[10px] font-bold text-[#166534] bg-[#DCFCE7] px-2 py-0.5 rounded-full animate-pulse">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
                                 LIVE NOW
-                              </span>
-                            ) : (
-                              <span className="text-[10px] text-[#94A3B8]">
-                                {session.attendanceCount > 0 ? `${session.attendanceCount} attending` : 'Open Entry'}
                               </span>
                             )}
                           </div>

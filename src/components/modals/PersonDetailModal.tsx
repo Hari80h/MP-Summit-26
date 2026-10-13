@@ -124,13 +124,14 @@ export const PersonDetailModal: React.FC = () => {
             <Star className={`w-5 h-5 ${isSaved ? 'fill-yellow-400 text-yellow-400' : 'text-[#9CA3AF]'}`} />
           </button>
           
-          {person.avatar ? (
-            <img src={person.avatar} alt={person.name} className="w-12 h-12 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0" />
-          ) : (
-            <div className="w-12 h-12 rounded-full bg-[#FAFAFA] border border-[#E5E7EB] flex items-center justify-center font-medium text-[15px] text-[#181818] flex-shrink-0 shadow-sm">
-              {person.name.split(' ').map((n) => n[0]).join('')}
-            </div>
-          )}
+          <img
+            src={person.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=181818&color=ffffff&bold=true`}
+            alt={person.name}
+            className="w-13 h-13 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0"
+            onError={(e) => {
+              e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=181818&color=ffffff&bold=true`;
+            }}
+          />
           <div className="pt-0.5 pr-8">
             <h2 className="text-[16px] font-bold text-[#181818] leading-tight">{person.name}</h2>
             <p className="text-[14px] text-[#4B5563] mt-0.5">

@@ -12,10 +12,10 @@ import {
   ChevronRight,
   Star,
   Users,
-  BarChart2,
   Map,
   Bookmark,
   BookmarkCheck,
+  BarChart2,
 } from 'lucide-react';
 
 export const DelegateHome: React.FC = () => {
@@ -149,24 +149,26 @@ export const DelegateHome: React.FC = () => {
             </p>
           </div>
 
-          <button
-            onClick={() => setActiveDelegateTab('profile')}
-            className="relative group focus:outline-none flex-shrink-0 ml-2"
-            aria-label="View Profile"
-          >
-            {currentUser.avatar ? (
-              <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-base border-2 border-white shadow-sm">
-                {currentUser.name.split(' ').map((n) => n[0]).join('')}
-              </div>
-            )}
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#22C55E] border-2 border-white rounded-full shadow-xs" />
-          </button>
+          <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+            <button
+              onClick={() => setActiveDelegateTab('profile')}
+              className="relative group focus:outline-none flex-shrink-0"
+              aria-label="View Profile"
+            >
+              {currentUser.avatar ? (
+                <img
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-base border-2 border-white shadow-sm">
+                  {currentUser.name.split(' ').map((n) => n[0]).join('')}
+                </div>
+              )}
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#22C55E] border-2 border-white rounded-full shadow-xs" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -383,7 +385,7 @@ export const DelegateHome: React.FC = () => {
         <div className="grid grid-cols-4 gap-2">
           {[
             { id: 'speakers', label: 'Speakers', icon: Users, tab: 'speakers' },
-            { id: 'polls', label: 'Polls', icon: BarChart2, tab: 'polls' },
+            { id: 'polls', label: 'Poll', icon: BarChart2, tab: 'polls' },
             { id: 'map', label: 'Map', icon: Map, tab: 'map' },
             { id: 'sponsors', label: 'Sponsors', icon: Star, tab: 'sponsors' },
           ].map((item) => (

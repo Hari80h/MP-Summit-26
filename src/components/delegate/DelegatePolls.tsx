@@ -52,12 +52,19 @@ export const DelegatePolls: React.FC = () => {
       </div>
       <div className="flex-1 overflow-y-auto px-4 pb-16 space-y-3">
         <div className="bg-white rounded-lg p-3 border border-[#DEDCD7] shadow-sm">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <span className="flex items-center gap-1.5 bg-[#B51F32] px-1.5 py-0.5 rounded text-[10px] font-bold text-white uppercase tracking-wider">
-              <span className="w-1 h-1 rounded-full bg-white animate-pulse" />
-              Live
-            </span>
-            <span className="text-xs font-semibold text-[#6B6B6B]">Session Poll</span>
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center gap-1.5">
+              <span className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                demoPoll.status === 'open' ? 'bg-[#DC2626] text-white' : 'bg-gray-200 text-[#4B5563]'
+              }`}>
+                {demoPoll.status === 'open' && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
+                {demoPoll.status === 'open' ? 'Live' : 'Closed'}
+              </span>
+              <span className="text-xs font-semibold text-[#6B6B6B]">Session Poll</span>
+            </div>
+            {demoPoll.status === 'closed' && (
+              <span className="text-[11px] text-[#DC2626] font-semibold">Voting Closed</span>
+            )}
           </div>
           
           <h2 className="text-[15px] font-bold text-[#181818] mb-2.5 leading-snug">
@@ -73,14 +80,16 @@ export const DelegatePolls: React.FC = () => {
               return (
                 <button
                   key={option.id}
-                  onClick={() => !hasVoted && handleVote(option.id)}
-                  disabled={!!hasVoted}
+                  onClick={() => !hasVoted && demoPoll.status === 'open' && handleVote(option.id)}
+                  disabled={Boolean(hasVoted || demoPoll.status === 'closed')}
                   className={`w-full relative overflow-hidden rounded-xl border p-4 transition-all text-left flex justify-between items-center ${
                     hasVoted 
                       ? isSelected 
                         ? 'border-[#0D9488] bg-[#F0FDF4]' 
                         : 'border-[#E5E7EB] bg-gray-50'
-                      : 'border-[#DEDCD7] hover:border-[#181818]/40 bg-white'
+                      : demoPoll.status === 'closed'
+                        ? 'border-[#E5E7EB] bg-gray-50 cursor-not-allowed opacity-80'
+                        : 'border-[#DEDCD7] hover:border-[#181818]/40 bg-white'
                   }`}
                 >
                   {hasVoted && (
