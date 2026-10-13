@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import { useStore } from '../../lib/store';
-import { Search, Download, Filter, User, Building, Mail, Phone, Calendar, ChevronRight, X, Edit3, CheckCircle2 } from 'lucide-react';
+import { Search, Download, Filter, User, Building, Mail, Phone, Calendar, ChevronRight, X, Edit3, CheckCircle2, UserPlus } from 'lucide-react';
 import { Lead, LeadStatus } from '../../types';
 
 export const ExhibitorLeads: React.FC = () => {
-  const { leads, updateLeadStatus, showToast } = useStore();
+  const { leads, updateLeadStatus, showToast, setActiveExhibitorTab } = useStore();
   const [selectedStatusTab, setSelectedStatusTab] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -88,13 +88,22 @@ export const ExhibitorLeads: React.FC = () => {
               {leads.length} captured leads at Booth B-14
             </p>
           </div>
-          <button
-            onClick={handleExportCSV}
-            className="h-10 px-4 bg-white/10 hover:bg-white/20 active:bg-white/30 text-white border border-white/20 font-semibold text-sm rounded-xl backdrop-blur-md transition-all flex items-center gap-1.5 shrink-0"
-          >
-            <Download className="w-4 h-4 stroke-[2.5]" />
-            <span>Export</span>
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setActiveExhibitorTab('scan')}
+              className="h-10 px-3.5 bg-[#B51F32] hover:bg-[#9C1A2B] active:scale-95 text-white font-semibold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 shrink-0"
+            >
+              <UserPlus className="w-3.5 h-3.5" />
+              <span>+ Save Lead</span>
+            </button>
+            <button
+              onClick={handleExportCSV}
+              className="h-10 px-3.5 bg-white/10 hover:bg-white/20 active:bg-white/30 text-white border border-white/20 font-semibold text-xs rounded-xl backdrop-blur-md transition-all flex items-center gap-1.5 shrink-0"
+            >
+              <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>Export</span>
+            </button>
+          </div>
         </div>
       </div>
 

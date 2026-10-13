@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useStore } from '../../lib/store';
-import { QrCode, Bell, ChevronRight, Users, BarChart2, ShoppingBag, Link } from 'lucide-react';
+import { UserPlus, Package, ChevronRight, Users } from 'lucide-react';
 
 export const ExhibitorHome: React.FC = () => {
   const {
@@ -74,61 +74,49 @@ export const ExhibitorHome: React.FC = () => {
           <p className="text-[11px] text-gray-400">MPSS26 · Hall B · {msft.teamSize} team members on floor</p>
         </div>
 
-        {/* 4 Core Metrics Grid */}
-        <div className="grid grid-cols-2 gap-2 mb-6 relative z-10">
-          {/* Card 1 */}
-          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
-              <Users className="w-4 h-4 text-[#E68A96]" />
+        {/* 2 Core Metrics Grid */}
+        <div className="grid grid-cols-2 gap-3 mb-6 relative z-10">
+          {/* Card 1: Total Leads */}
+          <div 
+            onClick={() => setActiveExhibitorTab('leads')}
+            className="bg-[#242424] p-3.5 rounded-2xl flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-transform"
+          >
+            <div className="w-10 h-10 rounded-full bg-[#3D1A22] flex items-center justify-center shrink-0">
+              <Users className="w-5 h-5 text-[#E68A96]" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-light text-white leading-none mb-0.5">{msft.visits}</span>
-              <span className="text-[10px] text-gray-400 font-medium">Booth visits</span>
+              <span className="text-2xl font-light text-white leading-none mb-1">
+                {msft.leads || 171}
+              </span>
+              <span className="text-[11px] text-gray-400 font-medium">Total Leads</span>
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
-              <BarChart2 className="w-4 h-4 text-[#E68A96]" />
+          {/* Card 2: Total Products */}
+          <div 
+            onClick={() => setActiveExhibitorTab('products')}
+            className="bg-[#242424] p-3.5 rounded-2xl flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-transform"
+          >
+            <div className="w-10 h-10 rounded-full bg-[#3D1A22] flex items-center justify-center shrink-0">
+              <Package className="w-5 h-5 text-[#E68A96]" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-light text-white leading-none mb-0.5">{msft.leads || 171}</span>
-              <span className="text-[10px] text-gray-400 font-medium">Leads</span>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
-              <ShoppingBag className="w-4 h-4 text-[#E68A96]" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-light text-white leading-none mb-0.5">{msft.enquiries || 96}</span>
-              <span className="text-[10px] text-gray-400 font-medium">Product enquiries</span>
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="bg-[#242424] p-3 rounded-2xl flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#B51F32]/15 flex items-center justify-center shrink-0">
-              <Link className="w-4 h-4 text-[#E68A96]" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-light text-white leading-none mb-0.5">96</span>
-              <span className="text-[10px] text-gray-400 font-medium">Connections</span>
+              <span className="text-2xl font-light text-white leading-none mb-1">
+                12
+              </span>
+              <span className="text-[11px] text-gray-400 font-medium">Total Products</span>
             </div>
           </div>
         </div>
 
-        {/* Primary Scan Button */}
+        {/* Primary Save Lead Button */}
         <button
           onClick={() => setActiveExhibitorTab('scan')}
-          className="w-full h-14 bg-gradient-to-r from-[#B51F32] to-[#8C1625] hover:from-[#9C1A2B] hover:to-[#73101D] text-white font-semibold text-sm rounded-2xl flex items-center justify-between px-5 transition-all active:scale-[0.98] shadow-md relative z-10"
+          className="w-full h-13 py-3.5 bg-[#9E1B2D] hover:bg-[#8A1625] text-white font-semibold text-[14px] rounded-2xl flex items-center justify-between px-5 transition-all active:scale-[0.98] shadow-md relative z-10"
         >
-          <div className="flex items-center gap-2 flex-1 justify-center ml-5">
-            <QrCode className="w-5 h-5" />
-            <span>Scan Attendee QR</span>
+          <div className="flex items-center gap-2.5 flex-1 justify-center ml-5">
+            <UserPlus className="w-5 h-5 stroke-[2.2]" />
+            <span>Save Lead</span>
           </div>
           <ChevronRight className="w-5 h-5 opacity-70" />
         </button>
