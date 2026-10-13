@@ -46,7 +46,7 @@ export const INITIAL_EVENT: EventMetadata = {
   status: 'LIVE',
   totalRegistered: 2438,
   totalCheckedIn: 1120,
-  totalExhibitors: 86,
+  totalExhibitors: 51,
   totalSpeakers: 40,
   totalScans: 6212,
   totalConnections: 3281,

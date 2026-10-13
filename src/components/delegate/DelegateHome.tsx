@@ -486,7 +486,7 @@ export const DelegateHome: React.FC = () => {
 
         <div className="grid grid-cols-2 gap-2.5">
           {(() => {
-            const exploreCompanies = ['Google Cloud', 'Stripe', 'Razorpay', 'Anthropic']
+            const exploreCompanies = ['MPSEDC', 'Truechip solutions private limited', 'CDAC', 'Analog Devices']
               .map((name) => exhibitors.find((e) => e.company === name))
               .filter(Boolean);
 
