@@ -62,15 +62,15 @@ export const DelegateEditProfile: React.FC = () => {
 
   const handleFillDemo = () => {
     setFormData({
-      name: 'Hari Gupta',
-      designation: 'CEO',
-      company: 'EventSphere',
-      bio: 'Founder & CEO building next-gen event engagement platforms.',
-      linkedin: 'https://linkedin.com/in/harigupta',
-      twitter: '@harigupta',
-      email: 'hari@eventsphere.com',
-      mobile: '+91 98765 00000',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
+      name: 'Santosh Kumar',
+      designation: 'Chief Scientific Advisor',
+      company: 'AIGGPA Bhopal, Govt. of Madhya Pradesh',
+      bio: 'Chief Scientific Advisor at Atal Bihari Vajpayee Institute of Good Governance and Policy Analysis (AIGGPA), Government of Madhya Pradesh.',
+      linkedin: 'https://linkedin.com/in/santosh-kumar-aiggpa',
+      twitter: 'https://x.com/DrVishvakarma?lang=en',
+      email: 'skvishvakarma@iiti.ac.in',
+      mobile: '+91 97137 22841',
+      avatar: '/images/avatars/santosh-kumar.png',
     });
     showToast('Demo profile loaded (100% complete)', 'success');
   };
@@ -180,7 +180,7 @@ export const DelegateEditProfile: React.FC = () => {
             <input
               type="text"
               name="name"
-              placeholder="e.g. Hari Gupta"
+              placeholder="e.g. Santosh Kumar"
               value={formData.name}
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12.5px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
@@ -192,7 +192,7 @@ export const DelegateEditProfile: React.FC = () => {
             <input
               type="text"
               name="designation"
-              placeholder="e.g. Founder & CEO"
+              placeholder="e.g. Chief Scientific Advisor"
               value={formData.designation}
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12.5px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
@@ -204,7 +204,7 @@ export const DelegateEditProfile: React.FC = () => {
             <input
               type="text"
               name="company"
-              placeholder="e.g. EventSphere"
+              placeholder="e.g. AIGGPA Bhopal, Govt. of Madhya Pradesh"
               value={formData.company}
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12.5px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
@@ -238,7 +238,7 @@ export const DelegateEditProfile: React.FC = () => {
             <input
               type="email"
               name="email"
-              placeholder="e.g. hari@eventsphere.com"
+              placeholder="e.g. skvishvakarma@iiti.ac.in"
               value={formData.email}
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12.5px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
@@ -250,7 +250,7 @@ export const DelegateEditProfile: React.FC = () => {
             <input
               type="tel"
               name="mobile"
-              placeholder="e.g. +91 98765 00000"
+              placeholder="e.g. +91 97137 22841"
               value={formData.mobile}
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12.5px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
@@ -274,7 +274,7 @@ export const DelegateEditProfile: React.FC = () => {
             <input
               type="text"
               name="twitter"
-              placeholder="@username"
+              placeholder="https://x.com/DrVishvakarma?lang=en"
               value={formData.twitter}
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12.5px] focus:outline-none focus:ring-1 focus:ring-[#181818]"

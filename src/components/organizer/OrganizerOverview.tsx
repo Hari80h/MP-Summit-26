@@ -21,7 +21,7 @@ export const OrganizerOverview: React.FC = () => {
 
   const registered = event.totalRegistered || 2438;
   const checkedIn = event.totalCheckedIn || 1120;
-  const exhibitorsCount = event.totalExhibitors || 86;
+  const exhibitorsCount = event.totalExhibitors || 51;
   const speakersCount = event.totalSpeakers || 42;
   const scansCount = event.totalScans || 6212;
   const connectionsCount = event.totalConnections || 3281;

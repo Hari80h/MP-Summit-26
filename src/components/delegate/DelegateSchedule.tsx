@@ -470,7 +470,7 @@ export const DelegateSchedule: React.FC = () => {
       </div>
 
       {/* Timeline Scroll Container */}
-      <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-3 pt-3 pb-24">
+      <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-3 pt-3 pb-2">
         {filteredSessions.length === 0 ? (
           <div className="p-8 text-center bg-white rounded-[16px] border border-[#E5E7EB] shadow-xs my-4">
             <Bookmark className="w-8 h-8 text-[#D1D5DB] mx-auto mb-2" />
@@ -528,7 +528,7 @@ export const DelegateSchedule: React.FC = () => {
                   </div>
 
                   {/* Right Column: SESSION BOX (flex-1 min-w-0 guarantees full visibility on mobile viewports!) */}
-                  <div className="flex-1 min-w-0 pl-2.5 sm:pl-3 pb-3 pt-0.5">
+                  <div className={`flex-1 min-w-0 pl-2.5 sm:pl-3 pt-0.5 ${index === filteredSessions.length - 1 ? 'pb-1' : 'pb-3'}`}>
                     {isSpecialBreak ? (
                       /* Special Break / Dining / Non-Session Row (Non-clickable) */
                       <div

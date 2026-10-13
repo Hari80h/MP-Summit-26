@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useStore } from '../../lib/store';
 import { ChevronLeft, ChevronRight, Check, Clock, UserPlus, Settings, Lightbulb, Grid, Calendar, CalendarPlus } from 'lucide-react';
 
@@ -21,10 +21,17 @@ export const DelegateAIRecommendations: React.FC = () => {
   const isConnected = (personId: string) => connections.some((c) => c.personId === personId && c.status === 'connected');
   const isPending = (personId: string) => connections.some((c) => c.personId === personId && c.status === 'pending');
 
-  const recommendedPeople = attendees
-    .filter((p) => p.id !== currentUser.id && (p.relevanceScore || 0) >= 80 && p.name.toLowerCase() !== 'sai kumar')
-    .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
-    .slice(0, 15);
+  const recommendedPeople = useMemo(() => {
+    const speakers = attendees.filter(
+      (a) =>
+        a.role === 'speaker' &&
+        a.id !== currentUser.id &&
+        a.name.toLowerCase() !== (currentUser.name || '').toLowerCase()
+    );
+    const indices = [0, 2, 3, 5, 7, 9, 11, 12, 13, 14];
+    const picked = indices.map((idx) => speakers[idx]).filter(Boolean);
+    return picked.length >= 10 ? picked.slice(0, 10) : speakers.slice(0, 10);
+  }, [attendees, currentUser.id, currentUser.name]);
 
   // Recommended Sessions mock (excluding non-session breaks & registrations)
   const recommendedSessions = sessions

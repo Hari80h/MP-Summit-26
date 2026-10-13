@@ -75,7 +75,7 @@ export const OrganizerAnalytics: React.FC = () => {
             {exhibitors.reduce((acc, curr) => acc + curr.leads, 0)}
           </p>
           <span className="text-[10px] text-[#6B6B6B]">
-            Across 86 booths
+            Across {exhibitors.length || 51} booths
           </span>
         </div>
       </div>

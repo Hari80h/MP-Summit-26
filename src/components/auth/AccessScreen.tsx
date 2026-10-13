@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../../lib/store';
+import { CURRENT_USER } from '../../lib/mockData';
 import { ShieldCheck, CheckCircle2, AlertCircle, ArrowRight, Loader2, Lock } from 'lucide-react';
 
 interface AccessScreenProps {
@@ -9,7 +10,7 @@ interface AccessScreenProps {
 }
 
 export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
-  const { setRole, setHasAccessConfirmed } = useStore();
+  const { setRole, setHasAccessConfirmed, setCurrentUser } = useStore();
   
   const [eventId, setEventId] = useState('MPSS26');
   const [mobile, setMobile] = useState('');
@@ -65,6 +66,10 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
       detectedRole = 'organizer';
     } else {
       detectedRole = 'delegate';
+    }
+
+    if (detectedRole === 'delegate') {
+      setCurrentUser(CURRENT_USER);
     }
 
     setTimeout(() => {
@@ -165,7 +170,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                     setMobile(e.target.value);
                     if (status === 'error') setStatus('idle');
                   }}
-                  placeholder="e.g. 9876543211"
+                  placeholder="e.g. 9713722841"
                   disabled={status === 'verifying' || status === 'confirmed'}
                   className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[13px] font-medium text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
                   autoComplete="tel"
@@ -179,6 +184,17 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
               <div className="flex flex-wrap gap-1.5">
                 <button
                   type="button"
+                  onClick={() => handleQuickSelect('9713722841')}
+                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
+                    mobile === '9713722841'
+                      ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
+                      : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
+                  }`}
+                >
+                  Delegate - Santosh Kumar (9713722841)
+                </button>
+                <button
+                  type="button"
                   onClick={() => handleQuickSelect('9876543211')}
                   className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
                     mobile === '9876543211'
@@ -187,17 +203,6 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                   }`}
                 >
                   Exhibitor (9876543211)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickSelect('9876543210')}
-                  className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
-                    mobile === '9876543210'
-                      ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
-                      : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
-                  }`}
-                >
-                  Delegate (9876543210)
                 </button>
                 <button
                   type="button"

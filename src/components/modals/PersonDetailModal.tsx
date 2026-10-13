@@ -236,8 +236,17 @@ export const PersonDetailModal: React.FC = () => {
                 </span>
                 <span>
                   {person.privacy?.shareTwitter && person.twitter ? (
-                    <a href={`https://twitter.com/${person.twitter}`} target="_blank" rel="noreferrer" className="text-[#1DA1F2] font-medium hover:underline">
-                      @{person.twitter}
+                    <a
+                      href={person.twitter.startsWith('http') ? person.twitter : `https://x.com/${person.twitter.replace(/^@/, '')}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[#1DA1F2] font-medium hover:underline"
+                    >
+                      {person.twitter.startsWith('http')
+                        ? `@${person.twitter.split('/').pop()?.split('?')[0] || 'profile'}`
+                        : person.twitter.startsWith('@')
+                        ? person.twitter
+                        : `@${person.twitter}`}
                     </a>
                   ) : (
                     <span className="text-[#9CA3AF] italic">Not shared</span>

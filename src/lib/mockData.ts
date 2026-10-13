@@ -43,7 +43,7 @@ export const INITIAL_EVENT: EventMetadata = {
   dates: '23–24 Oct 2026',
   city: 'Indore',
   venue: 'Brilliant Convention Centre, Indore',
-  status: 'LIVE',
+  status: 'UPCOMING',
   totalRegistered: 2438,
   totalCheckedIn: 1120,
   totalExhibitors: 51,
@@ -62,19 +62,19 @@ const PRIVATE_CONTACT_DEFAULT: PrivacyConsent = {
 
 // Current signed-in delegate profile
 export const CURRENT_USER: Person = {
-  id: 'att-hari-gupta',
-  name: 'Hari Gupta',
-  designation: 'CEO',
-  company: 'EventSphere',
+  id: 'att-santosh-kumar',
+  name: 'Santosh Kumar',
+  designation: 'Chief Scientific Advisor',
+  company: 'AIGGPA Bhopal, Govt. of Madhya Pradesh',
   role: 'delegate',
-  bio: 'Founder & CEO building next-gen event engagement platforms.',
-  interests: ['Semiconductors', 'AI Infrastructure', 'Event Tech'],
-  skills: ['Leadership', 'System Architecture', 'Product Strategy'],
-  email: 'hari@eventsphere.com',
-  mobile: '+91 98765 00000',
-  linkedin: '',
-  twitter: '',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
+  bio: 'Chief Scientific Advisor at Atal Bihari Vajpayee Institute of Good Governance and Policy Analysis (AIGGPA), Government of Madhya Pradesh.',
+  interests: ['Semiconductors', 'Policy & Governance', 'Science & Technology'],
+  skills: ['Scientific Advisory', 'Policy Analysis', 'Ecosystem Strategy'],
+  email: 'skvishvakarma@iiti.ac.in',
+  mobile: '+91 97137 22841',
+  linkedin: 'linkedin.com/in/santosh-kumar-aiggpa',
+  twitter: 'https://x.com/DrVishvakarma?lang=en',
+  avatar: '/images/avatars/santosh-kumar.png',
   privacy: { ...PRIVATE_CONTACT_DEFAULT },
   checkedIn: true,
   checkInTime: '08:30 AM',
@@ -83,6 +83,26 @@ export const CURRENT_USER: Person = {
 };
 
 export const INITIAL_ATTENDEES: Person[] = [
+  {
+    id: 'att-santosh-kumar',
+    name: 'Santosh Kumar',
+    company: 'AIGGPA Bhopal, Govt. of Madhya Pradesh',
+    designation: 'Chief Scientific Advisor',
+    role: 'delegate',
+    ticketType: 'Delegate',
+    checkedIn: true,
+    checkInTime: '08:30 AM',
+    registrationId: '#REG-MPSS26-0523',
+    email: 'skvishvakarma@iiti.ac.in',
+    mobile: '+91 97137 22841',
+    linkedin: 'linkedin.com/in/santosh-kumar-aiggpa',
+    twitter: 'https://x.com/DrVishvakarma?lang=en',
+    avatar: '/images/avatars/santosh-kumar.png',
+    bio: 'Chief Scientific Advisor at Atal Bihari Vajpayee Institute of Good Governance and Policy Analysis (AIGGPA), Government of Madhya Pradesh.',
+    interests: ['Semiconductors', 'Policy & Governance', 'Science & Technology'],
+    skills: ['Scientific Advisory', 'Policy Analysis', 'Ecosystem Strategy'],
+    privacy: { ...PRIVATE_CONTACT_DEFAULT },
+  },
   {
     id: 'att-hari-gupta',
     name: 'Hari Gupta',
@@ -96,6 +116,7 @@ export const INITIAL_ATTENDEES: Person[] = [
     email: 'hari@eventsphere.com',
     mobile: '+91 98765 00000',
     linkedin: 'linkedin.com/in/harigupta',
+    avatar: '/images/avatars/hari-gupta.png',
     bio: 'Founder & CEO building next-gen event engagement platforms.',
     interests: ['Event Tech', 'AI', 'Product Strategy'],
     skills: ['Product Leadership', 'Engineering', 'Architecture'],
@@ -1976,3 +1997,17 @@ export const getProfileCompletionDetails = (user: Partial<Person> | null | undef
 export const calculateProfileCompletion = (user: Partial<Person> | null | undefined): number => {
   return getProfileCompletionDetails(user).percentage;
 };
+
+export const RECOMMENDED_PEOPLE_IDS: string[] = [
+  'speaker-jaswinder-ahuja',
+  'speaker-dr-satya-gupta',
+  'speaker-dr-kamaljeet-singh',
+  'speaker-dr-manish-hooda',
+  'speaker-magesh-e',
+  'speaker-maj-gen-shivender-bhattacharya',
+  'speaker-prof-ajay-kumar-kushwaha',
+  'speaker-arundhati-sanath',
+  'speaker-dr-charan-gurumoorthy',
+  'speaker-chitra-hariharan',
+];
+

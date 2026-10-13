@@ -11,7 +11,7 @@ export interface EventMetadata {
   status: 'LIVE' | 'UPCOMING' | 'COMPLETED';
   totalRegistered: number; // 2438
   totalCheckedIn: number; // 1120
-  totalExhibitors: number; // 86
+  totalExhibitors: number; // 51
   totalSpeakers: number; // 42
   totalScans: number; // 6212
   totalConnections: number; // 3281

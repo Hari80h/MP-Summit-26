@@ -89,7 +89,7 @@ export const DelegateCompanies: React.FC = () => {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2.5 no-scrollbar pb-16">
+      <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2.5 no-scrollbar pb-2.5">
         <p className="text-[11.5px] font-semibold text-[#6B6B6B] px-0.5">
           {filteredExhibitors.length} {viewSavedCompaniesOnly ? 'Saved Exhibitor' : 'Exhibitor'}{filteredExhibitors.length !== 1 ? 's' : ''}
         </p>

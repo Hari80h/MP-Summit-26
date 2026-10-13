@@ -89,6 +89,7 @@ interface StoreContextType {
   // Core Data
   event: EventMetadata;
   currentUser: Person;
+  setCurrentUser: React.Dispatch<React.SetStateAction<Person>>;
   updateCurrentUser: (data: Partial<Person>) => void;
   updateCurrentUserPrivacy: (newPrivacy: Partial<PrivacyConsent>) => void;
   attendees: Person[];
@@ -119,6 +120,7 @@ interface StoreContextType {
   updateQuestionStatus: (questionId: string, status: QuestionStatus) => void;
   votePoll: (optionId: string) => { success: boolean; message: string };
   togglePollStatus: () => void;
+  resetPollVote: () => void;
   toggleCheckIn: (personId: string) => void;
   addWalkInAttendee: (data: { name: string; email: string; mobile: string; company: string; designation: string; ticketType: string }) => void;
   importAttendeesMock: (count: number) => void;
@@ -221,16 +223,22 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             totalConnections: parsed.event.totalConnections || INITIAL_EVENT.totalConnections,
           });
         }
-        if (parsed.currentUser) {
+        if (parsed.currentUser && parsed.currentUser.id === CURRENT_USER.id) {
           const u = parsed.currentUser;
           if (!u.registrationId || u.registrationId.toLowerCase().includes('not public')) {
             u.registrationId = '#0523';
           }
-          if (!u.email || u.email.toLowerCase().includes('not public') || u.email.toLowerCase().includes('unlisted')) {
-            u.email = 'hari@eventsphere.com';
+          if (!u.email || u.email.toLowerCase().includes('not public') || u.email.toLowerCase().includes('unlisted') || u.email.includes('hari@') || u.email.includes('aiggpa.mp.gov.in')) {
+            u.email = 'skvishvakarma@iiti.ac.in';
           }
           if (!u.mobile || u.mobile.toLowerCase().includes('not public') || u.mobile.toLowerCase().includes('unlisted')) {
-            u.mobile = '+91 98765 00000';
+            u.mobile = '+91 97137 22841';
+          }
+          if (!u.twitter || u.twitter === '@harigupta') {
+            u.twitter = 'https://x.com/DrVishvakarma?lang=en';
+          }
+          if (!u.avatar || u.avatar.includes('unsplash.com') || u.avatar.includes('ui-avatars') || u.avatar.includes('hari-gupta')) {
+            u.avatar = '/images/avatars/santosh-kumar.png';
           }
           if (!u.privacy || (u.privacy.preset as any) === 'Private') {
             u.privacy = {
@@ -238,10 +246,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               shareEmail: true,
               sharePhone: true,
               shareLinkedIn: true,
-              shareTwitter: false,
+              shareTwitter: true,
             };
           }
           setCurrentUser(u);
+        } else {
+          setCurrentUser(CURRENT_USER);
         }
         const initialMap = new Map(INITIAL_ATTENDEES.map((a: Person) => [a.id, a]));
         if (parsed.attendees) {
@@ -307,7 +317,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setSessions(INITIAL_SESSIONS);
         }
         if (parsed.questions) setQuestions(parsed.questions);
-        if (parsed.poll && parsed.poll.options && parsed.poll.options.length > 0 && parsed.poll.id !== 'poll-no-public-data') {
+        if (parsed.poll && parsed.poll.id === INITIAL_POLL.id && parsed.poll.options && parsed.poll.options.length > 0) {
           setPoll(parsed.poll);
         } else {
           setPoll(INITIAL_POLL);
@@ -370,7 +380,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Set role with tab preservation
   const setRole = (newRole: DemoRole) => {
     setRoleState(newRole);
-    showToast(`Switched to ${newRole === 'delegate' ? 'Delegate (Aarav)' : newRole === 'exhibitor' ? 'Exhibitor (Truechip Booth A-02)' : 'Organizer Console'} view`, 'info');
+    showToast(`Switched to ${newRole === 'delegate' ? 'Delegate (Santosh Kumar)' : newRole === 'exhibitor' ? 'Exhibitor (Truechip Booth A-02)' : 'Organizer Console'} view`, 'info');
   };
 
   // Connectivity toggle
@@ -762,6 +772,19 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   };
 
+  // Reset Poll to Initial State (for delegates / testing)
+  const resetPollVote = () => {
+    setPoll(INITIAL_POLL);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem(`eventsphere_poll_voted_${INITIAL_POLL.id}`);
+      } catch {
+        // ignore
+      }
+    }
+    showToast('Poll reset to initial state ✓', 'info');
+  };
+
   // Toggle check-in (Organizer)
   const toggleCheckIn = (personId: string) => {
     setAttendees((prev) =>
@@ -950,6 +973,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setSelectedCompanyId,
         event,
         currentUser,
+        setCurrentUser,
         updateCurrentUser,
         updateCurrentUserPrivacy,
         attendees,
@@ -978,6 +1002,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateQuestionStatus,
         votePoll,
         togglePollStatus,
+        resetPollVote,
         toggleCheckIn,
         addWalkInAttendee,
         importAttendeesMock,

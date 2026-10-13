@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useStore } from '../../lib/store';
-import { INITIAL_ATTENDEES } from '../../lib/mockData';
+import { INITIAL_ATTENDEES, RECOMMENDED_PEOPLE_IDS } from '../../lib/mockData';
+import { Person } from '../../types';
 import {
   Calendar,
   MapPin,
@@ -15,7 +16,51 @@ import {
   Bookmark,
   BookmarkCheck,
   BarChart2,
+  Cpu,
+  Box,
+  Zap,
+  Settings,
+  Rocket,
+  GraduationCap,
 } from 'lucide-react';
+
+const EVENT_PARTNERS = [
+  {
+    name: 'Make in India',
+    type: 'National Initiative',
+    logo: '/images/partners/make-in-india.png',
+  },
+  {
+    name: 'MSME Department',
+    type: 'Government Partner',
+    logo: '/images/partners/msme.png',
+  },
+  {
+    name: 'Semi-Conductor Laboratory',
+    type: 'Technology Partner',
+    logo: '/images/partners/scl.png',
+  },
+  {
+    name: 'MP Tourism',
+    type: 'Tourism Partner',
+    logo: '/images/partners/mp-tourism.png',
+  },
+  {
+    name: 'Invest MP',
+    type: 'Investment Partner',
+    logo: '/images/partners/invest-mp.png',
+  },
+  {
+    name: 'VLSI Society of India',
+    type: 'Industry Partner',
+    logo: '/images/partners/vlsi.png',
+  },
+  {
+    name: 'ISIG',
+    type: 'Industry Partner',
+    logo: '/images/partners/isig.png',
+  },
+];
 
 export const DelegateHome: React.FC = () => {
   const {
@@ -56,16 +101,12 @@ export const DelegateHome: React.FC = () => {
     (s) => s.id === featuredSession.id && s.isBookmarked
   );
 
-  // Curated people to meet (excluding self)
-  const recommendedPeople = attendees
-    .filter(
-      (a) =>
-        a.id !== currentUser.id &&
-        (a.relevanceScore || 0) >= 80 &&
-        a.name.toLowerCase() !== 'sai kumar'
-    )
-    .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
-    .slice(0, 10);
+  // 10 Curated speakers for "People You Should Meet"
+  const recommendedPeople = useMemo(() => {
+    return RECOMMENDED_PEOPLE_IDS
+      .map((id) => attendees.find((a) => a.id === id))
+      .filter(Boolean) as Person[];
+  }, [attendees]);
 
   const [activeSlide, setActiveSlide] = useState(0);
   const totalSlides = 4;
@@ -130,8 +171,46 @@ export const DelegateHome: React.FC = () => {
     '/images/speakers/satya-gupta.png',
   ];
 
+  // Auto-scroll for Event Partners Section (seamless infinite circular loop, scrolls one by one)
+  const partnersScrollRef = useRef<HTMLDivElement>(null);
+  const [isPartnersPaused, setIsPartnersPaused] = useState(false);
+
+  useEffect(() => {
+    const container = partnersScrollRef.current;
+    if (!container) return;
+
+    const interval = setInterval(() => {
+      if (isPartnersPaused) return;
+
+      const firstChild = container.firstElementChild as HTMLElement;
+      const itemWidth = firstChild ? firstChild.offsetWidth + 8 : 84;
+      const oneSetWidth = itemWidth * EVENT_PARTNERS.length;
+
+      // When we reach or pass one full set, normalize silently to start of cycle
+      if (container.scrollLeft >= oneSetWidth) {
+        container.scrollLeft -= oneSetWidth;
+      }
+
+      container.scrollBy({ left: itemWidth, behavior: 'smooth' });
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [isPartnersPaused]);
+
+  const handlePartnersScroll = () => {
+    const container = partnersScrollRef.current;
+    if (!container) return;
+    const firstChild = container.firstElementChild as HTMLElement;
+    const itemWidth = firstChild ? firstChild.offsetWidth + 8 : 84;
+    const oneSetWidth = itemWidth * EVENT_PARTNERS.length;
+
+    if (container.scrollLeft >= 2 * oneSetWidth) {
+      container.scrollLeft -= oneSetWidth;
+    }
+  };
+
   return (
-    <div className="flex-1 px-3 pt-2 pb-24 space-y-3 bg-[#F8F7F4] overflow-y-auto select-none">
+    <div className="flex-1 px-3 pt-2 pb-3 space-y-3 bg-[#F8F7F4] overflow-y-auto select-none">
       {/* Top Greeting & Attendee Identity Header */}
       <div className="pt-2 pb-1">
         <div className="flex items-center justify-between">
@@ -187,10 +266,10 @@ export const DelegateHome: React.FC = () => {
               <span className="text-[10.5px] font-bold text-white bg-[#27272A] px-2 py-0.5 rounded-md">
                 {event.id}
               </span>
-              <div className="flex items-center gap-1.5 bg-[#DC2626] px-2.5 py-0.5 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-                  LIVE
+              <div className="flex items-center gap-1.5 bg-[#E5E7EB] text-[#1F2937] px-2.5 py-0.5 rounded-full shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#6B7280]" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">
+                  UPCOMING
                 </span>
               </div>
             </div>
@@ -215,10 +294,10 @@ export const DelegateHome: React.FC = () => {
                 <strong>{event.totalRegistered || attendees.length}</strong> attendees
               </span>
               <span className="bg-[#27272A] text-[#E5E7EB] px-2 py-0.5 rounded-md shrink-0">
-                <strong>{event.totalSpeakers || 40}</strong> speakers
+                <strong>40+</strong> speakers
               </span>
               <span className="bg-[#27272A] text-[#E5E7EB] px-2 py-0.5 rounded-md shrink-0">
-                <strong>{event.totalExhibitors || 86}</strong> exhibitors
+                <strong>50+</strong> exhibitors
               </span>
             </div>
           </div>
@@ -232,19 +311,17 @@ export const DelegateHome: React.FC = () => {
             />
           </div>
 
-          {/* Slide 3: Exhibition & Showcase (Dark Theme) */}
+          {/* Slide 3: Exhibition & Showcase (Dark Theme - Top 4 Sectors Compact) */}
           <div 
-            onClick={() => setActiveDelegateTab('companies')}
-            className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#161C28] to-[#0F172A] cursor-pointer group"
+            className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#161C28] to-[#0F172A] select-none"
           >
-            {/* Header row with badge and interactive link */}
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-2 py-0.5 rounded-md border border-white/5">
+            {/* Header row with badge */}
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-bold tracking-wider text-slate-300 bg-white/10 px-2 py-0.5 rounded-md border border-white/10">
                 EXPO PAVILION
               </span>
-              <div className="flex items-center gap-1 text-[9.5px] font-bold text-[#38BDF8] bg-[#0284C7]/20 border border-[#38BDF8]/30 px-2 py-0.5 rounded-full group-hover:bg-[#0284C7]/30 transition-colors">
-                <span>86+ EXHIBITORS</span>
-                <ArrowRight className="w-2.5 h-2.5" />
+              <div className="flex items-center gap-1 text-[9.5px] font-bold text-[#38BDF8] bg-[#0284C7]/20 border border-[#38BDF8]/40 px-2.5 py-0.5 rounded-full shadow-sm">
+                <span>50+ EXHIBITORS</span>
               </div>
             </div>
 
@@ -253,50 +330,99 @@ export const DelegateHome: React.FC = () => {
               EXHIBITION & <span className="text-[#38BDF8]">SHOWCASE</span>
             </h2>
 
-            {/* Description taken directly from uploaded poster */}
-            <p className="text-[11px] text-[#94A3B8] leading-tight mt-1 line-clamp-2 pr-12">
-              Presenting technologies, products, capabilities, research, startups and ecosystem solutions.
+            {/* Subtitle description */}
+            <p className="text-[11px] text-[#94A3B8] leading-tight mt-0.5 line-clamp-1 pr-12">
+              Presenting cutting-edge technologies, research, startups & ecosystem solutions.
             </p>
 
-            {/* Category chips taken directly from image content */}
-            <div className="mt-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 pr-14 text-[10px] font-medium whitespace-nowrap">
-              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
-                Chip Design & EDA
-              </span>
-              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
-                ATMP / OSAT
-              </span>
-              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
-                Semiconductor & Electronics
-              </span>
-              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
-                Equipment & Materials
-              </span>
-              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
-                Startups & R&D
-              </span>
-              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
-                Talent & Academia
-              </span>
+            {/* Symmetrical 2x2 Grid of Top 4 Key Sectors */}
+            <div className="mt-2 grid grid-cols-2 gap-1.5 pb-0.5">
+              <div className="bg-[#1E293B]/70 border border-slate-700/60 rounded-lg px-2.5 py-1.5 flex items-center gap-2">
+                <Cpu className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
+                <span className="text-[11px] font-medium text-slate-200 truncate">Chip Design & EDA</span>
+              </div>
+              <div className="bg-[#1E293B]/70 border border-slate-700/60 rounded-lg px-2.5 py-1.5 flex items-center gap-2">
+                <Box className="w-3.5 h-3.5 text-[#60A5FA] shrink-0" />
+                <span className="text-[11px] font-medium text-slate-200 truncate">ATMP / OSAT</span>
+              </div>
+              <div className="bg-[#1E293B]/70 border border-slate-700/60 rounded-lg px-2.5 py-1.5 flex items-center gap-2">
+                <Zap className="w-3.5 h-3.5 text-[#FBBF24] shrink-0" />
+                <span className="text-[11px] font-medium text-slate-200 truncate">Semicon & Electronics</span>
+              </div>
+              <div className="bg-[#1E293B]/70 border border-slate-700/60 rounded-lg px-2.5 py-1.5 flex items-center gap-2">
+                <Settings className="w-3.5 h-3.5 text-[#2DD4BF] shrink-0" />
+                <span className="text-[11px] font-medium text-slate-200 truncate">Equipment & Materials</span>
+              </div>
             </div>
           </div>
 
-          {/* Slide 4: Expo Contest */}
-          <div className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#111C2E] to-[#1E3A8A]">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10.5px] font-bold text-[#E5E5E5] bg-[#2563EB] px-2 py-0.5 rounded-md">
-                EXPO CHALLENGE
-              </span>
-              <span className="text-[9.5px] font-bold text-[#93C5FD] uppercase tracking-wider">REWARDS</span>
+          {/* Slide 4: Jointly Organised By (Partners Poster - Vertically Symmetrical) */}
+          <div 
+            className="w-full flex-shrink-0 p-3 sm:p-3.5 relative min-h-[148px] bg-gradient-to-br from-[#060D19] via-[#091527] to-[#0D1D3A] flex flex-col justify-center gap-2.5 select-none overflow-hidden"
+          >
+            {/* Header: PARTNERS / JOINTLY ORGANISED BY */}
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1.5 mb-1">
+                <span className="w-5 h-[1.5px] bg-[#38BDF8]" />
+                <span className="text-[9px] font-extrabold tracking-[0.2em] text-[#38BDF8] uppercase">
+                  PARTNERS
+                </span>
+                <span className="w-5 h-[1.5px] bg-[#38BDF8]" />
+              </div>
+              <h2 className="text-[15px] sm:text-[16.5px] font-black text-white tracking-wider uppercase leading-none">
+                JOINTLY ORGANISED <span className="text-[#38BDF8]">BY</span>
+              </h2>
             </div>
-            <h2 className="text-[15px] font-bold text-white tracking-tight mt-0.5">Connect at Booths & Win MPSS26 Merch!</h2>
-            <div className="mt-1.5 text-[11.5px] text-[#BFDBFE] flex items-center gap-1.5">
-              <Check className="w-3.5 h-3.5" />
-              Visit 10 Exhibitors & Connect at Booths
+
+            {/* Symmetrical Two Partner Cards with 'and' in center */}
+            <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-1 sm:gap-1.5">
+              {/* Left Card: MPSeDC */}
+              <div className="bg-gradient-to-br from-[#EEF6FF] via-[#F8FAFC] to-[#FFFDF7] border border-amber-400/50 rounded-xl p-2 shadow-sm flex items-center gap-1.5 group-hover:border-amber-400 transition-colors">
+                <div className="w-8 h-8 shrink-0 flex items-center justify-center">
+                  <img
+                    src="/images/banners/mpsedc-clean.png"
+                    alt="MPSeDC"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="w-[1px] h-9 bg-slate-300/80 shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-[8.5px] sm:text-[9.5px] font-bold text-slate-900 leading-[1.18] line-clamp-3">
+                    Madhya Pradesh State Electronics Development Corporation (MPSeDC), Department of Science & Technology
+                  </h3>
+                  <p className="text-[7px] sm:text-[7.5px] text-slate-500 font-medium leading-tight mt-0.5">
+                    Government of Madhya Pradesh
+                  </p>
+                </div>
+              </div>
+
+              {/* Center 'and' */}
+              <div className="flex items-center justify-center px-0.5">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#F59E0B] italic shrink-0">
+                  and
+                </span>
+              </div>
+
+              {/* Right Card: AIGGPA */}
+              <div className="bg-gradient-to-br from-[#EEF6FF] via-[#F8FAFC] to-[#FFFDF7] border border-amber-400/50 rounded-xl p-2 shadow-sm flex items-center gap-1.5 group-hover:border-amber-400 transition-colors">
+                <div className="w-8 h-8 shrink-0 flex items-center justify-center">
+                  <img
+                    src="/images/banners/aiggpa-clean.png"
+                    alt="AIGGPA"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="w-[1px] h-9 bg-slate-300/80 shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-[8.5px] sm:text-[9.5px] font-bold text-slate-900 leading-[1.18] line-clamp-3">
+                    Atal Bihari Vajpayee Institute of Good Governance & Policy Analysis (AIGGPA), Bhopal
+                  </h3>
+                  <p className="text-[7px] sm:text-[7.5px] text-slate-500 font-medium leading-tight mt-0.5">
+                    Government of Madhya Pradesh
+                  </p>
+                </div>
+              </div>
             </div>
-            <p className="mt-1.5 text-[11px] text-[#E5E5E5] leading-snug pr-14 truncate">
-              Collect stamps on your digital passport to claim exclusive summit goodies.
-            </p>
           </div>
         </div>
 
@@ -420,7 +546,10 @@ export const DelegateHome: React.FC = () => {
       {recommendedPeople.length > 0 && (
         <div className="space-y-2 pt-1">
           <div className="flex items-center justify-between px-0.5">
-            <h3 className="text-[17px] font-bold text-[#111827] tracking-tight">
+            <h3
+              onClick={() => setActiveDelegateTab('people')}
+              className="text-[17px] font-bold text-[#111827] tracking-tight cursor-pointer hover:text-[#B51F32] transition-colors"
+            >
               People You Should Meet
             </h3>
             <button
@@ -464,7 +593,7 @@ export const DelegateHome: React.FC = () => {
                             {person.name}
                           </h4>
                           <p className="text-[11px] text-[#6B7280] truncate mt-0.5">
-                            {person.designation}
+                            {person.company || person.designation}
                           </p>
                         </div>
                       </div>
@@ -553,6 +682,55 @@ export const DelegateHome: React.FC = () => {
               );
             });
           })()}
+        </div>
+      </div>
+
+      {/* Partners Section (Clean minimal horizontal auto-scroll) */}
+      <div className="space-y-2 pt-1 pb-1">
+        {/* Section Heading Centered */}
+        <div className="text-center px-0.5">
+          <h3 className="text-[17px] font-bold text-[#111827] tracking-tight">
+            Partners
+          </h3>
+        </div>
+
+        {/* Scrollable Container with Auto-Scroll One by One (Fits 4 Icons in View, No Scrollbar Line) */}
+        <div
+          ref={partnersScrollRef}
+          onScroll={handlePartnersScroll}
+          onMouseEnter={() => setIsPartnersPaused(true)}
+          onMouseLeave={() => setIsPartnersPaused(false)}
+          onTouchStart={() => setIsPartnersPaused(true)}
+          onTouchEnd={() => {
+            setTimeout(() => setIsPartnersPaused(false), 2500);
+          }}
+          className="flex items-start gap-2 overflow-x-auto pb-1 pt-0.5 scroll-smooth select-none no-scrollbar"
+        >
+          {[...EVENT_PARTNERS, ...EVENT_PARTNERS, ...EVENT_PARTNERS].map((partner, index) => (
+            <div
+              key={index}
+              className="w-[76px] sm:w-[82px] shrink-0 flex flex-col items-center text-center group cursor-pointer"
+            >
+              {/* Decreased icon size in clean rounded white box */}
+              <div className="w-11 h-11 rounded-xl bg-white border border-[#E5E7EB] shadow-2xs p-1 flex items-center justify-center overflow-hidden group-hover:border-gray-400 group-hover:shadow-xs transition-all">
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="w-full h-full object-contain select-none"
+                />
+              </div>
+
+              {/* Name below */}
+              <h4 className="text-[10px] sm:text-[10.5px] font-bold text-[#181818] leading-[1.15] text-center mt-1.5 line-clamp-2 px-0.5">
+                {partner.name}
+              </h4>
+
+              {/* Partner type below */}
+              <p className="text-[8px] sm:text-[8.5px] font-semibold text-[#6B7280] leading-tight text-center mt-0.5 line-clamp-1">
+                {partner.type}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
