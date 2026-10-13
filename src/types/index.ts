@@ -22,7 +22,7 @@ export interface PrivacyConsent {
   sharePhone: boolean;
   shareLinkedIn: boolean;
   shareTwitter?: boolean;
-  preset: 'Open' | 'Connections Only' | 'Private';
+  preset: 'Open' | 'Connections Only';
 }
 
 export interface Person {

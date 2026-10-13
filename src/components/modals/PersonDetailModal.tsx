@@ -124,13 +124,14 @@ export const PersonDetailModal: React.FC = () => {
             <Star className={`w-5 h-5 ${isSaved ? 'fill-yellow-400 text-yellow-400' : 'text-[#9CA3AF]'}`} />
           </button>
           
-          {person.avatar ? (
-            <img src={person.avatar} alt={person.name} className="w-12 h-12 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0" />
-          ) : (
-            <div className="w-12 h-12 rounded-full bg-[#FAFAFA] border border-[#E5E7EB] flex items-center justify-center font-medium text-[15px] text-[#181818] flex-shrink-0 shadow-sm">
-              {person.name.split(' ').map((n) => n[0]).join('')}
-            </div>
-          )}
+          <img
+            src={person.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=181818&color=ffffff&bold=true`}
+            alt={person.name}
+            className="w-13 h-13 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0"
+            onError={(e) => {
+              e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=181818&color=ffffff&bold=true`;
+            }}
+          />
           <div className="pt-0.5 pr-8">
             <h2 className="text-[16px] font-bold text-[#181818] leading-tight">{person.name}</h2>
             <p className="text-[14px] text-[#4B5563] mt-0.5">
@@ -169,76 +170,82 @@ export const PersonDetailModal: React.FC = () => {
         </div>
 
         {/* Contact info respecting privacy consent */}
-        <div className="bg-[#FAFAFA] p-2.5 rounded-lg border border-[#E5E7EB] space-y-3 mt-3 text-[12px]">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-2 text-[#6B6B6B]">
-              <Mail className="w-4 h-4" />
-              Email
-            </span>
-            <span className="text-[#181818] font-medium">
-              {!isConnected ? (
-                <span className="text-[#9CA3AF] italic font-normal flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Hidden until connected</span>
-              ) : person.privacy?.shareEmail ? (
-                person.email
-              ) : (
-                <span className="text-[#9CA3AF] italic font-normal">Not shared</span>
-              )}
-            </span>
-          </div>
+        {(() => {
+          const isOpenPreset = person.privacy?.preset === 'Open';
+          const canViewContact = isConnected || isOpenPreset;
+          return (
+            <div className="bg-[#FAFAFA] p-2.5 rounded-lg border border-[#E5E7EB] space-y-3 mt-3 text-[12px]">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-[#6B6B6B]">
+                  <Mail className="w-4 h-4" />
+                  Email
+                </span>
+                <span className="text-[#181818] font-medium">
+                  {!canViewContact ? (
+                    <span className="text-[#9CA3AF] italic font-normal flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Hidden until connected</span>
+                  ) : person.privacy?.shareEmail !== false && person.email ? (
+                    person.email
+                  ) : (
+                    <span className="text-[#9CA3AF] italic font-normal">Not shared</span>
+                  )}
+                </span>
+              </div>
 
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-2 text-[#6B6B6B]">
-              <Phone className="w-4 h-4" />
-              Mobile
-            </span>
-            <span className="text-[#181818] font-medium">
-              {!isConnected ? (
-                <span className="text-[#9CA3AF] italic font-normal flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Hidden until connected</span>
-              ) : person.privacy?.sharePhone ? (
-                person.mobile
-              ) : (
-                <span className="text-[#9CA3AF] italic font-normal">Not shared</span>
-              )}
-            </span>
-          </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-[#6B6B6B]">
+                  <Phone className="w-4 h-4" />
+                  Mobile
+                </span>
+                <span className="text-[#181818] font-medium">
+                  {!canViewContact ? (
+                    <span className="text-[#9CA3AF] italic font-normal flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Hidden until connected</span>
+                  ) : person.privacy?.sharePhone !== false && person.mobile ? (
+                    person.mobile
+                  ) : (
+                    <span className="text-[#9CA3AF] italic font-normal">Not shared</span>
+                  )}
+                </span>
+              </div>
 
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-2 text-[#6B6B6B]">
-              <Linkedin className="w-4 h-4 text-[#0A66C2]" />
-              LinkedIn
-            </span>
-            <span>
-              {person.linkedin ? (
-                <a
-                  href={person.linkedin.startsWith('http') ? person.linkedin : `https://${person.linkedin}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-[#0A66C2] font-medium hover:underline flex items-center gap-1"
-                >
-                  {person.name} on LinkedIn
-                </a>
-              ) : (
-                <span className="text-[#9CA3AF] italic">Not shared</span>
-              )}
-            </span>
-          </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-[#6B6B6B]">
+                  <Linkedin className="w-4 h-4 text-[#0A66C2]" />
+                  LinkedIn
+                </span>
+                <span>
+                  {person.linkedin ? (
+                    <a
+                      href={person.linkedin.startsWith('http') ? person.linkedin : `https://${person.linkedin}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[#0A66C2] font-medium hover:underline flex items-center gap-1"
+                    >
+                      {person.name} on LinkedIn
+                    </a>
+                  ) : (
+                    <span className="text-[#9CA3AF] italic">Not shared</span>
+                  )}
+                </span>
+              </div>
 
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-2 text-[#6B6B6B]">
-              <Twitter className="w-4 h-4 text-[#1DA1F2]" />
-              Twitter / X
-            </span>
-            <span>
-              {person.privacy?.shareTwitter && person.twitter ? (
-                <a href={`https://twitter.com/${person.twitter}`} target="_blank" rel="noreferrer" className="text-[#1DA1F2] font-medium hover:underline">
-                  @{person.twitter}
-                </a>
-              ) : (
-                <span className="text-[#9CA3AF] italic">Not shared</span>
-              )}
-            </span>
-          </div>
-        </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-[#6B6B6B]">
+                  <Twitter className="w-4 h-4 text-[#1DA1F2]" />
+                  Twitter / X
+                </span>
+                <span>
+                  {person.privacy?.shareTwitter && person.twitter ? (
+                    <a href={`https://twitter.com/${person.twitter}`} target="_blank" rel="noreferrer" className="text-[#1DA1F2] font-medium hover:underline">
+                      @{person.twitter}
+                    </a>
+                  ) : (
+                    <span className="text-[#9CA3AF] italic">Not shared</span>
+                  )}
+                </span>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Connect Action Button */}
         <div className="pt-2">

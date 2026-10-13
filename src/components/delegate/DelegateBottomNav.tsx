@@ -19,7 +19,7 @@ export const DelegateBottomNav: React.FC = () => {
     <nav className="flex-shrink-0 w-full z-40 bg-[#FFFFFF] border-t border-[#DEDCD7] pb-safe px-2 pt-0.5 shadow-md select-none">
       <div className="flex items-center justify-around max-w-md mx-auto relative">
         {navItems.map((item) => {
-          const isActive = activeDelegateTab === item.id || (item.id === 'home' && ['speakers', 'polls', 'map', 'sponsors', 'ai_recommendations'].includes(activeDelegateTab));
+          const isActive = activeDelegateTab === item.id || (item.id === 'home' && ['speakers', 'polls', 'map', 'sponsors', 'ai_recommendations', 'support'].includes(activeDelegateTab));
           const Icon = item.icon;
 
           if (item.isRaised) {

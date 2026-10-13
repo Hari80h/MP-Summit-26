@@ -156,9 +156,9 @@ export const DelegatePeople: React.FC = () => {
       )}
 
       {/* Attendees List */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         {finalFilteredList.length === 0 ? (
-          <div className="p-8 text-center bg-white rounded-[14px] border border-[#DEDCD7]">
+          <div className="p-8 text-center bg-white rounded-[16px] border border-[#DEDCD7]">
             <p className="text-xs font-semibold text-[#181818]">No attendees found</p>
             <p className="text-[11px] text-[#6B6B6B] mt-1">
               Try adjusting your search keywords or filter tab.
@@ -173,30 +173,39 @@ export const DelegatePeople: React.FC = () => {
               <div
                 key={person.id}
                 onClick={() => setSelectedPersonId(person.id)}
-                className="bg-white p-2.5 rounded-lg border border-[#DEDCD7] hover:border-[#181818]/30 transition-all shadow-sm cursor-pointer flex items-center justify-between gap-2"
+                className="bg-white p-3.5 rounded-[16px] border border-[#E2E8F0] hover:border-[#181818]/30 transition-all shadow-xs hover:shadow-sm cursor-pointer flex items-center justify-between gap-3"
               >
-                <div className="flex items-center gap-2 overflow-hidden flex-1">
+                <div className="flex items-center gap-3 overflow-hidden flex-1 min-w-0">
                   {person.avatar ? (
-                    <img src={person.avatar} alt={person.name} className="w-8 h-8 rounded-full object-cover flex-shrink-0 shadow-sm border border-[#E5E7EB]" />
+                    <img
+                      src={person.avatar}
+                      alt={person.name}
+                      className="w-12 h-12 rounded-full object-cover flex-shrink-0 shadow-xs border border-[#E5E7EB]"
+                    />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-[#F6F4F0] border border-[#E5E7EB] flex items-center justify-center font-medium text-[12px] text-[#181818] flex-shrink-0 shadow-sm">
-                      {person.name.split(' ').map(n => n[0]).join('')}
+                    <div className="w-12 h-12 rounded-full bg-[#F6F4F0] border border-[#E5E7EB] flex items-center justify-center font-bold text-[15px] text-[#181818] flex-shrink-0 shadow-xs">
+                      {person.name
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')}
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-[11.5px] font-semibold text-[#181818] truncate">{person.name}</h3>
+                      <h3 className="text-[14.5px] font-bold text-[#0F172A] truncate leading-tight">
+                        {person.name}
+                      </h3>
                       {person.relevanceScore && (
-                        <span className="text-[11px] font-medium text-[#0D9488] bg-[#F0FDFA] border border-[#CCFBF1] px-1.5 py-0.5 rounded-md flex-shrink-0">
+                        <span className="text-[11px] font-bold text-[#0D9488] bg-[#F0FDFA] border border-[#CCFBF1] px-2 py-0.5 rounded-full flex-shrink-0">
                           {person.relevanceScore}%
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-[#6B6B6B] truncate mt-0.5">
+                    <p className="text-[12.5px] text-[#64748B] font-medium truncate mt-1 leading-normal">
                       {person.designation} · {person.company}
                     </p>
                     {person.boothNumber && (
-                      <span className="inline-block mt-1 text-[10px] font-medium text-[#B51F32] bg-red-50 border border-red-100 px-1.5 py-0.5 rounded-md">
+                      <span className="inline-block mt-1 text-[11px] font-semibold text-[#B51F32] bg-red-50 border border-red-100 px-2 py-0.5 rounded-md">
                         Booth {person.boothNumber}
                       </span>
                     )}
@@ -210,7 +219,7 @@ export const DelegatePeople: React.FC = () => {
                         e.stopPropagation();
                         ignoreConnectionRequest(person.id);
                       }}
-                      className="h-9 px-3 flex items-center justify-center text-[#6B6B6B] hover:text-[#181818] transition-all font-medium text-[12px] bg-transparent"
+                      className="h-10 px-3 flex items-center justify-center text-[#6B6B6B] hover:text-[#181818] transition-all font-semibold text-[13px] bg-transparent"
                     >
                       Ignore
                     </button>
@@ -219,7 +228,7 @@ export const DelegatePeople: React.FC = () => {
                         e.stopPropagation();
                         acceptConnectionRequest(person.id);
                       }}
-                      className="h-9 px-2.5 flex items-center justify-center rounded-lg border border-[#181818] text-[#181818] bg-white transition-all font-medium text-[12px] active:scale-95"
+                      className="h-10 px-3.5 flex items-center justify-center rounded-xl border border-[#181818] text-[#181818] bg-white transition-all font-semibold text-[13px] active:scale-95 shadow-xs"
                     >
                       Accept
                     </button>
@@ -234,27 +243,27 @@ export const DelegatePeople: React.FC = () => {
                         handleConnect(person.id, e);
                       }
                     }}
-                    className={`flex-shrink-0 w-[102px] justify-center h-[34px] rounded-lg text-[12.5px] font-medium flex items-center gap-1.5 transition-all active:scale-95 ${
+                    className={`flex-shrink-0 min-w-[106px] px-3.5 h-[40px] rounded-xl text-[13px] font-semibold flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-xs ${
                       connected
                         ? 'bg-red-50 text-[#B51F32] border border-red-200'
                         : pending
                         ? 'bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]'
-                        : 'bg-white text-[#181818] border border-[#181818]'
+                        : 'bg-white text-[#181818] border border-[#181818] hover:bg-[#F8F7F4]'
                     }`}
                   >
                     {connected ? (
                       <>
-                        <X className="w-3.5 h-3.5" />
+                        <X className="w-4 h-4" />
                         <span>Disconnect</span>
                       </>
                     ) : pending ? (
                       <>
-                        <Clock className="w-3.5 h-3.5" />
+                        <Clock className="w-4 h-4" />
                         <span>Pending</span>
                       </>
                     ) : (
                       <>
-                        <UserPlus className="w-3.5 h-3.5" />
+                        <UserPlus className="w-4 h-4" />
                         <span>Connect</span>
                       </>
                     )}

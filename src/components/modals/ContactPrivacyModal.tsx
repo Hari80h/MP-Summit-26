@@ -19,7 +19,7 @@ export const ContactPrivacyModal: React.FC<ContactPrivacyModalProps> = ({ isOpen
 
   if (!isOpen) return null;
 
-  const handlePresetSelect = (selected: 'Open' | 'Connections Only' | 'Private') => {
+  const handlePresetSelect = (selected: 'Open' | 'Connections Only') => {
     setPreset(selected);
     if (selected === 'Open') {
       setShareEmail(true);
@@ -27,12 +27,8 @@ export const ContactPrivacyModal: React.FC<ContactPrivacyModalProps> = ({ isOpen
       setShareLinkedIn(true);
     } else if (selected === 'Connections Only') {
       setShareEmail(true);
-      setSharePhone(false);
+      setSharePhone(true);
       setShareLinkedIn(true);
-    } else if (selected === 'Private') {
-      setShareEmail(false);
-      setSharePhone(false);
-      setShareLinkedIn(false);
     }
   };
 
@@ -68,19 +64,19 @@ export const ContactPrivacyModal: React.FC<ContactPrivacyModalProps> = ({ isOpen
         {/* Presets Grid */}
         <div className="space-y-1.5">
           <label className="text-xs font-bold text-[#181818]">Privacy Presets</label>
-          <div className="grid grid-cols-3 gap-1.5">
-            {(['Open', 'Connections Only', 'Private'] as const).map((p) => (
+          <div className="grid grid-cols-2 gap-2">
+            {(['Connections Only', 'Open'] as const).map((p) => (
               <button
                 key={p}
                 type="button"
                 onClick={() => handlePresetSelect(p)}
-                className={`py-2 px-1 rounded-xl text-xs font-semibold border transition-all text-center ${
+                className={`py-2 px-2 rounded-xl text-xs font-semibold border transition-all text-center ${
                   preset === p
                     ? 'bg-[#181818] text-white border-[#181818] shadow-xs'
                     : 'bg-white text-[#6B6B6B] border-[#DEDCD7] hover:border-[#181818]'
                 }`}
               >
-                {p}
+                {p === 'Connections Only' ? 'Connections Only (Default)' : 'Open'}
               </button>
             ))}
           </div>

@@ -42,8 +42,8 @@ interface StoreContextType {
   // Navigation & Role
   role: DemoRole;
   setRole: (role: DemoRole) => void;
-  activeDelegateTab: 'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors';
-  setActiveDelegateTab: (tab: 'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors') => void;
+  activeDelegateTab: 'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support';
+  setActiveDelegateTab: (tab: 'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support') => void;
   viewSavedPeopleOnly: boolean;
   setViewSavedPeopleOnly: (v: boolean) => void;
   viewSavedCompaniesOnly: boolean;
@@ -134,12 +134,12 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'eventsphere_mpss26_store_v9';
+const STORAGE_KEY = 'eventsphere_mpss26_store_v12';
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation & Role
   const [role, setRoleState] = useState<DemoRole>('delegate');
-  const [activeDelegateTab, setActiveDelegateTab] = useState<'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors'>('home');
+  const [activeDelegateTab, setActiveDelegateTab] = useState<'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support'>('home');
   const [viewSavedPeopleOnly, setViewSavedPeopleOnly] = useState<boolean>(false);
   const [viewSavedCompaniesOnly, setViewSavedCompaniesOnly] = useState<boolean>(false);
   const [activeExhibitorTab, setActiveExhibitorTab] = useState<'home' | 'leads' | 'scan' | 'products' | 'more'>('home');
@@ -223,24 +223,63 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           if (!u.registrationId || u.registrationId.toLowerCase().includes('not public')) {
             u.registrationId = '#0523';
           }
+          if (!u.email || u.email.toLowerCase().includes('not public') || u.email.toLowerCase().includes('unlisted')) {
+            u.email = 'hari@eventsphere.com';
+          }
+          if (!u.mobile || u.mobile.toLowerCase().includes('not public') || u.mobile.toLowerCase().includes('unlisted')) {
+            u.mobile = '+91 98765 00000';
+          }
+          if (!u.privacy || (u.privacy.preset as any) === 'Private') {
+            u.privacy = {
+              preset: 'Connections Only',
+              shareEmail: true,
+              sharePhone: true,
+              shareLinkedIn: true,
+              shareTwitter: false,
+            };
+          }
           setCurrentUser(u);
         }
+        const initialMap = new Map(INITIAL_ATTENDEES.map((a: Person) => [a.id, a]));
         if (parsed.attendees) {
           const existingIds = new Set(parsed.attendees.map((a: Person) => a.id));
           const missingSpeakers = INITIAL_ATTENDEES.filter((a) => !existingIds.has(a.id));
           const allAttendees = [...parsed.attendees, ...missingSpeakers];
           const sanitized = allAttendees.map((a: Person) => {
-            if (!a.registrationId || a.registrationId.toLowerCase().includes('not public') || a.registrationId.toLowerCase().includes('unlisted')) {
-              const num = String(Math.abs(a.id.split('').reduce((acc: number, c: string) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 9000 + 1000).padStart(4, '0');
-              return { ...a, registrationId: `#${num}` };
+            let item = { ...a };
+            const seed = initialMap.get(item.id);
+            if (!item.avatar && seed?.avatar) {
+              item.avatar = seed.avatar;
             }
-            return a;
+            if (!item.registrationId || item.registrationId.toLowerCase().includes('not public') || item.registrationId.toLowerCase().includes('unlisted')) {
+              const num = String(Math.abs(item.id.split('').reduce((acc: number, c: string) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 9000 + 1000).padStart(4, '0');
+              item.registrationId = `#${num}`;
+            }
+            if (!item.privacy || (item.privacy.preset as any) === 'Private') {
+              item.privacy = {
+                preset: 'Connections Only',
+                shareEmail: true,
+                sharePhone: true,
+                shareLinkedIn: true,
+                shareTwitter: false,
+              };
+            }
+            return item;
           });
           setAttendees(sanitized);
         } else {
           setAttendees(INITIAL_ATTENDEES);
         }
-        if (parsed.connections) setConnections(parsed.connections);
+        if (parsed.connections) {
+          const sanitizedConns = parsed.connections.map((c: any) => {
+            if (!c.avatar) {
+              const seed = initialMap.get(c.personId);
+              if (seed?.avatar) c.avatar = seed.avatar;
+            }
+            return c;
+          });
+          setConnections(sanitizedConns);
+        }
         if (parsed.leads && parsed.leads.length > 0) setLeads(parsed.leads);
         else setLeads(INITIAL_LEADS);
         if (parsed.products) setProducts(parsed.products);
@@ -259,7 +298,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setSessions(INITIAL_SESSIONS);
         }
         if (parsed.questions) setQuestions(parsed.questions);
-        if (parsed.poll) setPoll(parsed.poll);
+        if (parsed.poll && parsed.poll.options && parsed.poll.options.length > 0 && parsed.poll.id !== 'poll-no-public-data') {
+          setPoll(parsed.poll);
+        } else {
+          setPoll(INITIAL_POLL);
+        }
         if (parsed.exhibitors) setExhibitors(parsed.exhibitors);
         if (parsed.interestedVisitors) setInterestedVisitors(parsed.interestedVisitors);
         if (parsed.role) setRoleState(parsed.role);

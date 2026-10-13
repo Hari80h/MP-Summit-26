@@ -5,7 +5,6 @@ import { useStore } from '../../lib/store';
 import { INITIAL_ATTENDEES } from '../../lib/mockData';
 import {
   Calendar,
-  CalendarPlus,
   MapPin,
   ArrowRight,
   Check,
@@ -13,10 +12,10 @@ import {
   ChevronRight,
   Star,
   Users,
-  BarChart2,
   Map,
   Bookmark,
   BookmarkCheck,
+  BarChart2,
 } from 'lucide-react';
 
 export const DelegateHome: React.FC = () => {
@@ -36,8 +35,6 @@ export const DelegateHome: React.FC = () => {
     toggleBookmarkSession,
   } = useStore();
 
-  const upcomingSessions = sessions.filter((s) => s.status === 'upcoming' || s.status === 'live');
-
   // Featured "Up next" session for MPSS 2026: Day 1 Opening Keynote at 10:00 AM – 10:30 AM
   const featuredSession =
     sessions.find((s) => s.id === 'mpss26-d1-02') ||
@@ -56,31 +53,6 @@ export const DelegateHome: React.FC = () => {
       isBookmarked: false,
     };
 
-  const featuredSpeakers = (() => {
-    const list: { id?: string; name: string; avatar?: string; designation?: string; company?: string }[] = [];
-    const pool = [...attendees, ...INITIAL_ATTENDEES];
-    if (featuredSession.speakerId) {
-      const match = pool.find((a) => a.id === featuredSession.speakerId);
-      if (match) list.push(match);
-    }
-    if (list.length === 0 && featuredSession.speakerName) {
-      const match = pool.find((a) =>
-        a.name.toLowerCase().includes(featuredSession.speakerName.toLowerCase()) ||
-        featuredSession.speakerName.toLowerCase().includes(a.name.toLowerCase())
-      );
-      if (match) list.push(match);
-      else {
-        list.push({
-          id: featuredSession.speakerId || 'speaker-jaswinder-ahuja',
-          name: featuredSession.speakerName,
-          avatar: '/images/speakers/jaswinder-ahuja.png',
-          designation: featuredSession.speakerDesignation,
-          company: featuredSession.speakerCompany,
-        });
-      }
-    }
-    return list;
-  })();
 
   const isFeaturedBookmarked = sessions.some(
     (s) => s.id === featuredSession.id && s.isBookmarked
@@ -177,24 +149,26 @@ export const DelegateHome: React.FC = () => {
             </p>
           </div>
 
-          <button
-            onClick={() => setActiveDelegateTab('profile')}
-            className="relative group focus:outline-none flex-shrink-0 ml-2"
-            aria-label="View Profile"
-          >
-            {currentUser.avatar ? (
-              <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-base border-2 border-white shadow-sm">
-                {currentUser.name.split(' ').map((n) => n[0]).join('')}
-              </div>
-            )}
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#22C55E] border-2 border-white rounded-full shadow-xs" />
-          </button>
+          <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+            <button
+              onClick={() => setActiveDelegateTab('profile')}
+              className="relative group focus:outline-none flex-shrink-0"
+              aria-label="View Profile"
+            >
+              {currentUser.avatar ? (
+                <img
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-base border-2 border-white shadow-sm">
+                  {currentUser.name.split(' ').map((n) => n[0]).join('')}
+                </div>
+              )}
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#22C55E] border-2 border-white rounded-full shadow-xs" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -376,64 +350,15 @@ export const DelegateHome: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex items-center justify-between mt-1 gap-2.5">
-            <div className="min-w-0 flex-1">
-              <h4 className="text-[14.5px] font-bold text-[#111827] tracking-tight leading-snug truncate">
-                {featuredSession.title || 'Keynote on Global Semiconductor Industry & Technology Trends'}
-              </h4>
-              <div className="flex items-center gap-1.5 text-[11.5px] text-[#6B7280] mt-0.5 truncate">
-                <span className="flex items-center gap-1 flex-shrink-0">
-                  <MapPin className="w-3.5 h-3.5 text-[#9CA3AF]" />
-                  <span>{featuredSession.room || 'Main Auditorium'}</span>
-                </span>
-                {featuredSession.speakerName && (
-                  <span className="truncate text-[#4B5563]">
-                    · <strong className="text-[#111827] font-medium">{featuredSession.speakerName}</strong>
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Overlapping Speaker Avatars */}
-            <div className="flex -space-x-2 overflow-hidden flex-shrink-0 items-center">
-              {featuredSpeakers.length > 0 ? (
-                featuredSpeakers.map((spk, idx) => (
-                  spk.avatar ? (
-                    <img
-                      key={spk.id || idx}
-                      src={spk.avatar}
-                      alt={spk.name}
-                      onClick={(e) => {
-                        if (spk.id) {
-                          e.stopPropagation();
-                          setSelectedPersonId(spk.id);
-                        }
-                      }}
-                      title={`${spk.name} (View profile)`}
-                      className="w-8 h-8 rounded-full ring-2 ring-white object-cover shadow-xs flex-shrink-0 hover:scale-105 transition-transform cursor-pointer"
-                    />
-                  ) : (
-                    <div
-                      key={spk.id || idx}
-                      onClick={(e) => {
-                        if (spk.id) {
-                          e.stopPropagation();
-                          setSelectedPersonId(spk.id);
-                        }
-                      }}
-                      className="w-8 h-8 rounded-full ring-2 ring-white bg-[#FEE2E2] text-[#DC2626] font-bold text-xs flex items-center justify-center shadow-xs flex-shrink-0 cursor-pointer"
-                    >
-                      {spk.name.slice(0, 2)}
-                    </div>
-                  )
-                ))
-              ) : (
-                <img
-                  src="/images/speakers/jaswinder-ahuja.png"
-                  alt="Jaswinder Ahuja"
-                  className="w-8 h-8 rounded-full ring-2 ring-white object-cover shadow-xs flex-shrink-0"
-                />
-              )}
+          <div className="mt-1">
+            <h4 className="text-[14.5px] font-bold text-[#111827] tracking-tight leading-snug">
+              {featuredSession.title || 'Keynote on Global Semiconductor Industry & Technology Trends'}
+            </h4>
+            <div className="flex items-center gap-1.5 text-[11.5px] text-[#6B7280] mt-1">
+              <span className="flex items-center gap-1 flex-shrink-0">
+                <MapPin className="w-3.5 h-3.5 text-[#9CA3AF]" />
+                <span>{featuredSession.room || 'Main Auditorium'}</span>
+              </span>
             </div>
           </div>
 
@@ -460,7 +385,7 @@ export const DelegateHome: React.FC = () => {
         <div className="grid grid-cols-4 gap-2">
           {[
             { id: 'speakers', label: 'Speakers', icon: Users, tab: 'speakers' },
-            { id: 'polls', label: 'Polls', icon: BarChart2, tab: 'polls' },
+            { id: 'polls', label: 'Poll', icon: BarChart2, tab: 'polls' },
             { id: 'map', label: 'Map', icon: Map, tab: 'map' },
             { id: 'sponsors', label: 'Sponsors', icon: Star, tab: 'sponsors' },
           ].map((item) => (
@@ -643,78 +568,6 @@ export const DelegateHome: React.FC = () => {
               );
             });
           })()}
-        </div>
-      </div>
-
-      {/* Schedule / Upcoming Sessions Preview */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between px-0.5">
-          <h3 className="text-[17px] font-bold text-[#111827] tracking-tight">
-            Schedule
-          </h3>
-          <button
-            onClick={() => setActiveDelegateTab('schedule')}
-            className="text-[12px] font-semibold text-[#DC2626] flex items-center gap-1 hover:underline"
-          >
-            <span>View all</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        <div className="space-y-2.5">
-          {upcomingSessions.slice(0, 3).map((session) => (
-            <div
-              key={session.id}
-              onClick={() => {
-                setSelectedSessionId(session.id);
-                setActiveDelegateTab('schedule');
-              }}
-              className="p-3 bg-white rounded-2xl shadow-xs relative overflow-hidden flex flex-col gap-1.5 cursor-pointer hover:border-gray-400 transition-all border border-[#E5E7EB]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 bg-[#F3F4F6] px-2 py-0.5 rounded-full">
-                  <Calendar className="w-2.5 h-2.5 text-[#6B6B6B]" />
-                  <span className="text-[10px] font-semibold text-[#4B5563]">
-                    Day {session.day} · {session.timeRange}
-                  </span>
-                </div>
-                <span className="text-[10.5px] font-semibold text-[#6B6B6B] flex items-center gap-0.5">
-                  Details <ChevronRight className="w-3 h-3" />
-                </span>
-              </div>
-
-              <div>
-                <h4 className="text-[13.5px] font-bold text-[#181818] leading-snug pr-2">
-                  {session.title}
-                </h4>
-                <p className="text-[11px] text-[#6B6B6B] mt-0.5">
-                  {session.speakerName || 'Official Programme'}
-                </p>
-              </div>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleBookmarkSession(session.id);
-                }}
-                className={`w-full py-2 rounded-xl text-[11.5px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-1.5 mt-1 ${
-                  session.isBookmarked
-                    ? 'border-[#0D9488] bg-[#F0FDF4] text-[#0D9488]'
-                    : 'border-[#E5E7EB] text-[#181818] bg-[#F9FAFB] hover:bg-gray-100'
-                }`}
-              >
-                {session.isBookmarked ? (
-                  <>
-                    <Check className="w-3.5 h-3.5" /> Added to Schedule
-                  </>
-                ) : (
-                  <>
-                    <CalendarPlus className="w-3.5 h-3.5" /> Add to Schedule
-                  </>
-                )}
-              </button>
-            </div>
-          ))}
         </div>
       </div>
     </div>

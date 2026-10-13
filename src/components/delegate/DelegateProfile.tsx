@@ -88,12 +88,12 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
   };
 
   const handlePresetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const preset = e.target.value as any;
+    const preset = e.target.value as 'Open' | 'Connections Only';
     updateCurrentUserPrivacy({ preset });
     if (preset === 'Open') {
       updateCurrentUserPrivacy({ shareEmail: true, sharePhone: true, shareLinkedIn: true, shareTwitter: true });
-    } else if (preset === 'Private') {
-      updateCurrentUserPrivacy({ shareEmail: false, sharePhone: false, shareLinkedIn: false, shareTwitter: false });
+    } else if (preset === 'Connections Only') {
+      updateCurrentUserPrivacy({ shareEmail: true, sharePhone: true, shareLinkedIn: true, shareTwitter: false });
     }
   };
 
@@ -219,43 +219,34 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
 
       {/* Inline Contact Sharing block */}
       <div className="bg-white py-3 px-3.5 rounded-[16px] border border-[#DEDCD7] shadow-sm space-y-2">
-        <div>
-          <h3 className="text-[14.5px] font-bold text-[#181818]">Contact Sharing</h3>
-          <p className="text-[13px] text-[#6B6B6B] leading-relaxed mt-0.5 pr-2">
-            Applies to your QR, scans and product enquiries<br/>
-            EventSphere owns consent — registration data stays with the event website
-          </p>
-        </div>
+        <h3 className="text-[14.5px] font-bold text-[#181818]">Contact Sharing</h3>
 
         <select 
           value={currentUser.privacy.preset}
           onChange={handlePresetChange}
-          className="w-full py-2 px-3 rounded-[8px] border border-[#DEDCD7] bg-white text-[13.5px] font-medium text-[#181818] outline-none appearance-none focus:border-[#181818]"
+          className="w-full py-2.5 px-3 rounded-[10px] border border-[#DEDCD7] bg-white text-[13.5px] font-semibold text-[#181818] outline-none appearance-none focus:border-[#181818] cursor-pointer"
           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B6B6B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', backgroundSize: '16px' }}
         >
+          <option value="Connections Only">Connections Only (Default)</option>
           <option value="Open">Open</option>
-          <option value="Connections Only">Connections Only</option>
-          <option value="Private">Private</option>
         </select>
         
-        <p className="text-[13px] text-[#6B6B6B] mt-1 border-b border-[#F3F4F6] pb-4">
+        <p className="text-[12.5px] text-[#6B6B6B] mt-1 border-b border-[#F3F4F6] pb-3">
           {currentUser.privacy.preset === 'Open' 
-            ? 'Share selected fields with everyone' 
-            : currentUser.privacy.preset === 'Private'
-            ? 'Keep all contact information private'
-            : 'Customize who sees your information'}
+            ? 'Share contact details with everyone at the summit' 
+            : 'Share contact details only with your accepted connections'}
         </p>
 
-        <div className="space-y-0">
+          <div className="space-y-0">
           <div className="flex items-center justify-between py-2.5 group border-b border-[#F3F4F6]">
             <div className="flex items-center flex-1 min-w-0">
-              <span className="text-[14px] font-medium text-[#181818] w-[80px] flex-shrink-0">Email</span>
+              <span className="text-[14px] font-medium text-[#181818] w-[85px] flex-shrink-0">Email</span>
               <input 
                 type="text" 
-                value={currentUser.email === 'Not publicly listed' ? '' : (currentUser.email || '')} 
+                value={currentUser.email || 'hari@eventsphere.com'} 
                 onChange={(e) => updateCurrentUser({ email: e.target.value })} 
-                placeholder="Add email..." 
-                className="flex-1 min-w-0 max-w-[160px] px-2.5 py-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-md text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
+                placeholder="Registration email..." 
+                className="flex-1 min-w-0 max-w-[170px] px-2.5 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
               />
             </div>
             <button 
@@ -272,13 +263,13 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
           
           <div className="flex items-center justify-between py-2.5 group border-b border-[#F3F4F6]">
             <div className="flex items-center flex-1 min-w-0">
-              <span className="text-[14px] font-medium text-[#181818] w-[80px] flex-shrink-0">Mobile</span>
+              <span className="text-[14px] font-medium text-[#181818] w-[85px] flex-shrink-0">Mobile</span>
               <input 
                 type="text" 
-                value={currentUser.mobile === 'Not publicly listed' ? '' : (currentUser.mobile || '')} 
+                value={currentUser.mobile || '+91 98765 00000'} 
                 onChange={(e) => updateCurrentUser({ mobile: e.target.value })} 
-                placeholder="Add mobile..." 
-                className="flex-1 min-w-0 max-w-[160px] px-2.5 py-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-md text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
+                placeholder="Registration mobile..." 
+                className="flex-1 min-w-0 max-w-[170px] px-2.5 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
               />
             </div>
             <button 
@@ -295,13 +286,13 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
           
           <div className="flex items-center justify-between py-2.5 group border-b border-[#F3F4F6]">
             <div className="flex items-center flex-1 min-w-0">
-              <span className="text-[14px] font-medium text-[#181818] w-[80px] flex-shrink-0">LinkedIn</span>
+              <span className="text-[14px] font-medium text-[#181818] w-[85px] flex-shrink-0">LinkedIn</span>
               <input 
                 type="text" 
                 value={currentUser.linkedin || ''} 
                 onChange={(e) => updateCurrentUser({ linkedin: e.target.value })} 
-                placeholder="Profile link..." 
-                className="flex-1 min-w-0 max-w-[160px] px-2.5 py-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-md text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
+                placeholder="Add profile link..." 
+                className="flex-1 min-w-0 max-w-[170px] px-2.5 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
               />
             </div>
             <button 
@@ -318,13 +309,13 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
 
           <div className="flex items-center justify-between py-2.5 group">
             <div className="flex items-center flex-1 min-w-0">
-              <span className="text-[14px] font-medium text-[#181818] w-[80px] flex-shrink-0">Twitter / X</span>
+              <span className="text-[14px] font-medium text-[#181818] w-[85px] flex-shrink-0">Twitter / X</span>
               <input 
                 type="text" 
                 value={currentUser.twitter || ''} 
                 onChange={(e) => updateCurrentUser({ twitter: e.target.value })} 
-                placeholder="@handle" 
-                className="flex-1 min-w-0 max-w-[160px] px-2.5 py-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-md text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
+                placeholder="Add @handle..." 
+                className="flex-1 min-w-0 max-w-[170px] px-2.5 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg text-[13px] text-[#181818] outline-none focus:border-[#181818] focus:bg-white placeholder-[#9CA3AF] transition-colors"
               />
             </div>
             <button 

@@ -10,6 +10,7 @@ import {
   Lead,
   Connection,
   InterestedVisitor,
+  PrivacyConsent,
 } from '../types';
 
 /**
@@ -51,11 +52,11 @@ export const INITIAL_EVENT: EventMetadata = {
   totalConnections: 3281,
 };
 
-const PRIVATE_CONTACT_DEFAULT = {
-  preset: 'Private' as const,
-  shareEmail: false,
-  sharePhone: false,
-  shareLinkedIn: false,
+const PRIVATE_CONTACT_DEFAULT: PrivacyConsent = {
+  preset: 'Connections Only',
+  shareEmail: true,
+  sharePhone: true,
+  shareLinkedIn: true,
   shareTwitter: false,
 };
 
@@ -71,10 +72,10 @@ export const CURRENT_USER: Person = {
   skills: ['Leadership', 'System Architecture', 'Product Strategy'],
   email: 'hari@eventsphere.com',
   mobile: '+91 98765 00000',
-  linkedin: 'https://www.linkedin.com/in/harigupta',
+  linkedin: '',
   twitter: '',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
-  privacy: { ...PRIVATE_CONTACT_DEFAULT, shareLinkedIn: true },
+  privacy: { ...PRIVATE_CONTACT_DEFAULT },
   checkedIn: true,
   checkInTime: '08:30 AM',
   registrationId: '#0523',
@@ -103,6 +104,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-aarav-sharma',
     name: 'Aarav Sharma',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
     company: 'Infosys',
     designation: 'Product Manager',
     role: 'delegate',
@@ -121,6 +123,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-riya-mehta',
     name: 'Riya Mehta',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80',
     company: 'Google',
     designation: 'Product Manager',
     role: 'delegate',
@@ -139,6 +142,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-daniel-osei',
     name: 'Daniel Osei',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
     company: 'AWS',
     designation: 'Cloud Architect',
     role: 'exhibitor_staff',
@@ -157,6 +161,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-kenji-sato',
     name: 'Kenji Sato',
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&auto=format&fit=crop&q=80',
     company: 'Sony',
     designation: 'ML Engineer',
     role: 'delegate',
@@ -175,6 +180,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-sara-thomas',
     name: 'Sara Thomas',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80',
     company: 'Microsoft',
     designation: 'Design Lead',
     role: 'delegate',
@@ -193,6 +199,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-arjun-patel',
     name: 'Arjun Patel',
+    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80',
     company: 'Fluxbase',
     designation: 'Founder',
     role: 'vip',
@@ -211,6 +218,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-priya-rao',
     name: 'Priya Rao',
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80',
     company: 'TCS',
     designation: 'VP Engineering',
     role: 'vip',
@@ -229,6 +237,7 @@ export const INITIAL_ATTENDEES: Person[] = [
   {
     id: 'att-kabir-malhotra',
     name: 'Kabir Malhotra',
+    avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=400&auto=format&fit=crop&q=80',
     company: 'Zerodha',
     designation: 'Analyst',
     role: 'delegate',
@@ -1476,13 +1485,18 @@ export const INITIAL_SESSIONS: Session[] = [
 export const INITIAL_QUESTIONS: Question[] = [];
 
 export const INITIAL_POLL: Poll = {
-  id: 'poll-no-public-data',
-  sessionId: '',
-  question: 'No public poll has been published for BTS 2026.',
-  status: 'closed',
-  totalVotes: 0,
+  id: 'poll-mpss26-01',
+  sessionId: 'mpss26-d1-02',
+  question: 'Which sector presents the largest semiconductor growth opportunity for India by 2030?',
+  status: 'open',
+  totalVotes: 480,
   voterIds: [],
-  options: [],
+  options: [
+    { id: 'opt-1', text: 'Automotive & EV Power Semiconductor Modules', votes: 210 },
+    { id: 'opt-2', text: 'AI & Data Center High-Performance Accelerators', votes: 165 },
+    { id: 'opt-3', text: '5G / Telecom & IoT Edge Silicon', votes: 65 },
+    { id: 'opt-4', text: 'Industrial Automation & Fab Instrumentation', votes: 40 },
+  ],
 };
 
 export const INITIAL_EXHIBITORS: ExhibitorStats[] = [
