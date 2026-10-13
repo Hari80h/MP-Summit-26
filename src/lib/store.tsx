@@ -340,7 +340,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         role,
         /* hasAccessConfirmed */
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      const timer = setTimeout(() => {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch {
+          // ignore
+        }
+      }, 150);
+      return () => clearTimeout(timer);
     } catch {
       // ignore
     }
@@ -363,7 +370,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Set role with tab preservation
   const setRole = (newRole: DemoRole) => {
     setRoleState(newRole);
-    showToast(`Switched to ${newRole === 'delegate' ? 'Delegate (Aarav)' : newRole === 'exhibitor' ? 'Exhibitor (Microsoft B-14)' : 'Organizer Console'} view`, 'info');
+    showToast(`Switched to ${newRole === 'delegate' ? 'Delegate (Aarav)' : newRole === 'exhibitor' ? 'Exhibitor (Truechip Booth A-02)' : 'Organizer Console'} view`, 'info');
   };
 
   // Connectivity toggle
@@ -500,35 +507,54 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Save Lead (Exhibitor)
   const saveLead = (leadData: Omit<Lead, 'id' | 'capturedAt'>) => {
-    const newLead: Lead = {
-      ...leadData,
-      id: `lead-${Date.now()}`,
-      capturedAt: 'Just now',
-      syncStatus: isOnline ? 'synced' : 'pending',
-    };
+    const existingIndex = leads.findIndex((l) => l.personId === leadData.personId);
 
-    setLeads((prev) => [newLead, ...prev]);
+    if (existingIndex >= 0) {
+      setLeads((prev) => {
+        const copy = [...prev];
+        const existing = copy[existingIndex];
+        const updatedLead: Lead = {
+          ...existing,
+          ...leadData,
+          status: leadData.status,
+          notes: leadData.notes || existing.notes,
+          capturedAt: 'Just now',
+          syncStatus: isOnline ? 'synced' : 'pending',
+        };
+        copy.splice(existingIndex, 1);
+        return [updatedLead, ...copy];
+      });
+    } else {
+      const newLead: Lead = {
+        ...leadData,
+        id: `lead-${Date.now()}`,
+        capturedAt: 'Just now',
+        syncStatus: isOnline ? 'synced' : 'pending',
+      };
 
-    // Update Microsoft stats
-    setExhibitors((prev) =>
-      prev.map((ex) =>
-        ex.company === 'Microsoft'
-          ? { ...ex, leads: ex.leads + 1 }
-          : ex
-      )
-    );
+      setLeads((prev) => [newLead, ...prev]);
 
-    // Update event metrics
-    setEvent((prev) => ({
-      ...prev,
-      totalScans: prev.totalScans + 1,
-    }));
+      // Update Truechip stats
+      setExhibitors((prev) =>
+        prev.map((ex) =>
+          ex.company.toLowerCase().includes('truechip')
+            ? { ...ex, leads: ex.leads + 1 }
+            : ex
+        )
+      );
+
+      // Update event metrics
+      setEvent((prev) => ({
+        ...prev,
+        totalScans: prev.totalScans + 1,
+      }));
+    }
 
     if (!isOnline) {
       setSyncPendingCount((c) => c + 1);
       showToast(`Lead saved for ${leadData.name} (Sync pending)`, 'info');
     } else {
-      showToast(`Lead saved for ${leadData.name} ✓`, 'success');
+      showToast(`Lead saved for ${leadData.name} as "${leadData.status}" ✓`, 'success');
     }
   };
 
@@ -562,10 +588,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       )
     );
 
-    // Update Microsoft booth stats
+    // Update Truechip booth stats
     setExhibitors((prev) =>
       prev.map((ex) =>
-        ex.company === 'Microsoft'
+        ex.company.toLowerCase().includes('truechip')
           ? { ...ex, enquiries: ex.enquiries + 1 }
           : ex
       )
@@ -628,7 +654,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const addProduct = (productData: Omit<Product, 'id'>) => {
     const newProduct: Product = {
       ...productData,
-      id: `prod-microsoft-${Date.now()}`,
+      id: `prod-truechip-${Date.now()}`,
     };
     setProducts((prev) => [newProduct, ...prev]);
     showToast('New product added to showcase ✓', 'success');

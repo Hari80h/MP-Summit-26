@@ -85,7 +85,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   },
   {
     "id": "exh-2",
-    "company": "Truechip solutions private limited",
+    "company": "Truechip Solutions",
     "logo": "/images/exhibitors/truechip.png",
     "booth": "Hall 1 · A-02",
     "category": "Verification IP & EDA",
@@ -750,64 +750,219 @@ export const GENERATED_PRODUCTS: Product[] = [
   },
   {
     "id": "prod-truechip-1",
-    "name": "PCIe 6.0 / CXL Verification IP",
-    "tagline": "Comprehensive Verification IP Suite",
-    "company": "Truechip solutions private limited",
+    "name": "PCIe Gen 6 / Gen 7 Verification IP",
+    "tagline": "Next-Gen PCI Express Verification Suite",
+    "company": "Truechip Solutions",
     "category": "Verification IP & EDA",
     "booth": "Hall 1 · A-02",
     "image": "/images/exhibitors/truechip.png",
-    "views": 650,
-    "enquiries": 52,
-    "interestedVisitorsCount": 110,
-    "overview": "Industry-standard Verification IP for PCI Express Gen 6 and Compute Express Link (CXL) with full protocol coverage and compliance checkers.",
+    "views": 840,
+    "enquiries": 65,
+    "interestedVisitorsCount": 138,
+    "overview": "Industry-standard Verification IP for PCI Express Gen 6 and Gen 7 with full PAM4 signaling, FLIT mode, SRIS, and compliance checkers.",
     "features": [
-      "PAM4 Signaling Support",
-      "SystemVerilog / UVM Compliant",
-      "Error Injection Capabilities"
+      "PAM4 Signaling & 64/128 GT/s FLIT Mode",
+      "SystemVerilog / UVM Native Architecture",
+      "Advanced Error Injection & Protocol Assertions"
     ],
     "benefits": [
-      "Drastically cuts verification cycle",
-      "Zero protocol ambiguity",
-      "Proven in 100+ tapeouts"
+      "Drastically cuts verification cycle times",
+      "Zero protocol ambiguity with full compliance",
+      "Proven across 100+ silicon tapeouts"
     ],
     "useCases": [
-      "High Performance Compute",
-      "AI Accelerators",
-      "Data Center SoCs"
+      "High Performance Compute (HPC)",
+      "AI/ML Accelerators",
+      "Data Center & Cloud SoCs"
     ],
     "resources": {
-      "websiteUrl": "https://truechip.net"
+      "websiteUrl": "https://www.truechip.net/product/verification-ip"
     }
   },
   {
     "id": "prod-truechip-2",
-    "name": "HBM3 / LPDDR5X Memory VIP",
-    "tagline": "High-Bandwidth Memory Protocol Verification",
-    "company": "Truechip solutions private limited",
+    "name": "UCIe (Universal Chiplet Interconnect) VIP",
+    "tagline": "Turnkey Die-to-Die Chiplet Verification",
+    "company": "Truechip Solutions",
     "category": "Verification IP & EDA",
     "booth": "Hall 1 · A-02",
     "image": "/images/exhibitors/truechip.png",
-    "views": 580,
-    "enquiries": 40,
-    "interestedVisitorsCount": 88,
+    "views": 790,
+    "enquiries": 58,
+    "interestedVisitorsCount": 124,
+    "overview": "Comprehensive Die-to-Die (D2D) chiplet verification supporting standard and advanced package architectures, D2D adapter, and physical layers.",
+    "features": [
+      "UCIe 1.0 & 1.1 Multi-die Interconnect Support",
+      "D2D Adapter & Protocol Layer Verification",
+      "Sideband & Mainband Channel Modeling"
+    ],
+    "benefits": [
+      "Ensures inter-chiplet interoperability",
+      "Rapid integration in standard UVM testbenches",
+      "Reduces physical prototyping risks"
+    ],
+    "useCases": [
+      "Heterogeneous AI Chiplets",
+      "Modular Server Processors",
+      "Multi-Die Automotive SoCs"
+    ],
+    "resources": {
+      "websiteUrl": "https://www.truechip.net/product/verification-ip"
+    }
+  },
+  {
+    "id": "prod-truechip-3",
+    "name": "CXL 3.1 / 3.0 (Compute Express Link) VIP",
+    "tagline": "High-Bandwidth Coherent Interconnect Verification",
+    "company": "Truechip Solutions",
+    "category": "Verification IP & EDA",
+    "booth": "Hall 1 · A-02",
+    "image": "/images/exhibitors/truechip.png",
+    "views": 720,
+    "enquiries": 49,
+    "interestedVisitorsCount": 112,
+    "overview": "Complete Verification IP for CXL.io, CXL.cache, and CXL.mem protocols, enabling verification of memory expansion, accelerators, and pooled memory.",
+    "features": [
+      "CXL.io, CXL.cache, and CXL.mem Support",
+      "Coherent Memory Fabric Verification",
+      "Multi-Logical Device (MLD) Modeling"
+    ],
+    "benefits": [
+      "Guarantees cache coherency validation",
+      "Shortens verification schedule for complex memory architectures",
+      "Built-in compliance checking test suites"
+    ],
+    "useCases": [
+      "Disaggregated Cloud Memory",
+      "Accelerated Computing Clusters",
+      "Enterprise Storage Systems"
+    ],
+    "resources": {
+      "websiteUrl": "https://www.truechip.net/product/verification-ip"
+    }
+  },
+  {
+    "id": "prod-truechip-4",
+    "name": "USB4 & USB-PD 3.1 Verification IP",
+    "tagline": "High-Speed Multi-Protocol Tunneling Verification",
+    "company": "Truechip Solutions",
+    "category": "Verification IP & EDA",
+    "booth": "Hall 1 · A-02",
+    "image": "/images/exhibitors/truechip.png",
+    "views": 680,
+    "enquiries": 44,
+    "interestedVisitorsCount": 98,
+    "overview": "Complete USB4 router, adapter layer, and Type-C Power Delivery 3.1 verification IP supporting up to 80 Gbps tunneling of PCIe and DisplayPort.",
+    "features": [
+      "USB4 v2.0 / Gen 4 80 Gbps PAM3 Support",
+      "Full USB Type-C and Power Delivery 3.1",
+      "Simultaneous PCIe & DisplayPort Tunneling"
+    ],
+    "benefits": [
+      "Exhaustive test suite for corner cases",
+      "Plug-and-play SystemVerilog UVM environment",
+      "Field-tested compliance test sequences"
+    ],
+    "useCases": [
+      "Consumer Electronics SoCs",
+      "Smartphones & Laptops",
+      "Automotive Infotainment Hubs"
+    ],
+    "resources": {
+      "websiteUrl": "https://www.truechip.net/product/verification-ip"
+    }
+  },
+  {
+    "id": "prod-truechip-5",
+    "name": "HBM3 / LPDDR5X Memory VIP",
+    "tagline": "High-Bandwidth Memory Protocol Verification",
+    "company": "Truechip Solutions",
+    "category": "Verification IP & EDA",
+    "booth": "Hall 1 · A-02",
+    "image": "/images/exhibitors/truechip.png",
+    "views": 650,
+    "enquiries": 42,
+    "interestedVisitorsCount": 92,
     "overview": "Turnkey memory verification IP for next-generation AI and mobile memory subsystems, verifying physical and link layers seamlessly.",
     "features": [
-      "Multi-die HBM3 Support",
-      "Real-time Timing Assertions",
-      "Comprehensive Test Suites"
+      "Multi-die HBM3 & LPDDR5X Support",
+      "Real-time Timing Assertions & JEDEC Checks",
+      "Dynamic Frequency Scaling Verification"
     ],
     "benefits": [
       "First-pass silicon success",
       "Fast debugging with visual wave tracking",
-      "Multi-simulator support"
+      "Multi-simulator vendor support"
     ],
     "useCases": [
       "Edge AI Chips",
-      "Mobile Processors",
-      "Graphics Processors"
+      "Mobile 5G Processors",
+      "Graphics & Neural Processing Units"
     ],
     "resources": {
-      "websiteUrl": "https://truechip.net"
+      "websiteUrl": "https://www.truechip.net/product/verification-ip"
+    }
+  },
+  {
+    "id": "prod-truechip-6",
+    "name": "RISC-V Verification Suite & TileLink VIP",
+    "tagline": "Comprehensive Open-Architecture Core Verification",
+    "company": "Truechip Solutions",
+    "category": "Verification IP & EDA",
+    "booth": "Hall 1 · A-02",
+    "image": "/images/exhibitors/truechip.png",
+    "views": 610,
+    "enquiries": 38,
+    "interestedVisitorsCount": 85,
+    "overview": "End-to-end RISC-V processor testbenches covering TileLink cache coherency, JTAG DTM, PLIC/CLINT interrupt controllers, and custom ISA extensions.",
+    "features": [
+      "TileLink TL-UL, TL-UH, and TL-C Support",
+      "Custom Instruction & Extension Checkers",
+      "Automated Test Generator for Core Pipelines"
+    ],
+    "benefits": [
+      "Accelerates indigenous silicon design cycles",
+      "Validates full processor coherency",
+      "Seamless integration with open-source tools"
+    ],
+    "useCases": [
+      "Indigenous Indian Microprocessors",
+      "IoT & Edge Controllers",
+      "Custom AI Silicon"
+    ],
+    "resources": {
+      "websiteUrl": "https://www.truechip.net/product/verification-ip"
+    }
+  },
+  {
+    "id": "prod-truechip-7",
+    "name": "TruEye GUI Protocol Debug & Automation",
+    "tagline": "Intelligent Visual Protocol Analyzer & Debugger",
+    "company": "Truechip Solutions",
+    "category": "Verification IP & EDA",
+    "booth": "Hall 1 · A-02",
+    "image": "/images/exhibitors/truechip.png",
+    "views": 590,
+    "enquiries": 36,
+    "interestedVisitorsCount": 78,
+    "overview": "Proprietary GUI-based protocol debug environment providing transaction-level visualization, performance analytics, and automated packet tracing.",
+    "features": [
+      "Transaction-Level Waveform & Packet Viewer",
+      "Real-time Bandwidth & Latency Analytics",
+      "Automated Protocol Bug Diagnosis"
+    ],
+    "benefits": [
+      "Reduces debug cycles by up to 60%",
+      "Intuitive graphical trace timeline",
+      "Cross-platform support for major EDA tools"
+    ],
+    "useCases": [
+      "SoC Verification Engineers",
+      "Firmware Development Teams",
+      "Post-Silicon Validation"
+    ],
+    "resources": {
+      "websiteUrl": "https://www.truechip.net/automation-products.php"
     }
   },
   {

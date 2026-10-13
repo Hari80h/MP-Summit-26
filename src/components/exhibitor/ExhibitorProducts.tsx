@@ -59,10 +59,10 @@ export const ExhibitorProducts: React.FC = () => {
   // Delete confirm state
   const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
 
-  // Active exhibitor company is Microsoft (Booth B-14)
-  const exhibitorCompany = 'Microsoft';
+  // Active exhibitor company is Truechip Solutions (Booth A-02)
+  const exhibitorCompany = 'Truechip Solutions';
   const companyProducts = products.filter(
-    (p) => p.company.toLowerCase() === exhibitorCompany.toLowerCase()
+    (p) => p.company.toLowerCase().includes('truechip')
   );
 
   const activeProduct = companyProducts.find((p) => p.id === selectedProductId);
@@ -83,7 +83,7 @@ export const ExhibitorProducts: React.FC = () => {
     updateProduct(editingProduct.id, {
       name: formName.trim(),
       tagline: formTagline.trim(),
-      category: formCategory.trim() || 'Cloud & AI',
+      category: formCategory.trim() || 'Verification IP & EDA',
       overview: formOverview.trim() || editingProduct.overview,
     });
 
@@ -94,7 +94,7 @@ export const ExhibitorProducts: React.FC = () => {
   const handleOpenAdd = () => {
     setFormName('');
     setFormTagline('');
-    setFormCategory('Cloud & AI');
+    setFormCategory('Verification IP & EDA');
     setFormOverview('');
     setShowAddModal(true);
   };
@@ -105,19 +105,19 @@ export const ExhibitorProducts: React.FC = () => {
 
     addProduct({
       name: formName.trim(),
-      tagline: formTagline.trim() || 'Enterprise Solution by Microsoft',
-      category: formCategory.trim() || 'Cloud & AI',
-      company: 'Microsoft',
-      booth: 'B-14',
-      image: 'https://cdn.simpleicons.org/microsoft',
+      tagline: formTagline.trim() || 'Verification Solution by Truechip',
+      category: formCategory.trim() || 'Verification IP & EDA',
+      company: 'Truechip Solutions',
+      booth: 'Hall 1 · A-02',
+      image: '/images/exhibitors/truechip.png',
       views: 0,
       enquiries: 0,
       interestedVisitorsCount: 0,
-      overview: formOverview.trim() || 'Official featured solution showcased at Microsoft Booth B-14.',
-      features: ['Enterprise Ready', 'Cloud Connected', 'Secure Architecture'],
-      benefits: ['Improved Workflow Efficiency', 'Enterprise-grade Security', 'Seamless Microsoft Integration'],
-      useCases: ['Enterprise IT', 'Data Operations', 'Cloud Scale Operations'],
-      resources: { websiteUrl: 'https://azure.microsoft.com' },
+      overview: formOverview.trim() || 'Official featured solution showcased at Truechip Booth A-02.',
+      features: ['Silicon Proven', 'SystemVerilog / UVM Native', 'Comprehensive Test Suites'],
+      benefits: ['Drastically cuts verification cycle', 'First-pass silicon success', 'Multi-simulator support'],
+      useCases: ['ASIC & SoC Verification', 'Chiplet Integration', 'Semiconductor Emulation'],
+      resources: { websiteUrl: 'https://www.truechip.net' },
     });
 
     setShowAddModal(false);
@@ -220,7 +220,7 @@ export const ExhibitorProducts: React.FC = () => {
             </div>
             <div class="footer">
               <div>EventSphere Digital Experience Layer · MP Semiconductor Summit 2026 (MPSS26)</div>
-              <div>Microsoft Corporation · Booth ${prod.booth}</div>
+              <div>Truechip Solutions · Booth ${prod.booth}</div>
             </div>
           </body>
         </html>
@@ -302,7 +302,7 @@ export const ExhibitorProducts: React.FC = () => {
             <div className="flex items-center justify-between pb-2.5 border-b border-[#DEDCD7]">
               <div>
                 <h3 className="text-[17px] font-bold text-[#181818]">Edit Product</h3>
-                <p className="text-[13px] text-[#6B6B6B]">Microsoft Booth B-14</p>
+                <p className="text-[13px] text-[#6B6B6B]">Truechip Booth A-02</p>
               </div>
               <button
                 onClick={() => setShowEditModal(false)}
@@ -880,7 +880,7 @@ export const ExhibitorProducts: React.FC = () => {
               Showcase Products
             </h1>
             <p className="text-[13px] text-gray-300 font-medium">
-              Microsoft Booth B-14 Featured Solutions
+              Truechip Booth A-02 Featured Solutions
             </p>
           </div>
           <button
@@ -893,7 +893,7 @@ export const ExhibitorProducts: React.FC = () => {
         </div>
       </div>
 
-      {/* Products List (Microsoft Only) */}
+      {/* Products List (Truechip Only) */}
       <div className="px-4 -mt-8 relative z-20 space-y-3">
         {companyProducts.length === 0 ? (
           <div className="bg-white p-8 rounded-2xl border border-[#DEDCD7] text-center space-y-3">
@@ -965,7 +965,7 @@ export const ExhibitorProducts: React.FC = () => {
             <div className="flex items-center justify-between pb-2.5 border-b border-[#DEDCD7]">
               <div>
                 <h3 className="text-[17px] font-bold text-[#181818]">Add Featured Product</h3>
-                <p className="text-[13px] text-[#6B6B6B]">Showcase to attendees at Booth B-14</p>
+                <p className="text-[13px] text-[#6B6B6B]">Showcase to attendees at Truechip Booth A-02</p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -984,7 +984,7 @@ export const ExhibitorProducts: React.FC = () => {
                   onChange={(e) => setFormName(e.target.value)}
                   required
                   className="w-full px-3.5 py-2.5 text-sm border border-[#DEDCD7] rounded-xl focus:outline-none focus:border-[#B51F32] placeholder:text-[13px]"
-                  placeholder="e.g. Microsoft Copilot for Security"
+                  placeholder="e.g. PCIe Gen 7 Verification IP"
                 />
               </div>
 
