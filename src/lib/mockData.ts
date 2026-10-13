@@ -10,6 +10,7 @@ import {
   Lead,
   Connection,
   InterestedVisitor,
+  PrivacyConsent,
 } from '../types';
 
 /**
@@ -51,11 +52,11 @@ export const INITIAL_EVENT: EventMetadata = {
   totalConnections: 3281,
 };
 
-const PRIVATE_CONTACT_DEFAULT = {
-  preset: 'Private' as const,
-  shareEmail: false,
-  sharePhone: false,
-  shareLinkedIn: false,
+const PRIVATE_CONTACT_DEFAULT: PrivacyConsent = {
+  preset: 'Connections Only',
+  shareEmail: true,
+  sharePhone: true,
+  shareLinkedIn: true,
   shareTwitter: false,
 };
 
@@ -71,10 +72,10 @@ export const CURRENT_USER: Person = {
   skills: ['Leadership', 'System Architecture', 'Product Strategy'],
   email: 'hari@eventsphere.com',
   mobile: '+91 98765 00000',
-  linkedin: 'https://www.linkedin.com/in/harigupta',
+  linkedin: '',
   twitter: '',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
-  privacy: { ...PRIVATE_CONTACT_DEFAULT, shareLinkedIn: true },
+  privacy: { ...PRIVATE_CONTACT_DEFAULT },
   checkedIn: true,
   checkInTime: '08:30 AM',
   registrationId: '#0523',

@@ -101,8 +101,61 @@ export const DelegateEditProfile: React.FC = () => {
           </div>
         </div>
 
+        {/* Contact & Social Links */}
+        <div className="bg-white p-3 rounded-[14px] border border-[#E5E7EB] shadow-sm space-y-3">
+          <div className="border-b border-[#F3F4F6] pb-2">
+            <h2 className="text-[13px] font-bold text-[#181818]">Contact & Social Information</h2>
+            <p className="text-[11px] text-[#6B6B6B] mt-0.5">
+              Registration email and mobile are pre-verified. Add your LinkedIn & Twitter to expand your network.
+            </p>
+          </div>
+          
+          <div className="space-y-1.5">
+            <label className="text-[12px] font-semibold text-[#181818]">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email || 'hari@eventsphere.com'}
+              onChange={handleChange}
+              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818] bg-[#F9FAFB]"
+            />
+          </div>
 
+          <div className="space-y-1.5">
+            <label className="text-[12px] font-semibold text-[#181818]">Mobile Number</label>
+            <input
+              type="tel"
+              name="mobile"
+              value={formData.mobile || '+91 98765 00000'}
+              onChange={handleChange}
+              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818] bg-[#F9FAFB]"
+            />
+          </div>
 
+          <div className="space-y-1.5">
+            <label className="text-[12px] font-semibold text-[#181818]">LinkedIn Profile</label>
+            <input
+              type="text"
+              name="linkedin"
+              placeholder="https://linkedin.com/in/username"
+              value={formData.linkedin}
+              onChange={handleChange}
+              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[12px] font-semibold text-[#181818]">Twitter / X Handle</label>
+            <input
+              type="text"
+              name="twitter"
+              placeholder="@username"
+              value={formData.twitter}
+              onChange={handleChange}
+              className="w-full px-3 py-2 rounded-lg border border-[#DEDCD7] text-[12px] focus:outline-none focus:ring-1 focus:ring-[#181818]"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

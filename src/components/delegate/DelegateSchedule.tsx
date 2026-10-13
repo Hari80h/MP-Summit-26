@@ -18,8 +18,6 @@ import {
   Send,
   Sparkles,
   ThumbsUp,
-  User,
-  Users,
   Utensils,
   X,
 } from 'lucide-react';
@@ -160,10 +158,10 @@ export const DelegateSchedule: React.FC = () => {
             email: '',
             mobile: '',
             privacy: {
-              preset: 'Private',
-              shareEmail: false,
-              sharePhone: false,
-              shareLinkedIn: false,
+              preset: 'Connections Only',
+              shareEmail: true,
+              sharePhone: true,
+              shareLinkedIn: true,
               shareTwitter: false,
             },
             checkedIn: true,
@@ -293,7 +291,7 @@ export const DelegateSchedule: React.FC = () => {
         </div>
 
         {/* 4 Detail Tabs: Overview | Speaker(s) | Q&A | Poll */}
-        <div className="bg-white border-b border-[#E5E7EB] px-4 flex items-center justify-between sticky top-0 z-20 shadow-xs">
+        <div className="bg-white border-b border-[#E5E7EB] grid grid-cols-4 sticky top-0 z-20 shadow-xs">
           {[
             { id: 'overview', label: 'Overview' },
             {
@@ -309,16 +307,18 @@ export const DelegateSchedule: React.FC = () => {
                 setDetailSubTab(tab.id as any);
                 setPollVoteError(null);
               }}
-              className={`py-3 px-1 text-[13px] transition-all relative ${
+              className={`text-[13px] transition-all flex items-center justify-center relative ${
                 detailSubTab === tab.id
                   ? 'font-bold text-[#111827]'
                   : 'font-medium text-[#6B7280] hover:text-[#111827]'
               }`}
             >
-              <span>{tab.label}</span>
-              {detailSubTab === tab.id && (
-                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#DC2626] rounded-full" />
-              )}
+              <span className="relative py-3 inline-flex items-center justify-center">
+                <span>{tab.label}</span>
+                {detailSubTab === tab.id && (
+                  <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#DC2626] rounded-full" />
+                )}
+              </span>
             </button>
           ))}
         </div>
@@ -628,110 +628,113 @@ export const DelegateSchedule: React.FC = () => {
 
   // SCHEDULE LIST VIEW
   return (
-    <div ref={scrollRef} className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto px-3 pt-2 pb-24">
-      {/* Header section matching reference mockup */}
-      <div className="pt-2 pb-1">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
-              MPSS26 · PROGRAMME
-            </p>
-            <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
-              Schedule
-            </h1>
-          </div>
+    <div className="flex-1 min-h-0 h-full bg-[#F8F7F4] select-none flex flex-col overflow-hidden">
+      {/* Fixed Top Section: Header, Toggle, and Day Selector */}
+      <div className="shrink-0 bg-[#F8F7F4] px-3 z-10 border-b border-[#E5E7EB]">
+        {/* Header section matching reference mockup */}
+        <div className="pt-2 pb-1">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+                MPSS26 · PROGRAMME
+              </p>
+              <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
+                Schedule
+              </h1>
+            </div>
 
-          <button
-            onClick={() => {
-              setIsSearchOpen((prev) => !prev);
-              if (isSearchOpen) setSearchQuery('');
-            }}
-            className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all ${
-              isSearchOpen || searchQuery
-                ? 'bg-[#DC2626] border-[#DC2626] text-white shadow-xs'
-                : 'bg-white border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] shadow-xs'
-            }`}
-            aria-label="Toggle search"
-          >
-            {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
-          </button>
-        </div>
-
-        {/* Expandable Search Input */}
-        {isSearchOpen && (
-          <div className="mt-2.5 relative animate-in fade-in slide-in-from-top-2 duration-150">
-            <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              autoFocus
-              placeholder="Search sessions, speakers, rooms, topics..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-8 py-2 rounded-xl bg-white border border-[#E5E7EB] text-[13px] text-[#111827] focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] shadow-xs placeholder:text-[#9CA3AF]"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#111827]"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Segmented Top Toggle: All Sessions (X) | My Schedule (Y) */}
-      <div className="pt-2 pb-2">
-        <div className="flex bg-[#F1EFEA] p-1 rounded-xl border border-[#E2DFD8]">
-          <button
-            onClick={() => setActiveTab('all')}
-            className={`flex-1 py-2 rounded-lg text-[13px] font-semibold transition-all ${
-              activeTab === 'all'
-                ? 'bg-white text-[#111827] shadow-xs border border-black/5'
-                : 'text-[#64748B] hover:text-[#111827]'
-            }`}
-          >
-            All Sessions ({daySessions.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('saved')}
-            className={`flex-1 py-2 rounded-lg text-[13px] font-medium transition-all flex items-center justify-center gap-1.5 ${
-              activeTab === 'saved'
-                ? 'bg-white text-[#111827] font-semibold shadow-xs border border-black/5'
-                : 'text-[#64748B] hover:text-[#111827]'
-            }`}
-          >
-            <Bookmark className="w-3.5 h-3.5" />
-            <span>My Schedule ({daySavedSessions.length})</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Day Selector Tabs: Day 1: Oct 23, 2026 | Day 2: Oct 24, 2026 */}
-      <div className="border-b border-[#E5E7EB] bg-[#F8F7F4] sticky top-0 z-10 -mx-3 px-3">
-        <div className="flex -mb-[1px]">
-          {[
-            { day: 1, label: 'Day 1: Oct 23, 2026' },
-            { day: 2, label: 'Day 2: Oct 24, 2026' },
-          ].map((d) => (
             <button
-              key={d.day}
-              onClick={() => setActiveDay(d.day)}
-              className={`flex-1 py-2.5 px-2 text-center text-[13px] transition-all whitespace-nowrap border-b-2 ${
-                activeDay === d.day
-                  ? 'text-[#0F172A] font-bold border-[#DC2626]'
-                  : 'text-[#6B7280] hover:text-[#0F172A] font-medium border-transparent'
+              onClick={() => {
+                setIsSearchOpen((prev) => !prev);
+                if (isSearchOpen) setSearchQuery('');
+              }}
+              className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all ${
+                isSearchOpen || searchQuery
+                  ? 'bg-[#DC2626] border-[#DC2626] text-white shadow-xs'
+                  : 'bg-white border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] shadow-xs'
+              }`}
+              aria-label="Toggle search"
+            >
+              {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+            </button>
+          </div>
+
+          {/* Expandable Search Input */}
+          {isSearchOpen && (
+            <div className="mt-2.5 relative animate-in fade-in slide-in-from-top-2 duration-150">
+              <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                autoFocus
+                placeholder="Search sessions, speakers, rooms, topics..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-8 py-2 rounded-xl bg-white border border-[#E5E7EB] text-[13px] text-[#111827] focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] shadow-xs placeholder:text-[#9CA3AF]"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#111827]"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Segmented Top Toggle: All Sessions (X) | My Schedule (Y) */}
+        <div className="pt-1.5 pb-2">
+          <div className="flex bg-[#F1EFEA] p-1 rounded-xl border border-[#E2DFD8]">
+            <button
+              onClick={() => setActiveTab('all')}
+              className={`flex-1 py-2 rounded-lg text-[13px] font-semibold transition-all ${
+                activeTab === 'all'
+                  ? 'bg-white text-[#111827] shadow-xs border border-black/5'
+                  : 'text-[#64748B] hover:text-[#111827]'
               }`}
             >
-              {d.label}
+              All Sessions ({daySessions.length})
             </button>
-          ))}
+            <button
+              onClick={() => setActiveTab('saved')}
+              className={`flex-1 py-2 rounded-lg text-[13px] font-medium transition-all flex items-center justify-center gap-1.5 ${
+                activeTab === 'saved'
+                  ? 'bg-white text-[#111827] font-semibold shadow-xs border border-black/5'
+                  : 'text-[#64748B] hover:text-[#111827]'
+              }`}
+            >
+              <Bookmark className="w-3.5 h-3.5" />
+              <span>My Schedule ({daySavedSessions.length})</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Day Selector Tabs: Day 1: Oct 23, 2026 | Day 2: Oct 24, 2026 */}
+        <div className="-mx-3 px-3">
+          <div className="flex -mb-[1px]">
+            {[
+              { day: 1, label: 'Day 1: Oct 23, 2026' },
+              { day: 2, label: 'Day 2: Oct 24, 2026' },
+            ].map((d) => (
+              <button
+                key={d.day}
+                onClick={() => setActiveDay(d.day)}
+                className={`flex-1 py-2.5 px-2 text-center text-[13px] transition-all whitespace-nowrap border-b-2 ${
+                  activeDay === d.day
+                    ? 'text-[#0F172A] font-bold border-[#DC2626]'
+                    : 'text-[#6B7280] hover:text-[#0F172A] font-medium border-transparent'
+                }`}
+              >
+                {d.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Timeline Section */}
-      <div className="pt-3">
+      {/* Timeline Scroll Container */}
+      <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-3 pt-3 pb-24">
         {filteredSessions.length === 0 ? (
           <div className="p-8 text-center bg-white rounded-[16px] border border-[#E5E7EB] shadow-xs my-4">
             <Bookmark className="w-8 h-8 text-[#D1D5DB] mx-auto mb-2" />
@@ -842,92 +845,10 @@ export const DelegateSchedule: React.FC = () => {
                           {session.title}
                         </h3>
 
-                        {/* Speaker info */}
-                        {(() => {
-                          const spks = resolveSessionSpeakers(session);
-                          if (spks.length > 1) {
-                            return (
-                              <div className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-[11.5px] text-[#475569] flex-wrap">
-                                <Users className="w-3 h-3 text-[#94A3B8] flex-shrink-0" />
-                                {spks.map((s, sIdx) => (
-                                  <span
-                                    key={s.id || sIdx}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (s.id) {
-                                        if (!attendees.some((a) => a.id === s.id)) {
-                                          setAttendees((prev) => [...prev, s]);
-                                        }
-                                        setSelectedPersonId(s.id);
-                                      } else if (s.name) {
-                                        setSelectedPersonId(s.name);
-                                      }
-                                    }}
-                                    className="font-semibold text-[#1E293B] hover:text-[#DC2626] hover:underline cursor-pointer"
-                                  >
-                                    {s.name}{sIdx < spks.length - 1 ? ',' : ''}
-                                  </span>
-                                ))}
-                              </div>
-                            );
-                          }
-                          if (spks.length === 1) {
-                            const spk = spks[0];
-                            return (
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  if (spk.id) {
-                                    if (!attendees.some((a) => a.id === spk.id)) {
-                                      setAttendees((prev) => [...prev, spk]);
-                                    }
-                                    setSelectedPersonId(spk.id);
-                                  } else if (spk.name) {
-                                    setSelectedPersonId(spk.name);
-                                  }
-                                }}
-                                className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-[11.5px] text-[#475569] cursor-pointer group/spk"
-                              >
-                                <User className="w-3 h-3 text-[#94A3B8] flex-shrink-0 group-hover/spk:text-[#DC2626]" />
-                                <span className="font-semibold text-[#1E293B] group-hover/spk:text-[#DC2626] group-hover/spk:underline truncate">
-                                  {spk.name}
-                                </span>
-                                {spk.company && (
-                                  <span className="text-[#64748B] truncate">· {spk.company}</span>
-                                )}
-                              </div>
-                            );
-                          }
-                          if (session.speakerName) {
-                            return (
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  if (session.speakerId) {
-                                    setSelectedPersonId(session.speakerId);
-                                  } else {
-                                    setSelectedPersonId(session.speakerName);
-                                  }
-                                }}
-                                className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-[11.5px] text-[#475569] cursor-pointer group/spk"
-                              >
-                                <User className="w-3 h-3 text-[#94A3B8] flex-shrink-0 group-hover/spk:text-[#DC2626]" />
-                                <span className="font-semibold text-[#1E293B] group-hover/spk:text-[#DC2626] group-hover/spk:underline truncate">
-                                  {session.speakerName}
-                                </span>
-                                {session.speakerCompany && (
-                                  <span className="text-[#64748B] truncate">· {session.speakerCompany}</span>
-                                )}
-                              </div>
-                            );
-                          }
-                          return null;
-                        })()}
-
                         {/* Location / Room */}
                         {session.room && (
-                          <div className="mt-0.5 flex items-center gap-1 text-[10.5px] text-[#64748B]">
-                            <MapPin className="w-2.5 h-2.5 text-[#94A3B8] flex-shrink-0" />
+                          <div className="mt-1 flex items-center gap-1.5 text-[10.5px] sm:text-[11px] text-[#64748B]">
+                            <MapPin className="w-3 h-3 text-[#94A3B8] flex-shrink-0" />
                             <span className="truncate">{session.room}</span>
                           </div>
                         )}
