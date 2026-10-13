@@ -615,7 +615,7 @@ export const DelegateSchedule: React.FC = () => {
       {/* Fixed Top Section: Header, Toggle, and Day Selector */}
       <div className="shrink-0 bg-[#F8F7F4] px-3 z-10 border-b border-[#E5E7EB]">
         {/* Header section matching reference mockup */}
-        <div className="pt-2 pb-1">
+        <div className="pt-4 pb-1">
           <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
             MPSS26 · PROGRAMME
           </p>

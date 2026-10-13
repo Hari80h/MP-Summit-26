@@ -127,7 +127,7 @@ export const PersonDetailModal: React.FC = () => {
           <img
             src={person.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=181818&color=ffffff&bold=true`}
             alt={person.name}
-            className="w-13 h-13 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0"
+            className="w-14 h-14 rounded-full object-cover shadow-sm border border-[#E5E7EB] flex-shrink-0"
             onError={(e) => {
               e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=181818&color=ffffff&bold=true`;
             }}

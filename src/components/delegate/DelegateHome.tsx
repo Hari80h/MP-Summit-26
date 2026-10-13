@@ -457,7 +457,7 @@ export const DelegateHome: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-1 flex items-center justify-between text-[11.5px] font-semibold text-[#181818] border-t border-gray-100 mt-1">
+                    <div className="pt-1.5 flex items-center justify-center gap-1 text-[11.5px] font-semibold text-[#181818] border-t border-gray-100 mt-1 text-center">
                       <span>View profile</span>
                       <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
                     </div>
@@ -469,11 +469,11 @@ export const DelegateHome: React.FC = () => {
         </div>
       )}
 
-      {/* Companies to Explore */}
+      {/* Exhibitors to Explore */}
       <div className="space-y-2">
         <div className="flex items-center justify-between px-0.5">
           <h3 className="text-[17px] font-bold text-[#111827] tracking-tight">
-            Companies to Explore
+            Exhibitors to Explore
           </h3>
           <button
             onClick={() => setActiveDelegateTab('companies')}

@@ -91,7 +91,7 @@ export const DelegateAIRecommendations: React.FC = () => {
                     </div>
                   </div>
 
-                    <div className="pt-1 flex items-center justify-between text-[11px] font-semibold text-[#181818] border-t border-gray-100 mt-1">
+                    <div className="pt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold text-[#181818] border-t border-gray-100 mt-1 text-center">
                       <span>View profile</span>
                       <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
                     </div>
