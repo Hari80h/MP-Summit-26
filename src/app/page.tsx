@@ -5,7 +5,6 @@ import { useStore } from '../lib/store';
 import { DemoBar } from '../components/shell/DemoBar';
 import { AddToHomeScreenBanner } from '../components/shell/AddToHomeScreenBanner';
 import { PhoneFrame } from '../components/shell/PhoneFrame';
-import { SplashScreen } from '../components/shell/SplashScreen';
 import { AccessScreen } from '../components/auth/AccessScreen';
 
 // Delegate views
@@ -55,31 +54,9 @@ export default function App() {
 
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
-  const [showSplash, setShowSplash] = useState(false);
-
-  const hasInitialized = React.useRef(false);
-
-  React.useEffect(() => {
-    if (hasInitialized.current) return;
-    hasInitialized.current = true;
-
-    // 1. Splash Screen Logic
-    const hasSeen = sessionStorage.getItem('es_splash_seen');
-    if (!hasSeen) {
-      setShowSplash(true);
-      const timer = setTimeout(() => {
-        setShowSplash(false);
-        sessionStorage.setItem('es_splash_seen', 'true');
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
 
   return (
     <div className={`bg-[#F6F4F0] flex flex-col font-sans ${role === 'organizer' ? 'h-[100dvh] overflow-hidden' : 'min-h-[100dvh]'}`}>
-      {/* Splash Screen */}
-      {showSplash && <SplashScreen onDismiss={() => setShowSplash(false)} />}
 
 
       {/* Modals for Delegate Experience */}

@@ -32,7 +32,7 @@ MP Semiconductor Summit 2026 (MPSS26)
 ================================================
 
 Booth: ${company.booth || 'TBA'}
-Location: Brilliant Convention Centre, Indore / Bhopal, Madhya Pradesh
+Location: Brilliant Convention Centre, Indore, Madhya Pradesh
 Category: ${company.category || 'Technology'}
 
 ABOUT ${company.company.toUpperCase()}:
@@ -112,7 +112,7 @@ Generated via EventSphere Official App (MPSS26)
           <h2 className="text-[12px] font-bold text-[#181818] mb-1.5">{company.company}</h2>
           <div className="flex items-start gap-1 text-[#6B6B6B] mb-2">
             <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-            <p className="text-[12px]">Brilliant Convention Centre, Indore / Bhopal, MP</p>
+            <p className="text-[12px]">Brilliant Convention Centre, Indore, MP</p>
           </div>
 
           <p className="text-[12px] text-[#181818] leading-relaxed mb-2">

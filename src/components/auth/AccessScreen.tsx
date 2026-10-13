@@ -120,7 +120,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
             MP Semiconductor Summit 2026
           </h1>
           <p className="text-[12px] font-medium text-white/80">
-            23–24 Oct 2026 · Bhopal / Indore · 2,400 attending
+            23–24 Oct 2026 · Indore · 2,400 attending
           </p>
         </div>
       </div>
@@ -231,11 +231,11 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
 
           {/* Success Confirmation State */}
           {status === 'confirmed' && (
-            <div className="p-2.5 bg-red-50 border border-[#B51F32]/30 rounded-lg text-xs text-[#B51F32] flex items-center gap-2 animate-in fade-in mt-3">
-              <CheckCircle2 className="w-5 h-5 text-[#B51F32] flex-shrink-0" />
+            <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-800 flex items-center gap-2 animate-in fade-in mt-3">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
               <div>
-                <p className="font-bold text-[12px]">Access confirmed ✓</p>
-                <p className="text-[11px] text-[#B51F32]/80">Loading your personalized dashboard...</p>
+                <p className="font-bold text-[12px] text-emerald-900">Access confirmed ✓</p>
+                <p className="text-[11px] text-emerald-700">Loading your personalized dashboard...</p>
               </div>
             </div>
           )}

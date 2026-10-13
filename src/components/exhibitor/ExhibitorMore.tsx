@@ -218,10 +218,10 @@ export const ExhibitorMore: React.FC = () => {
                           Venue Location
                         </span>
                         <p className="text-[13.5px] font-bold text-[#181818] mt-0.5">
-                          Brilliant Convention Centre, Indore / RCVP Noronha Academy, Bhopal
+                          Brilliant Convention Centre, Indore
                         </p>
                         <p className="text-[12px] text-[#6B6B6B] mt-0.5 leading-relaxed">
-                          Indore / Bhopal, Madhya Pradesh, India
+                          Indore, Madhya Pradesh, India
                         </p>
                       </div>
                     </div>
