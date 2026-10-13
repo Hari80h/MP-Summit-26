@@ -5,7 +5,6 @@ import { useStore } from '../../lib/store';
 import { INITIAL_ATTENDEES } from '../../lib/mockData';
 import {
   Calendar,
-  CalendarPlus,
   MapPin,
   ArrowRight,
   Check,
@@ -35,8 +34,6 @@ export const DelegateHome: React.FC = () => {
     exhibitors,
     toggleBookmarkSession,
   } = useStore();
-
-  const upcomingSessions = sessions.filter((s) => s.status === 'upcoming' || s.status === 'live');
 
   // Featured "Up next" session for MPSS 2026: Day 1 Opening Keynote at 10:00 AM – 10:30 AM
   const featuredSession =
@@ -569,81 +566,6 @@ export const DelegateHome: React.FC = () => {
               );
             });
           })()}
-        </div>
-      </div>
-
-      {/* Schedule / Upcoming Sessions Preview */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between px-0.5">
-          <h3 className="text-[17px] font-bold text-[#111827] tracking-tight">
-            Schedule
-          </h3>
-          <button
-            onClick={() => setActiveDelegateTab('schedule')}
-            className="text-[12px] font-semibold text-[#DC2626] flex items-center gap-1 hover:underline"
-          >
-            <span>View all</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        <div className="space-y-2.5">
-          {upcomingSessions.slice(0, 3).map((session) => (
-            <div
-              key={session.id}
-              onClick={() => {
-                setSelectedSessionId(session.id);
-                setActiveDelegateTab('schedule');
-              }}
-              className="p-3 bg-white rounded-2xl shadow-xs relative overflow-hidden flex flex-col gap-1.5 cursor-pointer hover:border-gray-400 transition-all border border-[#E5E7EB]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 bg-[#F3F4F6] px-2 py-0.5 rounded-full">
-                  <Calendar className="w-2.5 h-2.5 text-[#6B6B6B]" />
-                  <span className="text-[10px] font-semibold text-[#4B5563]">
-                    Day {session.day} · {session.timeRange}
-                  </span>
-                </div>
-                <span className="text-[10.5px] font-semibold text-[#6B6B6B] flex items-center gap-0.5">
-                  Details <ChevronRight className="w-3 h-3" />
-                </span>
-              </div>
-
-              <div>
-                <h4 className="text-[13.5px] font-bold text-[#181818] leading-snug pr-2">
-                  {session.title}
-                </h4>
-                {session.room && (
-                  <p className="text-[11px] text-[#6B6B6B] mt-0.5 flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-[#9CA3AF]" />
-                    <span>{session.room}</span>
-                  </p>
-                )}
-              </div>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleBookmarkSession(session.id);
-                }}
-                className={`w-full py-2 rounded-xl text-[11.5px] font-bold transition-all active:scale-95 border flex items-center justify-center gap-1.5 mt-1 ${
-                  session.isBookmarked
-                    ? 'border-[#0D9488] bg-[#F0FDF4] text-[#0D9488]'
-                    : 'border-[#E5E7EB] text-[#181818] bg-[#F9FAFB] hover:bg-gray-100'
-                }`}
-              >
-                {session.isBookmarked ? (
-                  <>
-                    <Check className="w-3.5 h-3.5" /> Added to Schedule
-                  </>
-                ) : (
-                  <>
-                    <CalendarPlus className="w-3.5 h-3.5" /> Add to Schedule
-                  </>
-                )}
-              </button>
-            </div>
-          ))}
         </div>
       </div>
     </div>
