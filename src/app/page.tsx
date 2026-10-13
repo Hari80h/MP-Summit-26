@@ -166,7 +166,7 @@ export default function App() {
                 <DelegateBottomNav />
               </div>
           ) : (
-            /* Exhibitor (Microsoft B-14) Experience */
+            /* Exhibitor (Truechip Solutions) Experience */
             <div className="flex-1 flex flex-col h-full overflow-hidden">
               <div className="flex-1 flex flex-col overflow-y-auto overscroll-contain no-scrollbar">
                 <div className={activeExhibitorTab === 'home' ? 'contents' : 'hidden'}>

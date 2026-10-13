@@ -82,11 +82,11 @@ export const ExhibitorScan: React.FC = () => {
       email: emailToUse,
       mobile: mobileToUse,
       linkedin: linkedinToUse,
-      source: 'Booth Lead Capture (B-14)',
+      source: 'Booth Lead Capture (Hall 1 · A-02)',
       status: selectedStatus,
-      interests: existingLead?.interests || ['Cloud & Enterprise AI'],
+      interests: existingLead?.interests || ['PCIe Gen 6 / 7 VIP', 'UCIe Chiplet VIP'],
       notes: notes.trim(),
-      boothId: 'B-14',
+      boothId: 'Hall 1 · A-02',
       productsViewed: existingLead?.productsViewed || [],
     });
 
@@ -110,7 +110,7 @@ export const ExhibitorScan: React.FC = () => {
               {selectedPerson ? 'Save Lead' : 'Select Attendee'}
             </h1>
             <p className="text-xs text-gray-400">
-              {selectedPerson ? 'Booth B-14' : 'Choose an attendee to add to leads'}
+              {selectedPerson ? 'Hall 1 · Booth A-02' : 'Choose an attendee to add to Truechip leads'}
             </p>
           </div>
 

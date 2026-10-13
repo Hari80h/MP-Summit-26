@@ -48,13 +48,13 @@ export const ExhibitorMore: React.FC = () => {
       {/* Header Profile Card */}
       <div className="bg-white p-5 rounded-3xl border border-[#DEDCD7] shadow-sm flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-lg shadow-sm">
-            MS
+          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-1.5 border border-gray-200 shadow-sm overflow-hidden">
+            <img src="/images/exhibitors/truechip.png" alt="Truechip" className="w-full h-full object-contain" />
           </div>
           <div>
-            <h2 className="text-xl font-serif text-[#181818]">Microsoft India</h2>
+            <h2 className="text-xl font-serif text-[#181818]">Truechip Solutions</h2>
             <p className="text-xs text-[#6B6B6B] mt-0.5">
-              Booth B-14 · Hall B · Cloud & AI Tier 1
+              Hall 1 · Booth A-02 · Verification IP & EDA
             </p>
           </div>
         </div>
@@ -146,7 +146,7 @@ export const ExhibitorMore: React.FC = () => {
                   {modalTab === 'event' ? 'Event & Venue Guide' : 'Company Profile'}
                 </h3>
                 <p className="text-[12px] text-[#6B6B6B] mt-0.5">
-                  India Tech Summit 2026 · Booth B-14
+                  MPSS26 · Hall 1 · Booth A-02
                 </p>
               </div>
               <button
@@ -255,7 +255,7 @@ export const ExhibitorMore: React.FC = () => {
                           Hall B · Semiconductor Ecosystem Pavilion
                         </p>
                         <p className="text-[12px] text-[#6B6B6B] mt-0.5">
-                          Booth B-14 (Prominent center-row aisle position)
+                          Hall 1 · Booth A-02 (Prominent semiconductor verification pavilion position)
                         </p>
                       </div>
                     </div>
@@ -300,20 +300,20 @@ export const ExhibitorMore: React.FC = () => {
                   {/* Company Profile Header */}
                   <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-[#181818] text-white flex items-center justify-center font-bold text-lg shadow-sm">
-                        MS
+                      <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-1 border border-gray-200 shadow-sm overflow-hidden">
+                        <img src="/images/exhibitors/truechip.png" alt="Truechip" className="w-full h-full object-contain" />
                       </div>
                       <div>
                         <h4 className="text-[18px] font-serif font-bold text-[#181818]">
-                          Microsoft India
+                          Truechip Solutions
                         </h4>
                         <span className="text-[11.5px] font-bold text-[#B51F32] bg-red-50 border border-red-200 px-2 py-0.5 rounded inline-block mt-0.5">
-                          Cloud & AI Tier 1 Partner
+                          The Verification IP Specialist
                         </span>
                       </div>
                     </div>
                     <p className="text-[13px] text-[#555555] leading-relaxed">
-                      Microsoft India powers mission-critical enterprise cloud infrastructure, generative AI integration, and developer modernization across industry leaders and government institutions.
+                      Truechip is a leading global provider of Design and Verification solutions which helps accelerate semiconductor design, lowering the cost and the risks associated with the development of ASIC, FPGA, and SoC designs. Trusted across 100+ silicon tapeouts worldwide.
                     </p>
                   </div>
 
@@ -324,16 +324,16 @@ export const ExhibitorMore: React.FC = () => {
                     </span>
                     <div className="space-y-2 text-[12.5px]">
                       <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
-                        <span className="font-bold text-[#181818] block text-[13px]">Azure OpenAI Service</span>
-                        <p className="text-[#6B6B6B] mt-0.5">Enterprise LLMs, private embeddings, and secure vector databases with Indian data residency.</p>
+                        <span className="font-bold text-[#181818] block text-[13px]">PCIe Gen 6 / 7 & CXL 3.1 VIP</span>
+                        <p className="text-[#6B6B6B] mt-0.5">PAM4 signaling, FLIT mode, and cache-coherent interconnect verification suites.</p>
                       </div>
                       <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
-                        <span className="font-bold text-[#181818] block text-[13px]">GitHub Copilot</span>
-                        <p className="text-[#6B6B6B] mt-0.5">Developer productivity tools, automated pull requests, and security code remediation.</p>
+                        <span className="font-bold text-[#181818] block text-[13px]">UCIe Chiplet Interconnect VIP</span>
+                        <p className="text-[#6B6B6B] mt-0.5">Turnkey multi-die chiplet D2D adapter and physical layer verification testbenches.</p>
                       </div>
                       <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
-                        <span className="font-bold text-[#181818] block text-[13px]">Microsoft Fabric</span>
-                        <p className="text-[#6B6B6B] mt-0.5">Unified lakehouse analytics platform with real-time intelligence and Synapse integration.</p>
+                        <span className="font-bold text-[#181818] block text-[13px]">RISC-V Verification Suite & TruEye</span>
+                        <p className="text-[#6B6B6B] mt-0.5">TileLink coherency test suites paired with visual GUI-based protocol debug & transaction analysis.</p>
                       </div>
                     </div>
                   </div>
@@ -346,15 +346,15 @@ export const ExhibitorMore: React.FC = () => {
                     <div className="space-y-2 text-[12.5px]">
                       <div className="flex items-center gap-2.5 text-[#181818]">
                         <Globe className="w-4 h-4 text-[#737373] shrink-0" />
-                        <span className="font-medium">microsoft.com/en-in</span>
+                        <span className="font-medium">www.truechip.net</span>
                       </div>
                       <div className="flex items-center gap-2.5 text-[#181818]">
                         <Mail className="w-4 h-4 text-[#737373] shrink-0" />
-                        <span className="font-medium">india-events@microsoft.com</span>
+                        <span className="font-medium">info@truechip.net</span>
                       </div>
                       <div className="flex items-center gap-2.5 text-[#181818]">
                         <MapPin className="w-4 h-4 text-[#737373] shrink-0" />
-                        <span className="font-medium">Booth B-14, Hall B, BIEC Bengaluru</span>
+                        <span className="font-medium">Hall 1 · Booth A-02, Brilliant Convention Centre, Indore</span>
                       </div>
                     </div>
                   </div>

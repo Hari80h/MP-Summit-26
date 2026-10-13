@@ -364,7 +364,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Set role with tab preservation
   const setRole = (newRole: DemoRole) => {
     setRoleState(newRole);
-    showToast(`Switched to ${newRole === 'delegate' ? 'Delegate (Aarav)' : newRole === 'exhibitor' ? 'Exhibitor (Microsoft B-14)' : 'Organizer Console'} view`, 'info');
+    showToast(`Switched to ${newRole === 'delegate' ? 'Delegate (Aarav)' : newRole === 'exhibitor' ? 'Exhibitor (Truechip Booth A-02)' : 'Organizer Console'} view`, 'info');
   };
 
   // Connectivity toggle
@@ -528,10 +528,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       setLeads((prev) => [newLead, ...prev]);
 
-      // Update Microsoft stats
+      // Update Truechip stats
       setExhibitors((prev) =>
         prev.map((ex) =>
-          ex.company === 'Microsoft'
+          ex.company.toLowerCase().includes('truechip')
             ? { ...ex, leads: ex.leads + 1 }
             : ex
         )
@@ -582,10 +582,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       )
     );
 
-    // Update Microsoft booth stats
+    // Update Truechip booth stats
     setExhibitors((prev) =>
       prev.map((ex) =>
-        ex.company === 'Microsoft'
+        ex.company.toLowerCase().includes('truechip')
           ? { ...ex, enquiries: ex.enquiries + 1 }
           : ex
       )
@@ -648,7 +648,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const addProduct = (productData: Omit<Product, 'id'>) => {
     const newProduct: Product = {
       ...productData,
-      id: `prod-microsoft-${Date.now()}`,
+      id: `prod-truechip-${Date.now()}`,
     };
     setProducts((prev) => [newProduct, ...prev]);
     showToast('New product added to showcase ✓', 'success');

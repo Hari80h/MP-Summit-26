@@ -45,7 +45,7 @@ export const ExhibitorLeads: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `microsoft-booth-leads-mpss26.csv`);
+    link.setAttribute('download', `truechip-booth-leads-mpss26.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -85,7 +85,7 @@ export const ExhibitorLeads: React.FC = () => {
               Booth Leads
             </h1>
             <p className="text-[12px] text-gray-300 font-medium">
-              {leads.length} captured leads at Booth B-14
+              {leads.length} captured leads at Truechip (Booth A-02)
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">

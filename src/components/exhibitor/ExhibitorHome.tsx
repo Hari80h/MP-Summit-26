@@ -13,13 +13,13 @@ export const ExhibitorHome: React.FC = () => {
     currentUser,
   } = useStore();
 
-  const msftProducts = products.filter((p) => p.company.toLowerCase() === 'microsoft');
+  const truechipProducts = products.filter((p) => p.company.toLowerCase().includes('truechip'));
 
-  const msft = exhibitors.find((e) => e.company === 'Microsoft') || {
-    visits: 748,
-    leads: leads.length,
-    enquiries: 96,
-    teamSize: 11,
+  const truechip = exhibitors.find((e) => e.company.toLowerCase().includes('truechip')) || {
+    visits: 760,
+    leads: leads.length || 290,
+    enquiries: 140,
+    teamSize: 14,
   };
 
   const getGreetingIST = () => {
@@ -44,10 +44,10 @@ export const ExhibitorHome: React.FC = () => {
               {getGreetingIST()}
             </span>
             <h1 className="text-[21px] font-serif font-medium text-[#181818] leading-none mb-1">
-              Microsoft Team
+              Truechip Team
             </h1>
             <p className="text-[11.5px] font-semibold text-[#6B6B6B] leading-none">
-              Exhibitor <span className="opacity-50 mx-0.5">·</span> Booth B-14
+              Exhibitor <span className="opacity-50 mx-0.5">·</span> Hall 1 · Booth A-02
             </p>
           </div>
 
@@ -55,8 +55,8 @@ export const ExhibitorHome: React.FC = () => {
             onClick={() => setActiveExhibitorTab('more')}
             className="relative group focus:outline-none z-10 flex-shrink-0 ml-2"
           >
-            <div className="w-[52px] h-[52px] rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-xl border-[3px] border-white shadow-sm">
-              M
+            <div className="w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center p-2 border-[3px] border-white shadow-sm overflow-hidden">
+              <img src="/images/exhibitors/truechip.png" alt="Truechip" className="w-full h-full object-contain" />
             </div>
             <span className="absolute bottom-0 -right-0.5 w-[20px] h-[20px] bg-[#10B981] border-[2.5px] border-white rounded-full" />
           </button>
@@ -70,8 +70,8 @@ export const ExhibitorHome: React.FC = () => {
 
         {/* Title */}
         <div className="mb-6 relative z-10">
-          <h1 className="text-3xl font-serif mb-1 tracking-tight text-white">Microsoft</h1>
-          <p className="text-[11px] text-gray-400">MPSS26 · Hall B · {msft.teamSize} team members on floor</p>
+          <h1 className="text-3xl font-serif mb-1 tracking-tight text-white">Truechip</h1>
+          <p className="text-[11px] text-gray-400">MPSS26 · Hall 1 · Booth A-02 · {truechip.teamSize || 14} team members on floor</p>
         </div>
 
         {/* 2 Core Metrics Grid */}
@@ -86,7 +86,7 @@ export const ExhibitorHome: React.FC = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-light text-white leading-none mb-1">
-                {msft.leads || 171}
+                {truechip.leads || leads.length || 290}
               </span>
               <span className="text-[11px] text-gray-400 font-medium">Total Leads</span>
             </div>
@@ -102,7 +102,7 @@ export const ExhibitorHome: React.FC = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-light text-white leading-none mb-1">
-                12
+                {truechipProducts.length || 7}
               </span>
               <span className="text-[11px] text-gray-400 font-medium">Total Products</span>
             </div>
@@ -135,7 +135,7 @@ export const ExhibitorHome: React.FC = () => {
         </div>
 
         <div className="space-y-3">
-          {msftProducts.slice(0, 2).map((product) => (
+          {truechipProducts.slice(0, 2).map((product) => (
             <div 
               key={product.id} 
               className="bg-white p-4 rounded-[16px] border border-[#DEDCD7] flex justify-between items-center cursor-pointer active:scale-[0.99] transition-transform" 
