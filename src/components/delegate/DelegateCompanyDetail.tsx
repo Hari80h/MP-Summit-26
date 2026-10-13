@@ -93,7 +93,7 @@ Generated via EventSphere Official App (MPSS26)
               <img 
                 src={company.logo} 
                 alt={company.company} 
-                className="w-8 h-8 rounded-lg object-cover border border-[#DEDCD7]"
+                className="w-12 h-12 rounded-xl object-contain p-1 border border-[#DEDCD7] bg-white shadow-xs"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(company.company)}&background=F3F4F6&color=181818&bold=true`;

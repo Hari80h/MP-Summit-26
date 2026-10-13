@@ -505,12 +505,12 @@ export const DelegateHome: React.FC = () => {
                   className="bg-white p-3 rounded-2xl border border-[#E5E7EB] hover:border-gray-400 transition-all cursor-pointer shadow-xs flex flex-col gap-2.5"
                 >
                   <div className="flex justify-between items-start w-full">
-                    <div className="w-10 h-10 rounded-xl bg-[#F3F4F6] overflow-hidden flex items-center justify-center font-bold text-base text-[#181818] flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] overflow-hidden flex items-center justify-center font-bold text-base text-[#181818] flex-shrink-0">
                       {company.logo ? (
                         <img
                           src={company.logo}
                           alt={company.company}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain p-1"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(

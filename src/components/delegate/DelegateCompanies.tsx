@@ -117,7 +117,7 @@ export const DelegateCompanies: React.FC = () => {
                     <img
                       src={company.logo}
                       alt={company.company}
-                      className="w-10 h-10 rounded-xl object-cover border border-[#E5E7EB] flex-shrink-0 bg-white"
+                      className="w-11 h-11 rounded-xl object-contain p-1 border border-[#E5E7EB] flex-shrink-0 bg-white"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
