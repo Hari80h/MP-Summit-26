@@ -38,12 +38,11 @@ export const OrganizerExhibitors: React.FC = () => {
   };
 
   const handleExportCSV = () => {
-    const headers = ['Company', 'Booth', 'Category', 'Visits', 'Leads', 'Enquiries', 'Team Size', 'Status'];
+    const headers = ['Company', 'Booth', 'Category', 'Leads', 'Enquiries', 'Team Size', 'Status'];
     const rows = exhibitors.map((e) => [
       `"${e.company}"`,
       `"${e.booth}"`,
       `"${e.category}"`,
-      e.visits,
       e.leads,
       e.enquiries,
       e.teamSize,
@@ -74,7 +73,7 @@ export const OrganizerExhibitors: React.FC = () => {
 
         <button
           onClick={handleExportCSV}
-          className="px-2.5 py-2 bg-white hover:bg-[#F6F4F0] border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg shadow-xs transition-colors flex items-center gap-1.5"
+          className="px-3 py-2 bg-[#7A1B2D] hover:bg-[#631624] text-white font-semibold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
         >
           <Download className="w-3.5 h-3.5" />
           <span>Export Metrics</span>
@@ -94,7 +93,6 @@ export const OrganizerExhibitors: React.FC = () => {
               <tr className="border-b border-[#DEDCD7] text-[#6B6B6B] font-semibold text-[11px] uppercase tracking-wider bg-[#F6F4F0]/60">
                 <th className="py-1.5 px-3">Company</th>
                 <th className="py-1.5 px-3">Booth #</th>
-                <th className="py-1.5 px-3">Booth Visits</th>
                 <th className="py-1.5 px-3">Leads Captured</th>
                 <th className="py-1.5 px-3">Enquiries</th>
                 <th className="py-1.5 px-3">Team</th>
@@ -127,11 +125,7 @@ export const OrganizerExhibitors: React.FC = () => {
                     {ex.booth}
                   </td>
 
-                  <td className="py-1.5 px-3 font-mono text-[#181818]">
-                    {ex.visits}
-                  </td>
-
-                  <td className="py-1.5 px-3 font-mono font-bold text-[#B51F32]">
+                  <td className="py-1.5 px-3 font-mono font-bold text-[#7A1B2D]">
                     {ex.leads}
                   </td>
 
@@ -204,7 +198,7 @@ export const OrganizerExhibitors: React.FC = () => {
                   onClick={() => setCurrentPage(pageNum)}
                   className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center transition-all outline-none focus:outline-none ${
                     isActive
-                      ? 'bg-[#101012] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] cursor-default'
+                      ? 'bg-[#7A1B2D] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] cursor-default'
                       : 'text-[#6B6B6B] hover:text-[#181818] hover:bg-[#F6F4F0] cursor-pointer'
                   }`}
                 >

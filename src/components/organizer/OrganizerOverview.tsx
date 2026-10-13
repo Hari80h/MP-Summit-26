@@ -50,7 +50,7 @@ export const OrganizerOverview: React.FC = () => {
           <div className="flex items-center gap-2 mt-2 text-xs sm:text-sm text-[#5E5B54] select-text">
             <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
             <span className="font-medium select-text">
-              LIVE · {checkedIn.toLocaleString()} of {registered.toLocaleString()} checked in ({checkInRate}%)
+              LIVE · {registered.toLocaleString()} registered delegates & participants
             </span>
           </div>
         </div>
@@ -66,7 +66,7 @@ export const OrganizerOverview: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveOrganizerTab('reports')}
-            className="px-5 py-2 bg-[#101012] hover:bg-black text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors"
+            className="px-5 py-2 bg-[#7A1B2D] hover:bg-[#631624] text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors"
           >
             Event Report
           </button>
@@ -74,7 +74,7 @@ export const OrganizerOverview: React.FC = () => {
       </div>
 
       {/* 6 Core Metrics Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {/* Registered */}
         <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
           <Users className="w-4 h-4 text-[#8C8983]" />
@@ -83,17 +83,6 @@ export const OrganizerOverview: React.FC = () => {
               {registered.toLocaleString()}
             </p>
             <p className="text-xs text-[#8C8983] mt-1.5 select-text">Registered</p>
-          </div>
-        </div>
-
-        {/* Checked in */}
-        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
-          <CheckCircle2 className="w-4 h-4 text-[#8C8983]" />
-          <div>
-            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
-              {checkedIn.toLocaleString()}
-            </p>
-            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Checked in</p>
           </div>
         </div>
 
@@ -142,10 +131,10 @@ export const OrganizerOverview: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Grid: Top Exhibitors & Right Column Stack */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      {/* Main Grid: Top Exhibitors & Today's Programme — Equal Split */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
         {/* Top exhibitors by leads */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-6 border border-[#E8E4DA] shadow-xs">
+        <div className="bg-white rounded-2xl p-6 border border-[#E8E4DA] shadow-xs">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-base font-bold text-[#1A1A1A]">Top exhibitors by leads</h2>
             <button
@@ -169,7 +158,7 @@ export const OrganizerOverview: React.FC = () => {
 
                   <div className="flex-1 bg-[#EFECE4] h-2.5 rounded-full overflow-hidden">
                     <div
-                      className="bg-[#101012] h-full rounded-full transition-all duration-500"
+                      className="bg-gradient-to-r from-[#7A1B2D] to-[#B51F32] h-full rounded-full transition-all duration-500"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
@@ -183,34 +172,8 @@ export const OrganizerOverview: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Check-in Progress (Black + Red Shadow) & Today's Programme */}
-        <div className="lg:col-span-5 space-y-4">
-          {/* Check-in Progress Box (Styled black with subtle red shadow theme per user request) */}
-          <div className="relative overflow-hidden bg-[#101012] text-white rounded-2xl p-6 border border-[#B51F32]/40 shadow-[0_8px_30px_rgba(181,31,50,0.22)]">
-            {/* Ambient subtle red corner glow */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#B51F32]/20 rounded-full blur-2xl pointer-events-none" />
-
-            <div className="relative z-10">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-white/50">
-                CHECK-IN PROGRESS
-              </p>
-              <p className="text-4xl font-serif font-bold text-white tracking-tight mt-1">
-                {checkInRate}%
-              </p>
-
-              {/* Progress bar with red theme */}
-              <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden mt-4">
-                <div
-                  className="bg-gradient-to-r from-[#B51F32] to-[#E0533C] h-full rounded-full shadow-[0_0_10px_rgba(181,31,50,0.6)] transition-all duration-500"
-                  style={{ width: `${checkInRate}%` }}
-                />
-              </div>
-
-              <p className="text-xs text-white/60 mt-3 font-medium">
-                Peak: 9:00–9:45 AM · Gate A fastest (38/min)
-              </p>
-            </div>
-          </div>
+        {/* Right Column: Today's Programme */}
+        <div className="space-y-4">
 
           {/* Today's programme */}
           <div className="bg-white rounded-2xl p-6 border border-[#E8E4DA] shadow-xs">

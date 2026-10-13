@@ -44,7 +44,7 @@ export const OrganizerConsole: React.FC = () => {
   return (
     <div className="h-screen w-full bg-[#FAF7F2] flex flex-col md:flex-row overflow-hidden">
       {/* Sidebar Navigation */}
-      <aside className="no-print w-full md:w-72 h-full bg-[#101012] text-white flex flex-col justify-between p-5 flex-shrink-0 border-r border-[#B51F32]/30 shadow-[4px_0_25px_rgba(181,31,50,0.16)] z-20">
+      <aside className="no-print w-full md:w-72 h-full bg-[#4A0E1B] text-white flex flex-col justify-between p-5 flex-shrink-0 border-r border-[#B51F32]/30 shadow-[4px_0_25px_rgba(181,31,50,0.16)] z-20">
         <div className="space-y-5">
           {/* Console Header & Brand */}
           <div className="pt-1">

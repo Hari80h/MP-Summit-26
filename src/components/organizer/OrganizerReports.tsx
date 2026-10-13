@@ -204,7 +204,6 @@ export const OrganizerReports: React.FC = () => {
                   <th className="py-2.5 px-3">Rank</th>
                   <th className="py-2.5 px-3">Company</th>
                   <th className="py-2.5 px-3">Booth</th>
-                  <th className="py-2.5 px-3">Booth Visits</th>
                   <th className="py-2.5 px-3">Leads Captured</th>
                   <th className="py-2.5 px-3">Product Enquiries</th>
                 </tr>
@@ -215,8 +214,7 @@ export const OrganizerReports: React.FC = () => {
                     <td className="py-2.5 px-3 font-mono font-bold text-[#6B6B6B]">#{idx + 1}</td>
                     <td className="py-2.5 px-3 font-bold text-[#181818]">{ex.company}</td>
                     <td className="py-2.5 px-3 font-mono text-[#6B6B6B]">{ex.booth}</td>
-                    <td className="py-2.5 px-3 font-mono">{ex.visits}</td>
-                    <td className="py-2.5 px-3 font-mono font-bold text-[#B51F32]">{ex.leads}</td>
+                    <td className="py-2.5 px-3 font-mono font-bold text-[#7A1B2D]">{ex.leads}</td>
                     <td className="py-2.5 px-3 font-mono text-[#2F7D58]">{ex.enquiries}</td>
                   </tr>
                 ))}

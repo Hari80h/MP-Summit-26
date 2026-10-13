@@ -121,6 +121,9 @@ interface StoreContextType {
   addWalkInAttendee: (data: { name: string; email: string; mobile: string; company: string; designation: string; ticketType: string }) => void;
   importAttendeesMock: (count: number) => void;
   toggleBookmarkSession: (sessionId: string) => void;
+  updateSession: (sessionId: string, data: Partial<Session>) => void;
+  createSession: (sessionData: Omit<Session, 'id' | 'attendanceCount' | 'questionsCount'>) => void;
+  deleteSession: (sessionId: string) => void;
   recordScan: () => void;
   resetAllData: () => void;
 
@@ -780,6 +783,32 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
   };
 
+  // Update session
+  const updateSession = (sessionId: string, data: Partial<Session>) => {
+    setSessions((prev) =>
+      prev.map((s) => (s.id === sessionId ? { ...s, ...data } : s))
+    );
+    showToast('Session updated successfully ✓', 'success');
+  };
+
+  // Create session
+  const createSession = (sessionData: Omit<Session, 'id' | 'attendanceCount' | 'questionsCount'>) => {
+    const newSession: Session = {
+      ...sessionData,
+      id: `sess-${Date.now()}`,
+      attendanceCount: 0,
+      questionsCount: 0,
+    };
+    setSessions((prev) => [newSession, ...prev]);
+    showToast('Session created successfully ✓', 'success');
+  };
+
+  // Delete session
+  const deleteSession = (sessionId: string) => {
+    setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+    showToast('Session deleted', 'info');
+  };
+
   // Reset all data
   const resetAllData = () => {
     setEvent(INITIAL_EVENT);
@@ -873,6 +902,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         addWalkInAttendee,
         importAttendeesMock,
         toggleBookmarkSession,
+        updateSession,
+        createSession,
+        deleteSession,
         recordScan,
         resetAllData,
         toast,

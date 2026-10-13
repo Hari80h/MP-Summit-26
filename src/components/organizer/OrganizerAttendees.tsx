@@ -30,7 +30,7 @@ export const OrganizerAttendees: React.FC = () => {
     event,
   } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'All' | 'Checked in' | 'Not in' | 'VIP' | 'Speakers' | 'Exhibitors'>('All');
+  const [activeTab, setActiveTab] = useState<'All' | 'Delegates' | 'VIP' | 'Speakers' | 'Exhibitors'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,8 +71,7 @@ export const OrganizerAttendees: React.FC = () => {
 
     if (!matchesSearch) return false;
 
-    if (activeTab === 'Checked in') return person.checkedIn;
-    if (activeTab === 'Not in') return !person.checkedIn;
+    if (activeTab === 'Delegates') return person.role === 'delegate' || (!person.role && !person.ticketType?.toLowerCase().includes('speaker') && !person.ticketType?.toLowerCase().includes('vip') && !person.ticketType?.toLowerCase().includes('exhibitor'));
     if (activeTab === 'VIP') return person.role === 'vip' || person.ticketType?.toLowerCase().includes('vip');
     if (activeTab === 'Speakers') return person.role === 'speaker' || person.ticketType?.toLowerCase().includes('speaker');
     if (activeTab === 'Exhibitors') return person.role === 'exhibitor_staff' || person.ticketType?.toLowerCase().includes('exhibitor');
@@ -206,7 +205,7 @@ export const OrganizerAttendees: React.FC = () => {
 
           <button
             onClick={handleExportCSV}
-            className="px-4 py-2 bg-[#101012] hover:bg-black text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 bg-[#7A1B2D] hover:bg-[#631624] text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors flex items-center gap-1.5"
           >
             <Download className="w-4 h-4 text-white" />
             <span>Export</span>
@@ -230,7 +229,7 @@ export const OrganizerAttendees: React.FC = () => {
 
         {/* Filter Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-          {(['All', 'Checked in', 'Not in', 'VIP', 'Speakers', 'Exhibitors'] as const).map((tab) => {
+          {(['All', 'Delegates', 'VIP', 'Speakers', 'Exhibitors'] as const).map((tab) => {
             const isActive = activeTab === tab;
             return (
               <button
@@ -238,7 +237,7 @@ export const OrganizerAttendees: React.FC = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`px-3.5 py-2 rounded-lg text-xs whitespace-nowrap transition-all ${
                   isActive
-                    ? 'bg-[#101012] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] font-semibold'
+                    ? 'bg-[#7A1B2D] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] font-semibold'
                     : 'bg-white text-[#5E5B54] hover:text-[#1A1A1A] border border-[#E8E4DA] font-medium'
                 }`}
               >
@@ -259,7 +258,6 @@ export const OrganizerAttendees: React.FC = () => {
                 <th className="py-2.5 px-5 font-bold">COMPANY</th>
                 <th className="py-2.5 px-5 font-bold">DESIGNATION</th>
                 <th className="py-2.5 px-5 font-bold">TYPE</th>
-                <th className="py-2.5 px-5 font-bold">STATUS</th>
                 <th className="py-2.5 px-5 font-bold text-right">REG ID</th>
               </tr>
             </thead>
@@ -310,20 +308,6 @@ export const OrganizerAttendees: React.FC = () => {
                       </span>
                     </td>
 
-                    {/* STATUS */}
-                    <td className="py-2 px-5">
-                      {person.checkedIn ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16A34A]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
-                          Checked in
-                        </span>
-                      ) : (
-                        <span className="text-xs text-[#8C8983] font-medium">
-                          Not in
-                        </span>
-                      )}
-                    </td>
-
                     {/* REG ID */}
                     <td className="py-2 px-5 text-right font-mono text-xs text-[#8C8983]">
                       {getFormattedRegId(person)}
@@ -340,7 +324,7 @@ export const OrganizerAttendees: React.FC = () => {
           <div>
             Showing {filteredAttendees.length === 0 ? 0 : startIndex + 1}
             {paginatedAttendees.length > 1 ? `–${startIndex + paginatedAttendees.length}` : ''} of{' '}
-            {filteredAttendees.length.toLocaleString()} · sorted by check-in recency
+            {filteredAttendees.length.toLocaleString()} · sorted by registration order
           </div>
 
           <div className="flex items-center gap-1 font-medium select-none">
@@ -385,7 +369,7 @@ export const OrganizerAttendees: React.FC = () => {
                   onClick={() => setCurrentPage(pageNum)}
                   className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center transition-all outline-none focus:outline-none ${
                     isActive
-                      ? 'bg-[#101012] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] cursor-default'
+                      ? 'bg-[#7A1B2D] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] cursor-default'
                       : 'text-[#8C8983] hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer'
                   }`}
                 >
@@ -411,13 +395,13 @@ export const OrganizerAttendees: React.FC = () => {
       {/* Attendee Detail Modal */}
       {selectedPerson && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-lg max-h-[90vh] overflow-y-auto p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
+          <div className="bg-white rounded-[14px] w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 space-y-3 shadow-xl border border-[#DEDCD7]">
             <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
                   Attendee Profile & Engagement Record
                 </span>
-                <h2 className="text-[13px] font-normal text-[#181818]">{selectedPerson.name}</h2>
+                <h2 className="text-base font-bold text-[#181818]">{selectedPerson.name}</h2>
               </div>
               <button
                 onClick={() => setSelectedPerson(null)}
@@ -428,7 +412,7 @@ export const OrganizerAttendees: React.FC = () => {
             </div>
 
             {/* Registration Details */}
-            <div className="bg-[#F6F4F0] p-2.5 rounded-lg border border-[#DEDCD7] space-y-2 text-xs">
+            <div className="bg-[#F6F4F0] p-3 rounded-xl border border-[#DEDCD7] space-y-2 text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-[#6B6B6B]">Registration ID:</span>
                 <strong className="font-mono text-[#181818]">{getFormattedRegId(selectedPerson)}</strong>
@@ -442,10 +426,8 @@ export const OrganizerAttendees: React.FC = () => {
                 <span className="text-[#181818]">{selectedPerson.designation} · {selectedPerson.company}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#6B6B6B]">Check-in Status:</span>
-                <span className={`font-bold ${selectedPerson.checkedIn ? 'text-[#2F7D58]' : 'text-[#6B6B6B]'}`}>
-                  {selectedPerson.checkedIn ? `Checked In (${selectedPerson.checkInTime || 'On-site'})` : 'Not checked in'}
-                </span>
+                <span className="text-[#6B6B6B]">Email:</span>
+                <span className="text-[#181818] font-mono">{selectedPerson.email}</span>
               </div>
             </div>
 
@@ -465,21 +447,10 @@ export const OrganizerAttendees: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-2 flex items-center gap-2">
-              <button
-                onClick={() => {
-                  toggleCheckIn(selectedPerson.id);
-                  setSelectedPerson({ ...selectedPerson, checkedIn: !selectedPerson.checkedIn });
-                }}
-                className={`flex-1 py-2.5 rounded-xl font-bold text-xs text-white transition-colors ${
-                  selectedPerson.checkedIn ? 'bg-[#181818] hover:bg-black' : 'bg-[#2F7D58] hover:bg-[#256346]'
-                }`}
-              >
-                {selectedPerson.checkedIn ? 'Mark as Not Checked In' : 'Confirm Check-In Now'}
-              </button>
+            <div className="pt-2">
               <button
                 onClick={() => setSelectedPerson(null)}
-                className="py-2.5 px-3 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg hover:bg-[#F6F4F0]"
+                className="w-full py-2.5 px-3 bg-[#7A1B2D] hover:bg-[#631624] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs"
               >
                 Close
               </button>
