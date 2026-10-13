@@ -4,6 +4,7 @@ import React from 'react';
 import { Building, Calendar, ChevronRight, HelpCircle, LogOut, Pencil, Star } from 'lucide-react';
 
 import { useStore } from '../../lib/store';
+import { calculateProfileCompletion } from '../../lib/mockData';
 
 interface DelegateProfileProps {
   onOpenPrivacyModal?: () => void;
@@ -32,7 +33,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
   };
 
   const savedSessionsCount = sessions.filter((s) => s.isBookmarked).length;
-  const profileCompletion = 85; 
+  const profileCompletion = calculateProfileCompletion(currentUser); 
 
   return (
     <div className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto px-3 pt-1.5 pb-20 space-y-2">
@@ -56,21 +57,23 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
           {currentUser.avatar ? (
             <img 
               src={currentUser.avatar} 
-              alt={currentUser.name} 
+              alt={currentUser.name || 'Delegate'} 
               className="w-12 h-12 rounded-full object-cover border border-[#E5E7EB] flex-shrink-0" 
             />
           ) : (
             <div className="w-12 h-12 rounded-full bg-[#F6F4F0] border border-[#E5E7EB] text-[#181818] flex items-center justify-center font-bold text-[16px] flex-shrink-0">
-              {currentUser.name.split(' ').map(n => n[0]).join('')}
+              {currentUser.name ? currentUser.name.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2) : '?'}
             </div>
           )}
-          <div className="pr-6 space-y-0.5">
-            <h2 className="text-[15.5px] font-bold text-[#181818] tracking-tight leading-tight">{currentUser.name}</h2>
-            <p className="text-[12px] text-[#6B6B6B] leading-tight">
-              {currentUser.designation} · {currentUser.company}
+          <div className="pr-6 space-y-0.5 min-w-0 flex-1">
+            <h2 className="text-[15.5px] font-bold text-[#181818] tracking-tight leading-tight truncate">
+              {currentUser.name || 'Anonymous Delegate'}
+            </h2>
+            <p className="text-[12px] text-[#6B6B6B] leading-tight truncate">
+              {[currentUser.designation, currentUser.company].filter(Boolean).join(' · ') || 'No title or company added'}
             </p>
             <p className="text-[11.5px] text-[#8BA5CD] font-medium leading-tight">
-              {currentUser.ticketType} · 2-day
+              {currentUser.ticketType || 'Delegate'} · 2-day
             </p>
           </div>
         </div>
@@ -79,11 +82,15 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
         <div className="mt-2.5 pt-2 border-t border-[#F3F4F6]">
           <div className="flex items-center justify-between text-[10.5px] font-bold mb-1">
             <span className="text-[#6B6B6B] uppercase tracking-wider">Profile Completion</span>
-            <span className="text-[#181818]">{profileCompletion}%</span>
+            <span className={profileCompletion === 100 ? "text-[#16A34A] font-bold" : "text-[#181818]"}>
+              {profileCompletion}%
+            </span>
           </div>
           <div className="h-1.5 w-full bg-[#E5E7EB] rounded-full overflow-hidden">
             <div 
-              className="h-full bg-[#181818] rounded-full transition-all duration-300" 
+              className={`h-full rounded-full transition-all duration-300 ${
+                profileCompletion === 100 ? 'bg-[#16A34A]' : 'bg-[#181818]'
+              }`}
               style={{ width: `${profileCompletion}%` }}
             />
           </div>

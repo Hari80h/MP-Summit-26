@@ -58,7 +58,7 @@ export const DelegateSupport: React.FC = () => {
             </a>
 
             <a
-              href="mailto:support@mpss2026.gov.in"
+              href="mailto:ed1@mpsedc.com"
               className="p-3 rounded-xl border border-[#E5E7EB] hover:border-[#181818] bg-[#F9FAFB] hover:bg-white flex flex-col gap-1 transition-all group shadow-2xs"
             >
               <div className="flex items-center gap-1.5 text-[#181818]">
@@ -66,7 +66,7 @@ export const DelegateSupport: React.FC = () => {
                 <span className="text-[12px] font-bold">Email Support</span>
               </div>
               <span className="text-[11px] text-[#4B5563] truncate group-hover:text-[#181818]">
-                support@mpss2026.gov.in
+                ed1@mpsedc.com
               </span>
             </a>
           </div>

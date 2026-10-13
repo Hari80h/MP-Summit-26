@@ -194,7 +194,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-11",
     "company": "TULSHREE",
-    "logo": "https://ui-avatars.com/api/?name=TULSHREE&background=7C2D12&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/tulshree.png",
     "booth": "Hall 1 · B-01",
     "category": "Electronics Manufacturing",
     "visits": 490,
@@ -206,7 +206,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-12",
     "company": "HLBS",
-    "logo": "https://ui-avatars.com/api/?name=HLBS&background=2563EB&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/hlbs.png",
     "booth": "Hall 1 · B-02",
     "category": "Hardware Manufacturing",
     "visits": 640,
@@ -218,7 +218,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-13",
     "company": "Spintronics AI",
-    "logo": "https://ui-avatars.com/api/?name=Spintronics&background=7E22CE&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/spintronics.png",
     "booth": "Hall 1 · B-03",
     "category": "AI Hardware & Spintronics",
     "visits": 530,
@@ -230,7 +230,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-14",
     "company": "SVVV Indore",
-    "logo": "https://ui-avatars.com/api/?name=SVVV&background=9A3412&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/svvv.png",
     "booth": "Hall 1 · B-04",
     "category": "Academic & Research",
     "visits": 470,
@@ -242,7 +242,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-15",
     "company": "VLSI Experts",
-    "logo": "https://ui-avatars.com/api/?name=VLSI+Experts&background=0284C7&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/vlsiexperts.png",
     "booth": "Hall 1 · B-05",
     "category": "VLSI Training & Consulting",
     "visits": 680,
@@ -254,7 +254,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-16",
     "company": "VLSI for all Private Ltd.",
-    "logo": "https://ui-avatars.com/api/?name=VLSI+For+All&background=0D9488&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/vlsiforall.png",
     "booth": "Hall 1 · B-06",
     "category": "VLSI Education & EDA",
     "visits": 590,
@@ -266,7 +266,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-17",
     "company": "Siliciom Semiconductors",
-    "logo": "https://ui-avatars.com/api/?name=Siliciom&background=4338CA&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/siliciom.png",
     "booth": "Hall 1 · B-07",
     "category": "Silicon Engineering",
     "visits": 510,
@@ -278,7 +278,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-18",
     "company": "TRIVENI Semiconductor India",
-    "logo": "https://ui-avatars.com/api/?name=TRIVENI&background=B45309&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/triveni.png",
     "booth": "Hall 1 · B-08",
     "category": "Semiconductor Assembly & Test",
     "visits": 630,
@@ -290,7 +290,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-19",
     "company": "Paras Semi",
-    "logo": "https://ui-avatars.com/api/?name=Paras+Semi&background=15803D&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/paras.png",
     "booth": "Hall 1 · B-09",
     "category": "Power Semiconductors",
     "visits": 480,
@@ -302,7 +302,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-20",
     "company": "DigiComm Semi",
-    "logo": "https://ui-avatars.com/api/?name=DigiComm&background=6D28D9&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/digicomm.png",
     "booth": "Hall 1 · B-10",
     "category": "RF & Wireless ICs",
     "visits": 520,
@@ -314,7 +314,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-21",
     "company": "VIT Bhopal",
-    "logo": "https://ui-avatars.com/api/?name=VIT+Bhopal&background=1D4ED8&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/vitbhopal.png",
     "booth": "Hall 1 · C-01",
     "category": "Academic & Research",
     "visits": 560,
@@ -326,7 +326,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-22",
     "company": "MANIT Bhopal",
-    "logo": "https://ui-avatars.com/api/?name=MANIT&background=047857&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/manit.png",
     "booth": "Hall 1 · C-02",
     "category": "Academic & Research",
     "visits": 610,
@@ -338,7 +338,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-23",
     "company": "Medicaps",
-    "logo": "https://ui-avatars.com/api/?name=Medicaps&background=BE123C&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/medicaps.png",
     "booth": "Hall 1 · C-03",
     "category": "Academic & Research",
     "visits": 450,
@@ -350,7 +350,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-24",
     "company": "SGSITS Indore",
-    "logo": "https://ui-avatars.com/api/?name=SGSITS&background=374151&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/sgsits.png",
     "booth": "Hall 1 · C-04",
     "category": "Academic & Research",
     "visits": 670,
@@ -362,7 +362,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-25",
     "company": "ABV-IIITM Gwalior",
-    "logo": "https://ui-avatars.com/api/?name=IIITM+Gwalior&background=1E3A8A&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/iiitmgwalior.png",
     "booth": "Hall 1 · C-05",
     "category": "Academic & Research",
     "visits": 580,
@@ -374,7 +374,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-26",
     "company": "Jetwave",
-    "logo": "https://ui-avatars.com/api/?name=Jetwave&background=0284C7&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/jetwave.png",
     "booth": "Hall 2 · D-01",
     "category": "RF & High-Speed Hardware",
     "visits": 440,
@@ -386,7 +386,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-27",
     "company": "NIELIT",
-    "logo": "https://ui-avatars.com/api/?name=NIELIT&background=0F766E&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/nielit.png",
     "booth": "Hall 2 · D-02",
     "category": "Govt Skill & Certification",
     "visits": 590,
@@ -398,7 +398,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-28",
     "company": "Bio Line India",
-    "logo": "https://ui-avatars.com/api/?name=Bio+Line&background=059669&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/bioline.png",
     "booth": "Hall 2 · D-03",
     "category": "Instrumentation & Sensors",
     "visits": 420,
@@ -410,7 +410,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-29",
     "company": "CraftifAI",
-    "logo": "https://ui-avatars.com/api/?name=CraftifAI&background=6366F1&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/craftifai.png",
     "booth": "Hall 2 · D-04",
     "category": "AI Acceleration",
     "visits": 610,
@@ -422,7 +422,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-30",
     "company": "RRCAT",
-    "logo": "https://ui-avatars.com/api/?name=RRCAT&background=991B1B&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/rrcat.png",
     "booth": "Hall 2 · D-05",
     "category": "Govt Research & Lasers",
     "visits": 830,
@@ -434,7 +434,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-31",
     "company": "NEW AGE INSTRUMENTS & MATERIALS Pvt Ltd",
-    "logo": "https://ui-avatars.com/api/?name=New+Age&background=4B5563&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/newage.png",
     "booth": "Hall 2 · D-06",
     "category": "Materials & Instruments",
     "visits": 460,
@@ -446,7 +446,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-32",
     "company": "Acropolis Institute of tecnology and Research, Indore",
-    "logo": "https://ui-avatars.com/api/?name=Acropolis&background=C2410C&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/acropolis.png",
     "booth": "Hall 2 · D-07",
     "category": "Academic & Research",
     "visits": 520,
@@ -458,7 +458,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-33",
     "company": "Sagar Group of Institutions, SISTec, Bhopal",
-    "logo": "https://ui-avatars.com/api/?name=SISTec&background=1E40AF&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/sistec.png",
     "booth": "Hall 2 · D-08",
     "category": "Academic & Research",
     "visits": 490,
@@ -470,7 +470,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-34",
     "company": "Setu Manufacturing Solutions",
-    "logo": "https://ui-avatars.com/api/?name=Setu&background=D97706&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/setu.png",
     "booth": "Hall 2 · E-01",
     "category": "Precision Manufacturing",
     "visits": 430,
@@ -482,7 +482,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-35",
     "company": "HTL Co India Pvt Ltd",
-    "logo": "https://ui-avatars.com/api/?name=HTL&background=0F766E&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/htl.png",
     "booth": "Hall 2 · E-02",
     "category": "Semiconductor Equipment",
     "visits": 540,
@@ -494,7 +494,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-36",
     "company": "Indiesemic Private Limited",
-    "logo": "https://ui-avatars.com/api/?name=Indiesemic&background=4338CA&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/indiesemic.png",
     "booth": "Hall 2 · E-03",
     "category": "Fabless Semiconductor",
     "visits": 690,
@@ -506,7 +506,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-37",
     "company": "Laxmishri printed circuit boad",
-    "logo": "https://ui-avatars.com/api/?name=Laxmishri&background=854D0E&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/laxmishri.png",
     "booth": "Hall 2 · E-04",
     "category": "PCB Manufacturing",
     "visits": 470,
@@ -518,7 +518,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-38",
     "company": "SAGE University Indore",
-    "logo": "https://ui-avatars.com/api/?name=SAGE&background=7C3AED&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/sage.png",
     "booth": "Hall 2 · E-05",
     "category": "Academic & Research",
     "visits": 480,
@@ -530,7 +530,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-39",
     "company": "CSIR CEERI PIlani",
-    "logo": "https://ui-avatars.com/api/?name=CEERI&background=1E3A8A&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/ceeri.png",
     "booth": "Hall 2 · E-06",
     "category": "R&D Institution",
     "visits": 780,
@@ -542,7 +542,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-40",
     "company": "Teradyne",
-    "logo": "https://ui-avatars.com/api/?name=Teradyne&background=0284C7&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/teradyne.png",
     "booth": "Hall 2 · E-07",
     "category": "ATE & Testing Solutions",
     "visits": 840,
@@ -554,7 +554,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-41",
     "company": "Prestige PIEMR",
-    "logo": "https://ui-avatars.com/api/?name=PIEMR&background=B45309&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/piemr.png",
     "booth": "Hall 2 · E-08",
     "category": "Academic & Research",
     "visits": 460,
@@ -566,7 +566,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-42",
     "company": "IITI DRISHTI CPS FOUNDATION",
-    "logo": "https://ui-avatars.com/api/?name=DRISHTI+CPS&background=047857&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/drishticps.png",
     "booth": "Hall 2 · F-01",
     "category": "DeepTech Innovation Hub",
     "visits": 720,
@@ -578,7 +578,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-43",
     "company": "IISER Bhopal",
-    "logo": "https://ui-avatars.com/api/?name=IISER&background=1E40AF&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/iiser.png",
     "booth": "Hall 2 · F-02",
     "category": "Academic & Research",
     "visits": 630,
@@ -590,7 +590,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-44",
     "company": "PinE Training Academy",
-    "logo": "https://ui-avatars.com/api/?name=PinE&background=059669&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/pine.png",
     "booth": "Hall 2 · F-03",
     "category": "VLSI Training Academy",
     "visits": 640,
@@ -602,7 +602,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-45",
     "company": "NSDCS LAB IIT Indore",
-    "logo": "https://ui-avatars.com/api/?name=NSDCS+IIT&background=1E3A8A&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/nsdcs.png",
     "booth": "Hall 2 · F-04",
     "category": "Research Laboratory",
     "visits": 660,
@@ -614,7 +614,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-46",
     "company": "LeadSoc Technologies",
-    "logo": "https://ui-avatars.com/api/?name=LeadSoc&background=2563EB&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/leadsoc.png",
     "booth": "Hall 2 · F-05",
     "category": "Semiconductor Services",
     "visits": 570,
@@ -626,7 +626,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-47",
     "company": "Daksh instruments pvt ltd",
-    "logo": "https://ui-avatars.com/api/?name=Daksh&background=374151&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/daksh.png",
     "booth": "Hall 2 · F-06",
     "category": "Test & Measurement",
     "visits": 450,
@@ -638,7 +638,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-48",
     "company": "IET-DAVV Indore",
-    "logo": "https://ui-avatars.com/api/?name=IET+DAVV&background=B91C1C&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/ietdavv.png",
     "booth": "Hall 2 · F-07",
     "category": "Academic & Research",
     "visits": 580,
@@ -650,7 +650,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-49",
     "company": "IET University Bhopal",
-    "logo": "https://ui-avatars.com/api/?name=IET+Bhopal&background=4338CA&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/ietbhopal.png",
     "booth": "Hall 2 · F-08",
     "category": "Academic & Research",
     "visits": 470,
@@ -662,7 +662,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-50",
     "company": "Analog Devices",
-    "logo": "https://ui-avatars.com/api/?name=Analog+Devices&background=0F172A&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/analogdevices.png",
     "booth": "Hall 1 · G-01",
     "category": "Analog & Mixed-Signal ICs",
     "visits": 950,
@@ -674,7 +674,7 @@ export const GENERATED_EXHIBITORS: ExhibitorStats[] = [
   {
     "id": "exh-51",
     "company": "Nirji Semicon",
-    "logo": "https://ui-avatars.com/api/?name=Nirji&background=065F46&color=FFFFFF&bold=true",
+    "logo": "/images/exhibitors/nirji.png",
     "booth": "Hall 1 · G-02",
     "category": "Semiconductor Solutions",
     "visits": 510,
@@ -879,7 +879,7 @@ export const GENERATED_PRODUCTS: Product[] = [
     "company": "Analog Devices",
     "category": "Analog & Mixed-Signal ICs",
     "booth": "Hall 1 · G-01",
-    "image": "https://ui-avatars.com/api/?name=Analog+Devices&background=0F172A&color=FFFFFF&bold=true",
+    "image": "/images/exhibitors/analogdevices.png",
     "views": 940,
     "enquiries": 92,
     "interestedVisitorsCount": 180,
@@ -910,7 +910,7 @@ export const GENERATED_PRODUCTS: Product[] = [
     "company": "Analog Devices",
     "category": "Analog & Mixed-Signal ICs",
     "booth": "Hall 1 · G-01",
-    "image": "https://ui-avatars.com/api/?name=Analog+Devices&background=0F172A&color=FFFFFF&bold=true",
+    "image": "/images/exhibitors/analogdevices.png",
     "views": 810,
     "enquiries": 65,
     "interestedVisitorsCount": 130,
@@ -941,7 +941,7 @@ export const GENERATED_PRODUCTS: Product[] = [
     "company": "Teradyne",
     "category": "ATE & Testing Solutions",
     "booth": "Hall 2 · E-07",
-    "image": "https://ui-avatars.com/api/?name=Teradyne&background=0284C7&color=FFFFFF&bold=true",
+    "image": "/images/exhibitors/teradyne.png",
     "views": 790,
     "enquiries": 60,
     "interestedVisitorsCount": 140,
@@ -972,7 +972,7 @@ export const GENERATED_PRODUCTS: Product[] = [
     "company": "Indiesemic Private Limited",
     "category": "Fabless Semiconductor",
     "booth": "Hall 2 · E-03",
-    "image": "https://ui-avatars.com/api/?name=Indiesemic&background=4338CA&color=FFFFFF&bold=true",
+    "image": "/images/exhibitors/indiesemic.png",
     "views": 660,
     "enquiries": 48,
     "interestedVisitorsCount": 115,
@@ -1034,7 +1034,7 @@ export const GENERATED_PRODUCTS: Product[] = [
     "company": "PinE Training Academy",
     "category": "VLSI Training Academy",
     "booth": "Hall 2 · F-03",
-    "image": "https://ui-avatars.com/api/?name=PinE&background=059669&color=FFFFFF&bold=true",
+    "image": "/images/exhibitors/pine.png",
     "views": 630,
     "enquiries": 50,
     "interestedVisitorsCount": 112,

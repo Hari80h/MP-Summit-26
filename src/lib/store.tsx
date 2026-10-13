@@ -251,7 +251,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           const sanitized = allAttendees.map((a: Person) => {
             let item = { ...a };
             const seed = initialMap.get(item.id);
-            if (!item.avatar && seed?.avatar) {
+            if (seed?.role === 'speaker') {
+              item.avatar = seed.avatar;
+              item.designation = seed.designation;
+              item.company = seed.company;
+              item.email = 'Not publicly listed';
+              if (seed.linkedin) item.linkedin = seed.linkedin;
+            } else if (!item.avatar && seed?.avatar) {
               item.avatar = seed.avatar;
             }
             if (!item.registrationId || item.registrationId.toLowerCase().includes('not public') || item.registrationId.toLowerCase().includes('unlisted')) {

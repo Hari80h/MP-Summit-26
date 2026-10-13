@@ -8,7 +8,6 @@ import {
   MapPin,
   ArrowRight,
   Check,
-  Clock,
   ChevronRight,
   Star,
   Users,
@@ -39,8 +38,7 @@ export const DelegateHome: React.FC = () => {
   const featuredSession =
     sessions.find((s) => s.id === 'mpss26-d1-02') ||
     sessions.find((s) => s.title.toLowerCase().includes('global semiconductor industry')) ||
-    sessions[1] ||
-    sessions[0] || {
+    sessions.find((s) => !/registration|high tea|lunch|tea break|cultural evening|gala dinner/i.test(s.title)) || {
       id: 'mpss26-d1-02',
       title: 'Keynote on Global Semiconductor Industry & Technology Trends',
       timeRange: '10:00 AM – 10:30 AM',
@@ -142,10 +140,10 @@ export const DelegateHome: React.FC = () => {
               MPSS26 · DELEGATE
             </p>
             <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none truncate">
-              {currentUser.name}
+              {currentUser.name || 'Delegate'}
             </h1>
             <p className="text-[12px] text-[#6B6B6B] font-medium mt-1 truncate">
-              {currentUser.designation} · {currentUser.company}
+              {[currentUser.designation, currentUser.company].filter(Boolean).join(' · ') || 'MPSS26 Attendee'}
             </p>
           </div>
 
@@ -158,12 +156,12 @@ export const DelegateHome: React.FC = () => {
               {currentUser.avatar ? (
                 <img
                   src={currentUser.avatar}
-                  alt={currentUser.name}
+                  alt={currentUser.name || 'Delegate'}
                   className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm"
                 />
               ) : (
                 <div className="w-12 h-12 rounded-full bg-[#181818] text-white flex items-center justify-center font-bold text-base border-2 border-white shadow-sm">
-                  {currentUser.name.split(' ').map((n) => n[0]).join('')}
+                  {currentUser.name ? currentUser.name.split(' ').filter(Boolean).map((n) => n[0]).join('').slice(0, 2) : '?'}
                 </div>
               )}
               <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#22C55E] border-2 border-white rounded-full shadow-xs" />
@@ -225,47 +223,62 @@ export const DelegateHome: React.FC = () => {
             </div>
           </div>
 
-          {/* Slide 2: Keynote Spotlight */}
-          <div className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#2E1218] to-[#601420]">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10.5px] font-bold text-[#E5E5E5] bg-[#27272A] px-2 py-0.5 rounded-md">
-                FEATURED KEYNOTE
-              </span>
-              <div className="flex items-center gap-1 bg-[#DC2626] px-2 py-0.5 rounded-full">
-                <span className="text-[9.5px] font-bold text-white uppercase tracking-wider">UPCOMING</span>
-              </div>
-            </div>
-            <h2 className="text-[15px] font-bold text-white tracking-tight">The Future of AI & Cloud</h2>
-            <div className="mt-1.5 text-[11.5px] text-[#D1D5DB] flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-[#F87171]" />
-              Main Auditorium • 2:00 PM – 2:45 PM
-            </div>
-            <div className="mt-2 flex items-center gap-1.5 bg-[#27272A]/70 w-fit px-2 py-0.5 rounded-full border border-white/10">
-              <img
-                src="https://www.bengalurutechsummit.com/img/speakers/Harshil_Mathur.jpg"
-                className="w-5 h-5 rounded-full border border-white/20 object-cover"
-                alt="Speaker"
-              />
-              <span className="text-[11px] font-semibold text-white">Harshil Mathur · Razorpay</span>
-            </div>
+          {/* Slide 2: MPSS26 Official Leadership Poster (Dark Blue Theme) */}
+          <div className="w-full flex-shrink-0 relative min-h-[136px] bg-[#020817] flex items-center justify-center overflow-hidden">
+            <img
+              src="/images/banners/mpss26-summit-darkblue.png"
+              alt="Madhya Pradesh Semiconductor Summit 2026 - Building the Semiconductor Ecosystem of Madhya Pradesh"
+              className="w-full h-full min-h-[136px] max-h-[180px] object-contain select-none pointer-events-none"
+            />
           </div>
 
-          {/* Slide 3: Networking Mixer */}
-          <div className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#10241B] to-[#064E3B]">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10.5px] font-bold text-[#E5E5E5] bg-[#27272A] px-2 py-0.5 rounded-md">
-                NETWORKING
+          {/* Slide 3: Exhibition & Showcase (Dark Theme) */}
+          <div 
+            onClick={() => setActiveDelegateTab('companies')}
+            className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#161C28] to-[#0F172A] cursor-pointer group"
+          >
+            {/* Header row with badge and interactive link */}
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] font-bold text-[#E5E5E5] bg-[#27272A] px-2 py-0.5 rounded-md border border-white/5">
+                EXPO PAVILION
               </span>
-              <span className="text-[9.5px] font-bold text-[#34D399] uppercase tracking-wider">TODAY</span>
+              <div className="flex items-center gap-1 text-[9.5px] font-bold text-[#38BDF8] bg-[#0284C7]/20 border border-[#38BDF8]/30 px-2 py-0.5 rounded-full group-hover:bg-[#0284C7]/30 transition-colors">
+                <span>86+ EXHIBITORS</span>
+                <ArrowRight className="w-2.5 h-2.5" />
+              </div>
             </div>
-            <h2 className="text-[15px] font-bold text-white tracking-tight mt-0.5">Tech Founders & Investors Mixer</h2>
-            <div className="mt-1.5 text-[11.5px] text-[#A7F3D0] flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5" />
-              VIP Lounge • 6:00 PM Onwards
-            </div>
-            <p className="mt-1.5 text-[11px] text-[#E5E5E5] leading-snug pr-14 truncate">
-              Connect with 50+ founders, investors, and enterprise tech leaders.
+
+            {/* Title with cyan accent */}
+            <h2 className="text-[15.5px] font-bold text-white tracking-tight leading-snug mt-0.5">
+              EXHIBITION & <span className="text-[#38BDF8]">SHOWCASE</span>
+            </h2>
+
+            {/* Description taken directly from uploaded poster */}
+            <p className="text-[11px] text-[#94A3B8] leading-tight mt-1 line-clamp-2 pr-12">
+              Presenting technologies, products, capabilities, research, startups and ecosystem solutions.
             </p>
+
+            {/* Category chips taken directly from image content */}
+            <div className="mt-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 pr-14 text-[10px] font-medium whitespace-nowrap">
+              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
+                Chip Design & EDA
+              </span>
+              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
+                ATMP / OSAT
+              </span>
+              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
+                Semiconductor & Electronics
+              </span>
+              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
+                Equipment & Materials
+              </span>
+              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
+                Startups & R&D
+              </span>
+              <span className="bg-[#1E293B]/80 text-[#E2E8F0] border border-slate-700/60 px-2 py-0.5 rounded-md shrink-0">
+                Talent & Academia
+              </span>
+            </div>
           </div>
 
           {/* Slide 4: Expo Contest */}
@@ -502,15 +515,15 @@ export const DelegateHome: React.FC = () => {
                     setSelectedCompanyId(company.id);
                     setActiveDelegateTab('company_detail');
                   }}
-                  className="bg-white p-3 rounded-2xl border border-[#E5E7EB] hover:border-gray-400 transition-all cursor-pointer shadow-xs flex flex-col gap-2.5"
+                  className="bg-white p-2.5 rounded-2xl border border-[#E5E7EB] hover:border-gray-400 transition-all cursor-pointer shadow-xs flex flex-col gap-2 overflow-hidden"
                 >
-                  <div className="flex justify-between items-start w-full">
-                    <div className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] overflow-hidden flex items-center justify-center font-bold text-base text-[#181818] flex-shrink-0">
+                  <div className="flex justify-between items-start w-full gap-1">
+                    <div className="w-9 h-9 rounded-xl bg-white border border-[#E5E7EB] overflow-hidden flex items-center justify-center font-bold text-sm text-[#181818] flex-shrink-0">
                       {company.logo ? (
                         <img
                           src={company.logo}
                           alt={company.company}
-                          className="w-full h-full object-contain p-1"
+                          className="w-full h-full object-contain p-0.5"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -523,7 +536,7 @@ export const DelegateHome: React.FC = () => {
                       )}
                     </div>
                     {company.booth && (
-                      <span className="text-[10.5px] font-bold text-[#166534] bg-[#F0FDF4] border border-[#BBF7D0] px-2 py-0.5 rounded-lg flex-shrink-0 ml-1">
+                      <span className="text-[8.5px] font-semibold text-[#166534] bg-[#F0FDF4] border border-[#BBF7D0] px-1.5 py-0.5 rounded-md flex-shrink-0 whitespace-nowrap tracking-tight">
                         Booth {company.booth}
                       </span>
                     )}

@@ -45,9 +45,10 @@ const parseTime = (timeRange: string) => {
 const isBreakSession = (session: Session) => {
   const t = (session.title + ' ' + (session.track || '')).toLowerCase();
   return (
+    t.includes('registration') ||
+    t.includes('high tea') ||
     t.includes('lunch') ||
     t.includes('tea break') ||
-    t.includes('high tea') ||
     t.includes('cultural evening') ||
     t.includes('gala dinner')
   );
@@ -77,7 +78,6 @@ export const DelegateSchedule: React.FC = () => {
     currentUser,
     scheduleSubTab,
     setScheduleSubTab,
-    setActiveDelegateTab,
   } = useStore();
 
   const activeTab = scheduleSubTab;
@@ -177,17 +177,17 @@ export const DelegateSchedule: React.FC = () => {
     return [];
   };
 
-  // If a session is selected, render Session Detail Screen
-  const activeSession = sessions.find((s) => s.id === selectedSessionId);
+  // If a session is selected, render Session Detail Screen (excluding breaks/informational slots)
+  const activeSession = sessions.find((s) => s.id === selectedSessionId && !isBreakSession(s));
 
   // Day filter counts
   const daySessions = sessions.filter((s) => s.day === activeDay);
-  const daySavedSessions = daySessions.filter((s) => s.isBookmarked);
+  const daySavedSessions = daySessions.filter((s) => s.isBookmarked && !isBreakSession(s));
 
   // Filter sessions by Day and Tab
   const filteredSessions = sessions.filter((s) => {
     if (s.day !== activeDay) return false;
-    if (activeTab === 'saved' && !s.isBookmarked) return false;
+    if (activeTab === 'saved' && (!s.isBookmarked || isBreakSession(s))) return false;
     return true;
   });
 
@@ -410,24 +410,13 @@ export const DelegateSchedule: React.FC = () => {
       {/* Fixed Top Section: Header, Toggle, and Day Selector */}
       <div className="shrink-0 bg-[#F8F7F4] px-3 z-10 border-b border-[#E5E7EB]">
         {/* Header section matching reference mockup */}
-        <div className="pt-4 pb-1 flex items-center justify-between">
-          <div>
-            <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
-              MPSS26 · PROGRAMME
-            </p>
-            <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
-              Schedule
-            </h1>
-          </div>
-          {activeTab === 'saved' && (
-            <button
-              onClick={() => setActiveDelegateTab('profile')}
-              className="px-3 py-1.5 rounded-full bg-white border border-[#DEDCD7] text-[#181818] font-bold text-[11px] shadow-sm hover:bg-[#FAF9F5] active:scale-95 transition-all flex items-center gap-1 shrink-0"
-            >
-              <ChevronLeft className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>Profile</span>
-            </button>
-          )}
+        <div className="pt-4 pb-1">
+          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+            MPSS26 · PROGRAMME
+          </p>
+          <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
+            Schedule
+          </h1>
         </div>
 
         {/* Segmented Top Toggle: All Sessions (X) | My Schedule (Y) */}
@@ -541,10 +530,9 @@ export const DelegateSchedule: React.FC = () => {
                   {/* Right Column: SESSION BOX (flex-1 min-w-0 guarantees full visibility on mobile viewports!) */}
                   <div className="flex-1 min-w-0 pl-2.5 sm:pl-3 pb-3 pt-0.5">
                     {isSpecialBreak ? (
-                      /* Special Break / Dining / Cultural Row */
+                      /* Special Break / Dining / Non-Session Row (Non-clickable) */
                       <div
-                        onClick={() => setSelectedSessionId(session.id)}
-                        className="bg-[#FFFBEB] border border-[#FDE68A] rounded-[16px] p-3 shadow-xs flex items-center gap-2.5 cursor-pointer hover:border-[#F59E0B] transition-all"
+                        className="bg-[#FFFBEB] border border-[#FDE68A] rounded-[16px] p-3 shadow-xs flex items-center gap-2.5 cursor-default select-none"
                       >
                         <div className="w-7 h-7 rounded-full bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center flex-shrink-0">
                           {getBreakIcon(session.title)}

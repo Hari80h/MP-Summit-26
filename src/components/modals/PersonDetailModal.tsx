@@ -59,7 +59,7 @@ export const PersonDetailModal: React.FC = () => {
             bio: `${s.speakerName} is a distinguished keynote speaker at the Madhya Pradesh Semiconductor Summit 2026, presenting "${s.title}". Leading national semiconductor ecosystem, fab enablement, and industry initiatives.`,
             interests: ['Semiconductors', 'Wafer Fabs', 'ATMP / OSAT', 'Chip Design', 'Ecosystem Strategy'],
             skills: ['Semiconductor Engineering', 'Executive Leadership', 'Strategic Roadmap'],
-            email: 'speaker@mpss2026.org',
+            email: 'Not publicly listed',
             mobile: 'Not publicly listed',
             linkedin: 'https://linkedin.com',
             privacy: {
@@ -180,7 +180,9 @@ export const PersonDetailModal: React.FC = () => {
                   Email
                 </span>
                 <span className="text-[#181818] font-medium">
-                  {!canViewContact ? (
+                  {person.role === 'speaker' || person.ticketType === 'Speaker' ? (
+                    'Not publicly listed'
+                  ) : !canViewContact ? (
                     <span className="text-[#9CA3AF] italic font-normal flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Hidden until connected</span>
                   ) : person.privacy?.shareEmail !== false && person.email ? (
                     person.email

@@ -26,8 +26,10 @@ export const DelegateAIRecommendations: React.FC = () => {
     .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
     .slice(0, 15);
 
-  // Recommended Sessions mock
-  const recommendedSessions = sessions.slice(0, 4);
+  // Recommended Sessions mock (excluding non-session breaks & registrations)
+  const recommendedSessions = sessions
+    .filter((s) => !/registration|high tea|lunch|tea break|cultural evening|gala dinner/i.test(s.title))
+    .slice(0, 4);
 
   const handleConnect = (personId: string, e: React.MouseEvent) => {
     e.stopPropagation();
