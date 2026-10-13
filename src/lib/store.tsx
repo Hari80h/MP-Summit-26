@@ -48,6 +48,8 @@ interface StoreContextType {
   setViewSavedPeopleOnly: (v: boolean) => void;
   viewSavedCompaniesOnly: boolean;
   setViewSavedCompaniesOnly: (v: boolean) => void;
+  scheduleSubTab: 'all' | 'saved';
+  setScheduleSubTab: (tab: 'all' | 'saved') => void;
   savedCompanyIds: string[];
   savedPeopleIds: string[];
   toggleSavePerson: (id: string) => void;
@@ -142,6 +144,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [activeDelegateTab, setActiveDelegateTab] = useState<'home' | 'people' | 'scan' | 'focus' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support'>('home');
   const [viewSavedPeopleOnly, setViewSavedPeopleOnly] = useState<boolean>(false);
   const [viewSavedCompaniesOnly, setViewSavedCompaniesOnly] = useState<boolean>(false);
+  const [scheduleSubTab, setScheduleSubTab] = useState<'all' | 'saved'>('all');
   const [activeExhibitorTab, setActiveExhibitorTab] = useState<'home' | 'leads' | 'scan' | 'products' | 'more'>('home');
   const [activeOrganizerTab, setActiveOrganizerTab] = useState<'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'analytics' | 'reports' | 'settings'>('overview');
   const [viewMode, setViewMode] = useState<'frame' | 'responsive'>('frame');
@@ -882,11 +885,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     viewSavedPeopleOnly,
     setViewSavedPeopleOnly,
     viewSavedCompaniesOnly,
+    setViewSavedCompaniesOnly,
+    scheduleSubTab,
+    setScheduleSubTab,
     savedCompanyIds,
     savedPeopleIds,
     toggleSavePerson,
     toggleSaveCompany,
-    setViewSavedCompaniesOnly,
         setActiveDelegateTab,
         activeExhibitorTab,
         setActiveExhibitorTab,

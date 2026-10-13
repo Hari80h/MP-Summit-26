@@ -86,11 +86,28 @@ export const DelegateSchedule: React.FC = () => {
     poll,
     votePoll,
     currentUser,
+    scheduleSubTab,
+    setScheduleSubTab,
+    setActiveDelegateTab,
   } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'all' | 'saved'>('all');
+  const activeTab = scheduleSubTab;
+  const setActiveTab = setScheduleSubTab;
   const [activeDay, setActiveDay] = useState<number>(1);
   const [detailSubTab, setDetailSubTab] = useState<'overview' | 'speaker' | 'qa' | 'poll'>('overview');
+
+  // Auto-switch to day with saved sessions if user opens My Schedule
+  useEffect(() => {
+    if (activeTab === 'saved') {
+      const day1Saved = sessions.some((s) => s.day === 1 && s.isBookmarked);
+      const day2Saved = sessions.some((s) => s.day === 2 && s.isBookmarked);
+      if (!day1Saved && day2Saved) {
+        setActiveDay(2);
+      } else if (day1Saved) {
+        setActiveDay(1);
+      }
+    }
+  }, [activeTab, sessions]);
 
   // Helper to resolve all distinct speaker profiles for a session
   const resolveSessionSpeakers = (session: Session): Person[] => {
@@ -615,13 +632,24 @@ export const DelegateSchedule: React.FC = () => {
       {/* Fixed Top Section: Header, Toggle, and Day Selector */}
       <div className="shrink-0 bg-[#F8F7F4] px-3 z-10 border-b border-[#E5E7EB]">
         {/* Header section matching reference mockup */}
-        <div className="pt-4 pb-1">
-          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
-            MPSS26 · PROGRAMME
-          </p>
-          <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
-            Schedule
-          </h1>
+        <div className="pt-4 pb-1 flex items-center justify-between">
+          <div>
+            <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+              MPSS26 · PROGRAMME
+            </p>
+            <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
+              Schedule
+            </h1>
+          </div>
+          {activeTab === 'saved' && (
+            <button
+              onClick={() => setActiveDelegateTab('profile')}
+              className="px-3 py-1.5 rounded-full bg-white border border-[#DEDCD7] text-[#181818] font-bold text-[11px] shadow-sm hover:bg-[#FAF9F5] active:scale-95 transition-all flex items-center gap-1 shrink-0"
+            >
+              <ChevronLeft className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>Profile</span>
+            </button>
+          )}
         </div>
 
         {/* Segmented Top Toggle: All Sessions (X) | My Schedule (Y) */}

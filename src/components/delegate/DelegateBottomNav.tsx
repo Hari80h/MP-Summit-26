@@ -10,6 +10,7 @@ export const DelegateBottomNav: React.FC = () => {
     setActiveDelegateTab,
     setSelectedSessionId,
     setViewSavedCompaniesOnly,
+    setScheduleSubTab,
   } = useStore();
 
   const navItems = [
@@ -44,6 +45,7 @@ export const DelegateBottomNav: React.FC = () => {
               onClick={() => {
                 if (item.id === 'schedule') {
                   setSelectedSessionId(null);
+                  setScheduleSubTab('all');
                 }
                 if (item.id === 'companies') {
                   setViewSavedCompaniesOnly(false);

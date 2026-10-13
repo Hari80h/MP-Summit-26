@@ -22,6 +22,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
     setViewSavedCompaniesOnly,
     savedCompanyIds,
     setHasAccessConfirmed,
+    setScheduleSubTab,
   } = useStore();
 
   const handleLogout = () => {
@@ -89,23 +90,23 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
         </div>
       </div>
 
-      {/* Navigation Boxes: Saved People, Saved Companies, My Schedule, Help & Support */}
-      <div className="space-y-1.5">
+      {/* Navigation Boxes: Saved People, Saved Exhibitors, My Schedule, Help & Support */}
+      <div className="space-y-2">
         {/* Saved People */}
         <button
           onClick={() => {
             setViewSavedPeopleOnly(true);
             setActiveDelegateTab('people');
           }}
-          className="w-full bg-white py-2.5 px-3 rounded-[13px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
+          className="w-full bg-white py-3 px-3.5 rounded-[14px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8.5 h-8.5 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
-              <Star className="w-4 h-4 fill-current" />
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
+              <Star className="w-4.5 h-4.5" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-[#181818] text-[13.5px] tracking-tight">Saved People</span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#F4F4F5] text-[#4B5563] border border-[#E5E7EB]">
+              <span className="font-medium text-[#181818] text-[14px] tracking-tight">Saved People</span>
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[#F4F4F5] text-[#4B5563] border border-[#E5E7EB]">
                 {savedPeopleIds.length}
               </span>
             </div>
@@ -113,21 +114,21 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
           <ChevronRight className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#181818] group-hover:translate-x-0.5 transition-all" />
         </button>
 
-        {/* Saved Companies */}
+        {/* Saved Exhibitors */}
         <button
           onClick={() => {
             setViewSavedCompaniesOnly(true);
             setActiveDelegateTab('companies');
           }}
-          className="w-full bg-white py-2.5 px-3 rounded-[13px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
+          className="w-full bg-white py-3 px-3.5 rounded-[14px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8.5 h-8.5 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
-              <Building className="w-4 h-4" />
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
+              <Building className="w-4.5 h-4.5" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-[#181818] text-[13.5px] tracking-tight">Saved Exhibitors</span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#F4F4F5] text-[#4B5563] border border-[#E5E7EB]">
+              <span className="font-medium text-[#181818] text-[14px] tracking-tight">Saved Exhibitors</span>
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[#F4F4F5] text-[#4B5563] border border-[#E5E7EB]">
                 {savedCompanyIds.length}
               </span>
             </div>
@@ -139,17 +140,18 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
         <button
           onClick={() => {
             setSelectedSessionId(null);
+            setScheduleSubTab('saved');
             setActiveDelegateTab('schedule');
           }}
-          className="w-full bg-white py-2.5 px-3 rounded-[13px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
+          className="w-full bg-white py-3 px-3.5 rounded-[14px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8.5 h-8.5 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
-              <Calendar className="w-4 h-4" />
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
+              <Calendar className="w-4.5 h-4.5" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-[#181818] text-[13.5px] tracking-tight">My Schedule</span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#F4F4F5] text-[#4B5563] border border-[#E5E7EB]">
+              <span className="font-medium text-[#181818] text-[14px] tracking-tight">My Schedule</span>
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[#F4F4F5] text-[#4B5563] border border-[#E5E7EB]">
                 {savedSessionsCount}
               </span>
             </div>
@@ -162,13 +164,13 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
           onClick={() => {
             setActiveDelegateTab('support');
           }}
-          className="w-full bg-white py-2.5 px-3 rounded-[13px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
+          className="w-full bg-white py-3 px-3.5 rounded-[14px] border border-[#DEDCD7] shadow-xs hover:border-[#181818] transition-all text-left flex items-center justify-between active:scale-[0.99] group cursor-pointer"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8.5 h-8.5 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
-              <HelpCircle className="w-4 h-4" />
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[#F6F4F0] border border-[#EBE8E2] flex items-center justify-center text-[#181818] group-hover:bg-[#181818] group-hover:text-white transition-colors flex-shrink-0">
+              <HelpCircle className="w-4.5 h-4.5" />
             </div>
-            <span className="font-bold text-[#181818] text-[13.5px] tracking-tight">Help & Support</span>
+            <span className="font-medium text-[#181818] text-[14px] tracking-tight">Help & Support</span>
           </div>
           <ChevronRight className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#181818] group-hover:translate-x-0.5 transition-all" />
         </button>
