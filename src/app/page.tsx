@@ -11,7 +11,7 @@ import { AccessScreen } from '../components/auth/AccessScreen';
 // Delegate views
 import { DelegateHome } from '../components/delegate/DelegateHome';
 import { DelegatePeople } from '../components/delegate/DelegatePeople';
-import { DelegateScan } from '../components/delegate/DelegateScan';
+import { DelegateFocus } from '../components/delegate/DelegateFocus';
 import { DelegateSchedule } from '../components/delegate/DelegateSchedule';
 import { DelegateProfile } from '../components/delegate/DelegateProfile';
 import { DelegateEditProfile } from '../components/delegate/DelegateEditProfile';
@@ -145,7 +145,7 @@ export default function App() {
                 <div className="flex-1 flex flex-col overflow-y-auto overscroll-contain no-scrollbar">
                   {activeDelegateTab === 'home' && <DelegateHome />}
                   {activeDelegateTab === 'people' && <DelegatePeople />}
-                  {activeDelegateTab === 'scan' && <DelegateScan />}
+                  {(activeDelegateTab === 'focus' || activeDelegateTab === 'scan') && <DelegateFocus />}
                   {activeDelegateTab === 'schedule' && <DelegateSchedule />}
                   {activeDelegateTab === 'companies' && <DelegateCompanies />}
                   {activeDelegateTab === 'company_detail' && <DelegateCompanyDetail />}

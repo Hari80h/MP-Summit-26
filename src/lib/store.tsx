@@ -42,8 +42,8 @@ interface StoreContextType {
   // Navigation & Role
   role: DemoRole;
   setRole: (role: DemoRole) => void;
-  activeDelegateTab: 'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support';
-  setActiveDelegateTab: (tab: 'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support') => void;
+  activeDelegateTab: 'home' | 'people' | 'scan' | 'focus' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support';
+  setActiveDelegateTab: (tab: 'home' | 'people' | 'scan' | 'focus' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support') => void;
   viewSavedPeopleOnly: boolean;
   setViewSavedPeopleOnly: (v: boolean) => void;
   viewSavedCompaniesOnly: boolean;
@@ -136,7 +136,7 @@ const STORAGE_KEY = 'eventsphere_mpss26_store_v12';
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation & Role
   const [role, setRoleState] = useState<DemoRole>('delegate');
-  const [activeDelegateTab, setActiveDelegateTab] = useState<'home' | 'people' | 'scan' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support'>('home');
+  const [activeDelegateTab, setActiveDelegateTab] = useState<'home' | 'people' | 'scan' | 'focus' | 'schedule' | 'profile' | 'companies' | 'company_detail' | 'edit_profile' | 'ai_recommendations' | 'speakers' | 'polls' | 'map' | 'sponsors' | 'support'>('home');
   const [viewSavedPeopleOnly, setViewSavedPeopleOnly] = useState<boolean>(false);
   const [viewSavedCompaniesOnly, setViewSavedCompaniesOnly] = useState<boolean>(false);
   const [activeExhibitorTab, setActiveExhibitorTab] = useState<'home' | 'leads' | 'scan' | 'products' | 'more'>('home');

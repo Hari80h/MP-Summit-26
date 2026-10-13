@@ -169,10 +169,9 @@ export const PersonDetailModal: React.FC = () => {
           </div>
         </div>
 
-        {/* Contact info respecting privacy consent */}
+        {/* Contact info */}
         {(() => {
-          const isOpenPreset = person.privacy?.preset === 'Open';
-          const canViewContact = isConnected || isOpenPreset;
+          const canViewContact = true;
           return (
             <div className="bg-[#FAFAFA] p-2.5 rounded-lg border border-[#E5E7EB] space-y-3 mt-3 text-[12px]">
               <div className="flex items-center justify-between">
@@ -246,37 +245,6 @@ export const PersonDetailModal: React.FC = () => {
             </div>
           );
         })()}
-
-        {/* Connect Action Button */}
-        <div className="pt-2">
-          <button
-            onClick={handleConnect}
-            className={`w-full py-3 rounded-xl font-semibold text-[13px] flex items-center justify-center gap-2 transition-all active:scale-95 ${
-              isConnected
-                ? 'bg-[#F0FDF4] text-[#166534] border border-[#BBF7D0]'
-                : isPending
-                ? 'bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]'
-                : 'bg-white text-[#181818] border border-[#181818]'
-            }`}
-          >
-            {isConnected ? (
-              <>
-                <Check className="w-4 h-4" />
-                <span>Connected</span>
-              </>
-            ) : isPending ? (
-              <>
-                <Clock className="w-4 h-4" />
-                <span>Pending</span>
-              </>
-            ) : (
-              <>
-                <UserPlus className="w-4 h-4" />
-                <span>Connect with {person.name}</span>
-              </>
-            )}
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -45,7 +45,7 @@ export const DelegateAIRecommendations: React.FC = () => {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-[12px] font-bold text-[#181818] truncate">My AI Recommendations</h1>
+          <h1 className="text-[12px] font-bold text-[#181818] truncate">People You Should Meet</h1>
         </div>
         
         <p className="text-[12px] text-[#4B5563] leading-relaxed mb-2 pr-4">
@@ -91,36 +91,11 @@ export const DelegateAIRecommendations: React.FC = () => {
                     </div>
                   </div>
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (connected) return;
-                      if (pending) disconnectFrom(person.id);
-                      else handleConnect(person.id, e);
-                    }}
-                    className={`w-full py-1.5 rounded-lg text-[11px] font-bold transition-all active:scale-95 border ${
-                      connected
-                        ? 'bg-[#F0FDF4] text-[#166534] border-[#BBF7D0]'
-                        : pending
-                        ? 'bg-[#F3F4F6] text-[#4B5563] border-[#E5E7EB]'
-                        : 'bg-white text-[#181818] border-[#181818]'
-                    }`}
-                  >
-                    {connected ? (
-                      <span className="flex items-center justify-center gap-1.5">
-                        <Check className="w-3.5 h-3.5" /> Connected
-                      </span>
-                    ) : pending ? (
-                      <span className="flex items-center justify-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5" /> Pending
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center gap-1.5">
-                        Connect
-                      </span>
-                    )}
-                  </button>
-                </div>
+                    <div className="pt-1 flex items-center justify-between text-[11px] font-semibold text-[#181818] border-t border-gray-100 mt-1">
+                      <span>View profile</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+                    </div>
+                  </div>
               );
             })}
           </div>

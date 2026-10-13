@@ -147,40 +147,6 @@ export const DelegateSpeakers: React.FC = () => {
                     </p>
                   </div>
                 </div>
-
-                {/* Connect Action Button */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (connected) return;
-                    if (pending) disconnectFrom(speaker.id);
-                    else handleConnect(speaker.id, e);
-                  }}
-                  className={`w-full mt-2.5 h-[34px] rounded-[10px] text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-2xs ${
-                    connected
-                      ? 'bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]'
-                      : pending
-                      ? 'bg-[#F3F4F6] text-[#4B5563] border border-[#D1D5DB]'
-                      : 'bg-white text-[#111827] border border-[#111827] hover:bg-gray-50'
-                  }`}
-                >
-                  {connected ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Connected</span>
-                    </>
-                  ) : pending ? (
-                    <>
-                      <Clock className="w-3.5 h-3.5" />
-                      <span>Pending</span>
-                    </>
-                  ) : (
-                    <>
-                      <UserPlus className="w-3.5 h-3.5 stroke-[2.2]" />
-                      <span>Connect</span>
-                    </>
-                  )}
-                </button>
               </div>
             );
           })}

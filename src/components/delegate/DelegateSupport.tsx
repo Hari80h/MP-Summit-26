@@ -19,7 +19,7 @@ import {
 
 export const DelegateSupport: React.FC = () => {
   const { setActiveDelegateTab, showToast } = useStore();
-  const [ticketSubject, setTicketSubject] = useState('Badge / QR Access');
+  const [ticketSubject, setTicketSubject] = useState('Badge & Event Access');
   const [ticketMessage, setTicketMessage] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -172,7 +172,7 @@ export const DelegateSupport: React.FC = () => {
                 onChange={(e) => setTicketSubject(e.target.value)}
                 className="w-full py-2 px-2.5 rounded-lg border border-[#DEDCD7] bg-[#F9FAFB] text-[12.5px] font-medium text-[#181818] outline-none focus:border-[#181818]"
               >
-                <option value="Badge / QR Access">Badge / QR Access</option>
+                <option value="Badge & Event Access">Badge & Event Access</option>
                 <option value="Wi-Fi / Network Issue">Wi-Fi / Network Issue</option>
                 <option value="Speaker / Session Query">Speaker / Session Query</option>
                 <option value="Food & Beverages">Food & Beverages</option>

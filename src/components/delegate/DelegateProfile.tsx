@@ -7,7 +7,7 @@ import { useStore } from '../../lib/store';
 
 interface DelegateProfileProps {
   onOpenPrivacyModal: () => void;
-  onOpenQRModal: () => void;
+  onOpenQRModal?: () => void;
 }
 
 export const DelegateProfile: React.FC<DelegateProfileProps> = ({
@@ -163,17 +163,6 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = ({
       </div>
 
       <div className="bg-white rounded-[16px] border border-[#DEDCD7] shadow-sm overflow-hidden">
-        <button
-          onClick={onOpenQRModal}
-          className="w-full py-2.5 px-3.5 flex items-center justify-between hover:bg-gray-50 transition-colors text-left border-b border-[#F3F4F6]"
-        >
-          <div className="flex items-center gap-3">
-            <QrCode className="w-[20px] h-[20px] text-[#181818]" />
-            <span className="font-semibold text-[#181818] text-[13px]">My Event QR</span>
-          </div>
-          <ChevronRight className="w-5 h-5 text-[#9CA3AF]" />
-        </button>
-
         <button
           onClick={() => {
             setViewSavedPeopleOnly(true);

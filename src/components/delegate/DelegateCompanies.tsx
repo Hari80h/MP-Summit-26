@@ -1,109 +1,192 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useMemo } from 'react';
 import { Search, ChevronLeft, MapPin } from 'lucide-react';
-import { useStore } from '@/lib/store';
+import { useStore } from '../../lib/store';
 
 export const DelegateCompanies: React.FC = () => {
-  const { setActiveDelegateTab, setSelectedCompanyId, exhibitors, viewSavedCompaniesOnly, setViewSavedCompaniesOnly, savedCompanyIds } = useStore();
-  const [searchQuery, setSearchQuery] = useState('');
+  const {
+    setActiveDelegateTab,
+    setSelectedCompanyId,
+    exhibitors,
+    viewSavedCompaniesOnly,
+    setViewSavedCompaniesOnly,
+    savedCompanyIds,
+  } = useStore();
 
-  const filteredExhibitors = exhibitors.filter(company => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Available categories
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    exhibitors.forEach((c) => {
+      if (c.category) set.add(c.category);
+    });
+    return ['All', ...Array.from(set)];
+  }, [exhibitors]);
+
+  const filteredExhibitors = exhibitors.filter((company) => {
     if (viewSavedCompaniesOnly && !savedCompanyIds.includes(company.id)) return false;
 
-    return searchQuery === '' ||
-    company.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (company.booth && company.booth.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (company.category && company.category.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesCategory =
+      selectedCategory === 'All' || company.category === selectedCategory;
+
+    const matchesSearch =
+      searchQuery === '' ||
+      company.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (company.booth && company.booth.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (company.category && company.category.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    return matchesCategory && matchesSearch;
   });
 
   return (
-    <div className="flex-1 bg-[#F6F4F0] flex flex-col h-full overflow-hidden">
-      {/* Header */}
-      {viewSavedCompaniesOnly ? (
-        <div className="pt-4 pb-4 px-4 flex items-center gap-3 bg-[#F6F4F0]">
-          <button 
-            onClick={() => {
-              setViewSavedCompaniesOnly(false);
-              setActiveDelegateTab('profile');
-            }}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
-          >
-            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
-          </button>
-          <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Saved Companies</h1>
+    <div className="flex-1 min-h-0 h-full bg-[#F8F7F4] select-none flex flex-col overflow-hidden">
+      {/* Fixed Top Section: Header & Search matching Schedule */}
+      <div className="shrink-0 bg-[#F8F7F4] px-3 z-10 border-b border-[#E5E7EB]">
+        {/* Header section matching reference mockup */}
+        <div className="pt-2 pb-1">
+          {viewSavedCompaniesOnly ? (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+                  MPSS26 · SAVED
+                </p>
+                <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
+                  Saved Companies
+                </h1>
+              </div>
+              <button
+                onClick={() => {
+                  setViewSavedCompaniesOnly(false);
+                  setActiveDelegateTab('profile');
+                }}
+                className="px-3 py-1.5 rounded-full bg-white border border-[#DEDCD7] text-[#181818] font-bold text-[11px] shadow-sm hover:bg-[#FAF9F5] active:scale-95 transition-all flex items-center gap-1"
+              >
+                <ChevronLeft className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span>Profile</span>
+              </button>
+            </div>
+          ) : (
+            <div>
+              <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+                MPSS26 · DIRECTORY
+              </p>
+              <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">
+                Exhibitors
+              </h1>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="pt-4 pb-4 px-4 bg-[#F6F4F0] flex-shrink-0">
-          <div className="flex items-center gap-3 mb-4">
-            <button 
-              onClick={() => setActiveDelegateTab('home')}
-              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#181818] transition-active active:scale-95 shadow-sm"
-            >
-              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
-            </button>
-            <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Exhibitor Directory</h1>
-          </div>
-          
-          {/* Search */}
-          <div className="relative">
-            <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search companies, booths, or tags..."
-              className="w-full h-11 bg-white border border-[#E5E7EB] rounded-[10px] pl-10 pr-4 text-[13px] focus:ring-2 focus:ring-[#B51F32]/20 focus:border-[#B51F32] outline-none text-[#181818] placeholder-[#9CA3AF] shadow-sm transition-all"
-            />
-          </div>
-        </div>
-      )}
 
-      {/* List */}
-      <div className="flex-1 overflow-y-auto px-4 pb-16 space-y-3 no-scrollbar">
-        <p className="text-[12px] font-semibold text-[#6B6B6B] mb-1">{filteredExhibitors.length} Exhibitors</p>
-        
-        {filteredExhibitors.map((company) => (
-          <div 
-            key={company.id}
-            onClick={() => {
-              setSelectedCompanyId(company.id);
-              setActiveDelegateTab('company_detail');
-            }}
-            className="bg-white p-2.5 rounded-[14px] border border-[#DEDCD7] hover:border-[#181818]/40 transition-all cursor-pointer shadow-sm active:scale-[0.98]"
-          >
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                {company.logo ? (
-                  <img 
-                    src={company.logo} 
-                    alt={company.company} 
-                    className="w-8 h-8 rounded-lg object-cover border border-[#DEDCD7] flex-shrink-0" 
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(company.company)}&background=F3F4F6&color=181818&bold=true`;
-                    }}
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-lg bg-[#F6F4F0] border border-[#E5E7EB] flex items-center justify-center font-bold text-[12px] text-[#181818] flex-shrink-0">
-                    {company.company.charAt(0)}
+        {/* Search Bar */}
+        <div className="relative mt-1 mb-2">
+          <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search companies, booths, or tags..."
+            className="w-full h-10 bg-white border border-[#E5E7EB] rounded-[10px] pl-10 pr-9 text-[12.5px] focus:ring-2 focus:ring-[#B51F32]/20 focus:border-[#B51F32] outline-none text-[#181818] placeholder-[#9CA3AF] shadow-xs transition-all"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-[#6B6B6B] hover:text-[#181818]"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        {/* Category Filter Pills (if not in saved companies mode) */}
+        {!viewSavedCompaniesOnly && categories.length > 1 && (
+          <div className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
+                  selectedCategory === cat
+                    ? 'bg-[#181818] text-white shadow-xs'
+                    : 'bg-white text-[#6B6B6B] border border-[#DEDCD7] hover:text-[#181818]'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2.5 no-scrollbar pb-16">
+        <p className="text-[11.5px] font-semibold text-[#6B6B6B] px-0.5">
+          {filteredExhibitors.length} Exhibitor{filteredExhibitors.length !== 1 ? 's' : ''}
+        </p>
+
+        {filteredExhibitors.length === 0 ? (
+          <div className="p-8 text-center bg-white rounded-[16px] border border-[#DEDCD7] shadow-xs">
+            <p className="text-xs font-semibold text-[#181818]">No exhibitors found</p>
+            <p className="text-[11px] text-[#6B6B6B] mt-1">
+              Try adjusting your search keywords or filter category.
+            </p>
+          </div>
+        ) : (
+          filteredExhibitors.map((company) => (
+            <div
+              key={company.id}
+              onClick={() => {
+                setSelectedCompanyId(company.id);
+                setActiveDelegateTab('company_detail');
+              }}
+              className="bg-white rounded-[16px] border border-[#E2E8F0] hover:border-[#CBD5E1] p-3 shadow-xs hover:shadow-md transition-all cursor-pointer relative active:scale-[0.99]"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  {company.logo ? (
+                    <img
+                      src={company.logo}
+                      alt={company.company}
+                      className="w-10 h-10 rounded-xl object-cover border border-[#E5E7EB] flex-shrink-0 bg-white"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                          company.company
+                        )}&background=F3F4F6&color=181818&bold=true`;
+                      }}
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-xl bg-[#F6F4F0] border border-[#E5E7EB] flex items-center justify-center font-bold text-[13px] text-[#181818] flex-shrink-0">
+                      {company.company.charAt(0)}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-[13px] font-bold text-[#181818] leading-snug truncate">
+                      {company.company}
+                    </h3>
+                    <p className="text-[11.5px] text-[#6B6B6B] truncate mt-0.5">
+                      {company.category}
+                    </p>
                   </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-[12px] font-bold text-[#181818] leading-snug truncate">{company.company}</h3>
-                  <p className="text-[12px] text-[#6B6B6B] mt-0.5 truncate">{company.category}</p>
+                </div>
+
+                <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+                  {company.booth && (
+                    <span className="text-[10.5px] font-mono font-medium bg-[#F0FDF4] border border-[#BBF7D0] px-2 py-0.5 rounded-md text-[#166534] flex items-center gap-1">
+                      <MapPin className="w-2.5 h-2.5" />
+                      Booth {company.booth}
+                    </span>
+                  )}
+                  <span className="text-[11px] font-semibold text-[#B51F32] flex items-center gap-0.5">
+                    Visit &rarr;
+                  </span>
                 </div>
               </div>
-              <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                <span className="text-[11px] font-mono font-medium bg-[#F0FDF4] border border-[#BBF7D0] px-2 py-1 rounded-md text-[#166534] flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  Booth {company.booth}
-                </span>
-                <span className="text-[11px] font-semibold text-[#181818] mt-1 pr-0.5">
-                  Visit &rarr;
-                </span>
-              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BarChart2, Bell, Briefcase, Building2, Calendar, Check, ChevronLeft, Clock, Filter, LineChart, Linkedin, Mic, Search, User, UserPlus, Users, X, XCircle } from 'lucide-react';
-
+import {
+  ChevronLeft,
+  ChevronRight,
+  Search,
+} from 'lucide-react';
 import { useStore } from '../../lib/store';
-
-;
 
 export const DelegatePeople: React.FC = () => {
   const {
@@ -13,72 +14,47 @@ export const DelegatePeople: React.FC = () => {
     currentUser,
     connections,
     connectWith,
-    disconnectFrom,
     setSelectedPersonId,
     setActiveDelegateTab,
-    acceptConnectionRequest,
-    ignoreConnectionRequest,
     viewSavedPeopleOnly,
     setViewSavedPeopleOnly,
-    savedPeopleIds
+    savedPeopleIds,
   } = useStore();
 
-  const [activeSubTab, setActiveSubTab] = useState<'recommended' | 'all' | 'connections' | 'pending' | 'requests'>('recommended');
-  
-  // Remove the useEffect since we want to persist viewSavedPeopleOnly
-
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const incomingRequestsCount = connections.filter(c => c.type === 'received' && c.status === 'pending').length;
 
-  const isConnected = (personId: string) => {
-    return connections.some((c) => c.personId === personId && c.status === 'connected');
-  };
+  // Filter attendees - only recommended attendees; exclude any requests, connected, or pending
+  const filteredList = attendees
+    .filter((person) => {
+      if (person.id === currentUser.id) return false;
 
-  const isPending = (personId: string) => {
-    return connections.some((c) => c.personId === personId && c.status === 'pending');
-  };
+      // Search query filter
+      const matchesSearch =
+        searchQuery === '' ||
+        person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        person.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        person.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        person.interests.some((i) => i.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  // Filter attendees
-  const filteredList = attendees.filter((person) => {
-    if (person.id === currentUser.id) return false;
+      if (!matchesSearch) return false;
 
-    // Search query filter
-    const matchesSearch =
-      searchQuery === '' ||
-      person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.interests.some((i) => i.toLowerCase().includes(searchQuery.toLowerCase()));
+      if (viewSavedPeopleOnly) {
+        return savedPeopleIds.includes(person.id);
+      }
 
-    if (!matchesSearch) return false;
+      // Exclude anyone already in requests, connected, or pending
+      const hasConnection = connections.some((c) => c.personId === person.id);
+      if (hasConnection) return false;
 
-    if (viewSavedPeopleOnly) {
-      return savedPeopleIds.includes(person.id);
-    }
-
-    if (activeSubTab === 'recommended') {
+      // Only recommended attendees (relevance >= 80)
       return (person.relevanceScore || 0) >= 80;
-    }
-    if (activeSubTab === 'connections') {
-      return isConnected(person.id);
-    }
-    if (activeSubTab === 'pending') {
-      return isPending(person.id) && connections.find(c => c.personId === person.id)?.type === 'sent';
-    }
-    if (activeSubTab === 'requests') {
-      return connections.some(c => c.personId === person.id && c.type === 'received' && c.status === 'pending');
-    }
-    return true; // 'all'
-  }).sort((a, b) => {
-    if (viewSavedPeopleOnly) return 0;
-    if (activeSubTab === 'recommended') {
+    })
+    .sort((a, b) => {
+      if (viewSavedPeopleOnly) return 0;
       return (b.relevanceScore || 0) - (a.relevanceScore || 0);
-    }
-    return 0;
-  });
+    });
 
-  const finalFilteredList = (!viewSavedPeopleOnly && activeSubTab === 'recommended') ? filteredList.slice(0, 15) : filteredList;
+  const displayedList = viewSavedPeopleOnly ? filteredList : filteredList.slice(0, 10);
 
   const handleConnect = (personId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -90,7 +66,7 @@ export const DelegatePeople: React.FC = () => {
       {/* Header */}
       {viewSavedPeopleOnly ? (
         <div className="pt-2 pb-1 mb-2 flex items-center gap-3">
-          <button 
+          <button
             onClick={() => {
               setViewSavedPeopleOnly(false);
               setActiveDelegateTab('profile');
@@ -102,176 +78,107 @@ export const DelegatePeople: React.FC = () => {
           <h1 className="text-[20px] font-bold text-[#181818] tracking-tight">Saved People</h1>
         </div>
       ) : (
-        <div className="pt-2 pb-1">
-          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · NETWORKING</p>
-          <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">People</h1>
+        <div className="pt-2 pb-1 flex items-center justify-between">
+          <div>
+            <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">
+              MPSS26 · NETWORKING
+            </p>
+            <h1 className="text-[26px] font-serif font-medium text-[#181818] tracking-tight leading-tight">
+              People You Should Meet
+            </h1>
+          </div>
+          <button
+            onClick={() => setActiveDelegateTab('home')}
+            className="px-3 py-1.5 rounded-full bg-white border border-[#DEDCD7] text-[#181818] font-bold text-[11px] shadow-sm hover:bg-[#FAF9F5] active:scale-95 transition-all flex items-center gap-1 shrink-0"
+          >
+            <ChevronLeft className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span>Home</span>
+          </button>
         </div>
       )}
 
-      {!viewSavedPeopleOnly && (
-        <>
-          {/* Search Bar */}
-          <div className="relative mt-2 mb-3">
-            <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by name, company, or interest (e.g. AI)..."
-              className="w-full h-11 bg-white border border-[#E5E7EB] rounded-[10px] pl-10 pr-4 text-[13px] focus:ring-2 focus:ring-[#B51F32]/20 focus:border-[#B51F32] outline-none text-[#181818] placeholder-[#9CA3AF] shadow-sm transition-all"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-[#6B6B6B] hover:text-[#181818]"
-              >
-                Clear
-              </button>
-            )}
-          </div>
+      {/* Search Bar */}
+      <div className="relative mt-2 mb-3">
+        <Search className="w-4 h-4 text-[#6B6B6B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by name, company, or interest (e.g. AI)..."
+          className="w-full h-11 bg-white border border-[#E5E7EB] rounded-[10px] pl-10 pr-4 text-[13px] focus:ring-2 focus:ring-[#B51F32]/20 focus:border-[#B51F32] outline-none text-[#181818] placeholder-[#9CA3AF] shadow-sm transition-all"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-[#6B6B6B] hover:text-[#181818]"
+          >
+            Clear
+          </button>
+        )}
+      </div>
 
-          {/* Filter Tabs */}
-          <div className="flex items-center gap-1.5 p-1 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7] overflow-x-auto no-scrollbar">
-            {[
-              { id: 'recommended', label: 'Recommended' },
-              { id: 'requests', label: incomingRequestsCount > 0 ? `Requests (${incomingRequestsCount})` : 'Requests' },
-              { id: 'all', label: 'All Attendees' },
-              { id: 'connections', label: `Connected (${connections.filter(c => c.status === 'connected').length})` },
-              { id: 'pending', label: 'Pending' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveSubTab(tab.id as any)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                  activeSubTab === tab.id
-                    ? 'bg-white text-[#181818] shadow-xs'
-                    : 'text-[#6B6B6B] hover:text-[#181818]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </>
+      {!viewSavedPeopleOnly && (
+        <p className="text-[11.5px] font-semibold text-[#6B6B6B] px-0.5">
+          {displayedList.length} Recommended Attendees
+        </p>
       )}
 
-      {/* Attendees List */}
+      {/* Attendees List - strictly recommended attendees */}
       <div className="space-y-3">
-        {finalFilteredList.length === 0 ? (
+        {displayedList.length === 0 ? (
           <div className="p-8 text-center bg-white rounded-[16px] border border-[#DEDCD7]">
-            <p className="text-xs font-semibold text-[#181818]">No attendees found</p>
+            <p className="text-xs font-semibold text-[#181818]">No recommended attendees found</p>
             <p className="text-[11px] text-[#6B6B6B] mt-1">
-              Try adjusting your search keywords or filter tab.
+              Try adjusting your search keywords.
             </p>
           </div>
         ) : (
-          finalFilteredList.map((person) => {
-            const connected = isConnected(person.id);
-            const pending = isPending(person.id);
-
-            return (
-              <div
-                key={person.id}
-                onClick={() => setSelectedPersonId(person.id)}
-                className="bg-white p-3.5 rounded-[16px] border border-[#E2E8F0] hover:border-[#181818]/30 transition-all shadow-xs hover:shadow-sm cursor-pointer flex items-center justify-between gap-3"
-              >
-                <div className="flex items-center gap-3 overflow-hidden flex-1 min-w-0">
-                  {person.avatar ? (
-                    <img
-                      src={person.avatar}
-                      alt={person.name}
-                      className="w-12 h-12 rounded-full object-cover flex-shrink-0 shadow-xs border border-[#E5E7EB]"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-[#F6F4F0] border border-[#E5E7EB] flex items-center justify-center font-bold text-[15px] text-[#181818] flex-shrink-0 shadow-xs">
-                      {person.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')}
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-[14.5px] font-bold text-[#0F172A] truncate leading-tight">
-                        {person.name}
-                      </h3>
-                      {person.relevanceScore && (
-                        <span className="text-[11px] font-bold text-[#0D9488] bg-[#F0FDFA] border border-[#CCFBF1] px-2 py-0.5 rounded-full flex-shrink-0">
-                          {person.relevanceScore}%
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[12.5px] text-[#64748B] font-medium truncate mt-1 leading-normal">
-                      {person.designation} · {person.company}
-                    </p>
-                    {person.boothNumber && (
-                      <span className="inline-block mt-1 text-[11px] font-semibold text-[#B51F32] bg-red-50 border border-red-100 px-2 py-0.5 rounded-md">
-                        Booth {person.boothNumber}
+          displayedList.map((person) => (
+            <div
+              key={person.id}
+              onClick={() => setSelectedPersonId(person.id)}
+              className="bg-white p-3.5 rounded-[16px] border border-[#E2E8F0] hover:border-[#181818]/30 transition-all shadow-xs hover:shadow-sm cursor-pointer flex items-center justify-between gap-3"
+            >
+              <div className="flex items-center gap-3 overflow-hidden flex-1 min-w-0">
+                {person.avatar ? (
+                  <img
+                    src={person.avatar}
+                    alt={person.name}
+                    className="w-12 h-12 rounded-full object-cover flex-shrink-0 shadow-xs border border-[#E5E7EB]"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-[#F6F4F0] border border-[#E5E7EB] flex items-center justify-center font-bold text-[15px] text-[#181818] flex-shrink-0 shadow-xs">
+                    {person.name
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')}
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-[14.5px] font-bold text-[#0F172A] truncate leading-tight">
+                      {person.name}
+                    </h3>
+                    {person.relevanceScore && (
+                      <span className="text-[11px] font-bold text-[#0D9488] bg-[#F0FDFA] border border-[#CCFBF1] px-2 py-0.5 rounded-full flex-shrink-0">
+                        {person.relevanceScore}%
                       </span>
                     )}
                   </div>
+                  <p className="text-[12.5px] text-[#64748B] font-medium truncate mt-1 leading-normal">
+                    {person.designation} · {person.company}
+                  </p>
+                  {person.boothNumber && (
+                    <span className="inline-block mt-1 text-[11px] font-semibold text-[#B51F32] bg-red-50 border border-red-100 px-2 py-0.5 rounded-md">
+                      Booth {person.boothNumber}
+                    </span>
+                  )}
                 </div>
-
-                {activeSubTab === 'requests' ? (
-                  <div className="flex-shrink-0 flex items-center gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        ignoreConnectionRequest(person.id);
-                      }}
-                      className="h-10 px-3 flex items-center justify-center text-[#6B6B6B] hover:text-[#181818] transition-all font-semibold text-[13px] bg-transparent"
-                    >
-                      Ignore
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        acceptConnectionRequest(person.id);
-                      }}
-                      className="h-10 px-3.5 flex items-center justify-center rounded-xl border border-[#181818] text-[#181818] bg-white transition-all font-semibold text-[13px] active:scale-95 shadow-xs"
-                    >
-                      Accept
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (connected || pending) {
-                        disconnectFrom(person.id);
-                      } else {
-                        handleConnect(person.id, e);
-                      }
-                    }}
-                    className={`flex-shrink-0 min-w-[106px] px-3.5 h-[40px] rounded-xl text-[13px] font-semibold flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-xs ${
-                      connected
-                        ? 'bg-red-50 text-[#B51F32] border border-red-200'
-                        : pending
-                        ? 'bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]'
-                        : 'bg-white text-[#181818] border border-[#181818] hover:bg-[#F8F7F4]'
-                    }`}
-                  >
-                    {connected ? (
-                      <>
-                        <X className="w-4 h-4" />
-                        <span>Disconnect</span>
-                      </>
-                    ) : pending ? (
-                      <>
-                        <Clock className="w-4 h-4" />
-                        <span>Pending</span>
-                      </>
-                    ) : (
-                      <>
-                        <UserPlus className="w-4 h-4" />
-                        <span>Connect</span>
-                      </>
-                    )}
-                  </button>
-                )}
               </div>
-            );
-          })
+
+              <ChevronRight className="w-4 h-4 text-[#9CA3AF] flex-shrink-0" />
+            </div>
+          ))
         )}
       </div>
     </div>
