@@ -38,11 +38,12 @@ export const OrganizerExhibitors: React.FC = () => {
   };
 
   const handleExportCSV = () => {
-    const headers = ['Company', 'Booth', 'Category'];
+    const headers = ['Company', 'Booth', 'Category', 'Leads Generated'];
     const rows = exhibitors.map((e) => [
       `"${e.company}"`,
       `"${e.booth}"`,
       `"${e.category}"`,
+      e.leads || 0,
     ]);
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
     const encodedUri = encodeURI(csvContent);
@@ -95,7 +96,8 @@ export const OrganizerExhibitors: React.FC = () => {
             <thead>
               <tr className="border-b border-[#E2E8F0] text-[#64748B] font-semibold text-[11px] uppercase tracking-wider bg-[#F8FAFC]">
                 <th className="py-3 px-6">Company</th>
-                <th className="py-3 px-6 text-right">Booth</th>
+                <th className="py-3 px-6">Booth</th>
+                <th className="py-3 px-6 text-right">Leads Generated</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E2E8F0]">
@@ -118,8 +120,15 @@ export const OrganizerExhibitors: React.FC = () => {
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-6 text-right font-mono text-xs font-semibold text-[#172033]">
+                  <td className="py-3.5 px-6 font-mono text-xs font-semibold text-[#172033]">
                     {ex.booth}
+                  </td>
+
+                  <td className="py-3.5 px-6 text-right">
+                    <span className="font-mono text-xs font-semibold text-[#172033]">
+                      {(ex.leads || 0).toLocaleString()}
+                    </span>
+                    <span className="text-[11px] text-[#64748B] ml-1">leads</span>
                   </td>
                 </tr>
               ))}
