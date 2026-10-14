@@ -5,8 +5,7 @@ import { useStore } from '../../lib/store';
 import {
   Users,
   Building2,
-  Mic,
-  Download
+  Mic
 } from 'lucide-react';
 
 export const OrganizerOverview: React.FC = () => {
@@ -51,37 +50,18 @@ export const OrganizerOverview: React.FC = () => {
   return (
     <div className="space-y-6 select-text max-w-[1360px] mx-auto w-full">
       {/* Event Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <span className="text-[12px] uppercase tracking-wider font-semibold text-[#64748B] block">
-            {event.id} · {event.city.toUpperCase()} · DAY 1 OF 3
+      <div>
+        <span className="text-[12px] uppercase tracking-wider font-semibold text-[#64748B] block">
+          {event.id} · {event.city.toUpperCase()} · DAY 1 OF 3
+        </span>
+        <h1 className="text-[28px] sm:text-[30px] font-semibold text-[#172033] tracking-tight leading-tight mt-1">
+          {event.name}
+        </h1>
+        <div className="flex items-center gap-2 mt-1.5 text-[13px] text-[#64748B]">
+          <span className="w-2 h-2 rounded-full bg-[#16A34A] shrink-0" />
+          <span className="font-medium">
+            LIVE · {registered.toLocaleString()} registered delegates & participants
           </span>
-          <h1 className="text-[28px] sm:text-[30px] font-semibold text-[#172033] tracking-tight leading-tight mt-1">
-            {event.name}
-          </h1>
-          <div className="flex items-center gap-2 mt-1.5 text-[13px] text-[#64748B]">
-            <span className="w-2 h-2 rounded-full bg-[#16A34A] shrink-0" />
-            <span className="font-medium">
-              LIVE · {registered.toLocaleString()} registered delegates & participants
-            </span>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-end">
-          <button
-            onClick={() => setActiveOrganizerTab('reports')}
-            className="h-9 px-3.5 bg-white hover:bg-[#F8FAFC] active:bg-[#F1F5F9] text-[#172033] text-[13px] font-medium rounded-lg border border-[#E2E8F0] shadow-2xs transition-colors flex items-center gap-2 cursor-pointer"
-          >
-            <Download className="w-4 h-4 text-[#64748B]" />
-            <span>Export</span>
-          </button>
-          <button
-            onClick={() => setActiveOrganizerTab('reports')}
-            className="h-9 px-4 bg-[#3563F6] hover:bg-[#2554E5] active:bg-[#1D46CA] text-white text-[13px] font-medium rounded-lg shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer"
-          >
-            <span>Event Report</span>
-          </button>
         </div>
       </div>
 

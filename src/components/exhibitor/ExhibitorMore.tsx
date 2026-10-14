@@ -12,7 +12,6 @@ import {
   MapPin,
   Calendar,
   Clock,
-  Wifi,
   Phone,
   Mail,
   Globe,
@@ -260,40 +259,6 @@ export const ExhibitorMore: React.FC = React.memo(() => {
                       </div>
                     </div>
                   </div>
-
-                  {/* Exhibitor Logistics & Connectivity */}
-                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 mt-0.5">
-                        <Wifi className="w-4 h-4 text-[#181818]" />
-                      </div>
-                      <div>
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373]">
-                          Exhibitor High-Speed Wi-Fi
-                        </span>
-                        <p className="text-[13px] font-semibold text-[#181818] mt-0.5">
-                          Network: <span className="font-mono text-[#B51F32]">MPSS26_Exhibitor_5G</span>
-                        </p>
-                        <p className="text-[12px] text-[#6B6B6B]">
-                          Passkey: <span className="font-mono font-medium">EventSphere2026</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-[#EAE7E0] pt-2.5 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 mt-0.5">
-                        <ShieldCheck className="w-4 h-4 text-[#2F7D58]" />
-                      </div>
-                      <div>
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373]">
-                          Fast-Track Entry Gate
-                        </span>
-                        <p className="text-[13px] font-semibold text-[#181818] mt-0.5">
-                          Gate 3 · Dedicated Exhibitor & Staff Turnstiles
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                 </>
               ) : (
                 <>
@@ -315,27 +280,6 @@ export const ExhibitorMore: React.FC = React.memo(() => {
                     <p className="text-[13px] text-[#555555] leading-relaxed">
                       Truechip is a leading global provider of Design and Verification solutions which helps accelerate semiconductor design, lowering the cost and the risks associated with the development of ASIC, FPGA, and SoC designs. Trusted across 100+ silicon tapeouts worldwide.
                     </p>
-                  </div>
-
-                  {/* Booth Details Card */}
-                  <div className="bg-white p-4 rounded-2xl border border-[#DEDCD7] shadow-sm space-y-2.5">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#737373] block">
-                      Booth Showcase & Demos
-                    </span>
-                    <div className="space-y-2 text-[12.5px]">
-                      <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
-                        <span className="font-bold text-[#181818] block text-[13px]">PCIe Gen 6 / 7 & CXL 3.1 VIP</span>
-                        <p className="text-[#6B6B6B] mt-0.5">PAM4 signaling, FLIT mode, and cache-coherent interconnect verification suites.</p>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
-                        <span className="font-bold text-[#181818] block text-[13px]">UCIe Chiplet Interconnect VIP</span>
-                        <p className="text-[#6B6B6B] mt-0.5">Turnkey multi-die chiplet D2D adapter and physical layer verification testbenches.</p>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-[#F6F4F0] border border-[#EAE7E0]">
-                        <span className="font-bold text-[#181818] block text-[13px]">RISC-V Verification Suite & TruEye</span>
-                        <p className="text-[#6B6B6B] mt-0.5">TileLink coherency test suites paired with visual GUI-based protocol debug & transaction analysis.</p>
-                      </div>
-                    </div>
                   </div>
 
                   {/* Official Contact & Web Card */}

@@ -7,8 +7,6 @@ import {
   Clock,
   MapPin,
   Mic,
-  MessageSquare,
-  Users,
   Plus,
   Edit3,
   Search,
@@ -23,7 +21,6 @@ import { Session } from '../../types';
 export const OrganizerSessions: React.FC = () => {
   const {
     sessions,
-    questions,
     updateSession,
     createSession,
     deleteSession,
@@ -249,7 +246,6 @@ export const OrganizerSessions: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredSessions.map((session) => {
-            const qCount = questions.filter((q) => q.sessionId === session.id).length;
             const initials = (session.speakerName || 'TBA')
               .split(' ')
               .map((n) => n[0])
@@ -335,21 +331,8 @@ export const OrganizerSessions: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Footer Metrics + Edit Pill */}
-                  <div className="flex items-center justify-between text-xs text-[#64748B] pt-1">
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex items-center gap-1 text-[11px] font-medium">
-                        <MessageSquare className="w-3.5 h-3.5 text-[#94A3B8]" />
-                        {qCount} Q&A
-                      </span>
-                      {session.attendanceCount > 0 && (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium">
-                          <Users className="w-3.5 h-3.5 text-[#94A3B8]" />
-                          {session.attendanceCount}
-                        </span>
-                      )}
-                    </div>
-
+                  {/* Footer Edit Action */}
+                  <div className="flex items-center justify-end text-xs text-[#64748B] pt-1">
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-[#3563F6] group-hover:underline">
                       <Edit3 className="w-3.5 h-3.5" />
                       <span>Edit</span>

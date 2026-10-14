@@ -19,9 +19,14 @@ import {
 } from 'lucide-react';
 
 export const OrganizerReports: React.FC = () => {
-  const { event, exhibitors, poll, questions, showToast } = useStore();
+  const { event, exhibitors, poll, showToast } = useStore();
   const [isGenerating, setIsGenerating] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(true);
+
+  // Top 5 exhibitors ranked by most leads generated
+  const topExhibitorsByLeads = [...exhibitors]
+    .sort((a, b) => (b.leads || 0) - (a.leads || 0))
+    .slice(0, 5);
 
   const handleGenerateReport = () => {
     setIsGenerating(true);
@@ -44,14 +49,14 @@ export const OrganizerReports: React.FC = () => {
         `Event Name,${event.name}`,
         `Event ID,${event.id}`,
         `Total Registered,${event.totalRegistered}`,
-        `Total Checked In,${event.totalCheckedIn}`,
-        `Check-In Rate,${((event.totalCheckedIn / event.totalRegistered) * 100).toFixed(1)}%`,
         `Total Exhibitors,${event.totalExhibitors}`,
         `Total Speakers,${event.totalSpeakers}`,
-        `Q&A Questions,142`,
-        `Questions Answered,98`,
         `Poll Responses,${poll.totalVotes}`,
-        `Session Attendance,1026`,
+        '',
+        'Top 5 Exhibitors by Leads,Booth,Category,Leads Generated',
+        ...topExhibitorsByLeads.map(
+          (ex, idx) => `"#${idx + 1} ${ex.company}","${ex.booth}","${ex.category}",${ex.leads || 0}`
+        ),
       ].join('\n');
 
     const encodedUri = encodeURI(csvContent);
@@ -145,23 +150,16 @@ export const OrganizerReports: React.FC = () => {
           </div>
         </div>
 
-        {/* 4 Core Executive Numbers Grid */}
+        {/* 3 Core Executive Numbers Grid */}
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] mb-2.5">
             1. Executive Attendance & Scale Metrics
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
             <div className="p-3.5 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
               <span className="text-[11px] uppercase font-semibold text-[#64748B] block">Registered</span>
               <p className="text-[18px] font-semibold font-mono text-[#172033] mt-1">
                 {event.totalRegistered.toLocaleString()}
-              </p>
-            </div>
-
-            <div className="p-3.5 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
-              <span className="text-[11px] uppercase font-semibold text-[#64748B] block">Checked In</span>
-              <p className="text-[18px] font-semibold font-mono text-[#16A34A] mt-1">
-                {event.totalCheckedIn.toLocaleString()}
               </p>
             </div>
 
@@ -181,28 +179,32 @@ export const OrganizerReports: React.FC = () => {
           </div>
         </div>
 
-        {/* Featured Exhibitors Directory */}
+        {/* Top 5 Featured Exhibitors by Leads Directory */}
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] mb-2.5">
-            2. Featured Exhibitors & Booth Locations
+            2. Featured Exhibitors & Leads Generated
           </h3>
           <div className="rounded-lg border border-[#E2E8F0] overflow-hidden">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0] text-[#64748B] font-semibold text-[11px] uppercase tracking-wider">
-                  <th className="py-2.5 px-4 w-16">#</th>
+                  <th className="py-2.5 px-4 w-14">#</th>
                   <th className="py-2.5 px-4">Company</th>
                   <th className="py-2.5 px-4">Category</th>
-                  <th className="py-2.5 px-4 text-right">Booth Location</th>
+                  <th className="py-2.5 px-4">Booth Location</th>
+                  <th className="py-2.5 px-4 text-right">Leads Generated</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E2E8F0]">
-                {exhibitors.slice(0, 5).map((ex, idx) => (
+                {topExhibitorsByLeads.map((ex, idx) => (
                   <tr key={ex.id} className="hover:bg-[#F8FAFC]">
                     <td className="py-2.5 px-4 font-mono font-medium text-[#64748B]">#{idx + 1}</td>
                     <td className="py-2.5 px-4 font-semibold text-[#172033]">{ex.company}</td>
                     <td className="py-2.5 px-4 text-[#64748B]">{ex.category}</td>
-                    <td className="py-2.5 px-4 text-right font-mono font-semibold text-[#172033]">{ex.booth}</td>
+                    <td className="py-2.5 px-4 font-mono font-semibold text-[#172033]">{ex.booth}</td>
+                    <td className="py-2.5 px-4 text-right font-mono font-semibold text-[#172033]">
+                      {(ex.leads || 0).toLocaleString()} <span className="text-[11px] text-[#64748B] font-normal">leads</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -215,30 +217,14 @@ export const OrganizerReports: React.FC = () => {
           <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] mb-2.5">
             3. Audience Engagement Highlights
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div className="p-3.5 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
-              <span className="text-[11px] uppercase font-semibold text-[#64748B] block">Questions Submitted</span>
-              <p className="text-[18px] font-semibold font-mono text-[#172033] mt-1">142</p>
-              <span className="text-[11px] text-[#16A34A] font-medium">Live Q&A</span>
-            </div>
-
-            <div className="p-3.5 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
-              <span className="text-[11px] uppercase font-semibold text-[#64748B] block">Questions Answered</span>
-              <p className="text-[18px] font-semibold font-mono text-[#16A34A] mt-1">98</p>
-              <span className="text-[11px] text-[#64748B]">69% Answered Rate</span>
-            </div>
-
-            <div className="p-3.5 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
+          <div className="p-3.5 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] max-w-xs text-center sm:text-left sm:flex sm:items-center sm:justify-between">
+            <div>
               <span className="text-[11px] uppercase font-semibold text-[#64748B] block">Poll Responses</span>
-              <p className="text-[18px] font-semibold font-mono text-[#172033] mt-1">{poll.totalVotes}</p>
-              <span className="text-[11px] text-[#64748B]">Interactive voting</span>
+              <p className="text-[20px] font-semibold font-mono text-[#172033] mt-0.5">{poll.totalVotes}</p>
             </div>
-
-            <div className="p-3.5 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
-              <span className="text-[11px] uppercase font-semibold text-[#64748B] block">Session Attendance</span>
-              <p className="text-[18px] font-semibold font-mono text-[#172033] mt-1">1,026</p>
-              <span className="text-[11px] text-[#16A34A] font-medium">Across 4 stages</span>
-            </div>
+            <span className="text-[11px] text-[#3563F6] font-medium bg-blue-50 border border-blue-200/60 px-2.5 py-1 rounded-md mt-2 sm:mt-0 inline-block">
+              Interactive voting
+            </span>
           </div>
         </div>
 
