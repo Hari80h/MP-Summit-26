@@ -282,7 +282,9 @@ export const DelegateHome: React.FC = () => {
             <div className="mt-1.5 text-[11.5px] text-[#A1A1AA] space-y-1">
               <div className="flex items-center gap-1.5 truncate">
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-[#9CA3AF]" />
-                <span className="truncate">{event.venue}, {event.city}</span>
+                <span className="truncate">
+                  {event.venue.includes(event.city) ? event.venue : `${event.venue}, ${event.city}`}
+                </span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-[#9CA3AF]" />

@@ -218,6 +218,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setEvent({
             ...INITIAL_EVENT,
             ...parsed.event,
+            venue: INITIAL_EVENT.venue,
+            city: INITIAL_EVENT.city,
             totalRegistered: parsed.event.totalRegistered || INITIAL_EVENT.totalRegistered,
             totalCheckedIn: parsed.event.totalCheckedIn || INITIAL_EVENT.totalCheckedIn,
             totalExhibitors: parsed.event.totalExhibitors || INITIAL_EVENT.totalExhibitors,

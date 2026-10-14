@@ -42,7 +42,7 @@ export const INITIAL_EVENT: EventMetadata = {
   name: 'Madhya Pradesh Semiconductor Summit 2026',
   dates: '23–24 Oct 2026',
   city: 'Indore',
-  venue: 'Brilliant Convention Centre, Indore',
+  venue: 'Brilliant Convention Centre',
   status: 'UPCOMING',
   totalRegistered: 2438,
   totalCheckedIn: 1120,

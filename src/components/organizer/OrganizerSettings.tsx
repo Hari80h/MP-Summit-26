@@ -65,7 +65,7 @@ export const OrganizerSettings: React.FC = () => {
             <input
               type="text"
               readOnly
-              value={`${event.venue}, ${event.city}`}
+              value={event.venue.includes(event.city) ? event.venue : `${event.venue}, ${event.city}`}
               className="w-full h-9 px-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#172033] cursor-not-allowed"
             />
           </div>

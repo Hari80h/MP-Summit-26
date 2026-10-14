@@ -145,7 +145,7 @@ export const OrganizerReports: React.FC = () => {
           <div className="text-right text-xs text-[#64748B] space-y-1">
             <p className="font-mono font-semibold text-[#172033]">{event.id} · LIVE AUDIT</p>
             <p>{event.dates}</p>
-            <p>{event.venue}, {event.city}</p>
+            <p>{event.venue.includes(event.city) ? event.venue : `${event.venue}, ${event.city}`}</p>
             <p className="text-[11px] text-[#16A34A] font-medium">VERIFIED DATA LAYER</p>
           </div>
         </div>
