@@ -224,22 +224,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           });
         }
         if (parsed.currentUser && parsed.currentUser.id === CURRENT_USER.id) {
-          const u = parsed.currentUser;
-          if (!u.registrationId || u.registrationId.toLowerCase().includes('not public')) {
-            u.registrationId = '#0523';
-          }
-          if (!u.email || u.email.toLowerCase().includes('not public') || u.email.toLowerCase().includes('unlisted') || u.email.includes('hari@') || u.email.includes('aiggpa.mp.gov.in')) {
-            u.email = 'skvishvakarma@iiti.ac.in';
-          }
-          if (!u.mobile || u.mobile.toLowerCase().includes('not public') || u.mobile.toLowerCase().includes('unlisted')) {
-            u.mobile = '+91 97137 22841';
-          }
-          if (!u.twitter || u.twitter === '@harigupta') {
-            u.twitter = 'https://x.com/DrVishvakarma?lang=en';
-          }
-          if (!u.avatar || u.avatar.includes('unsplash.com') || u.avatar.includes('ui-avatars') || u.avatar.includes('hari-gupta')) {
-            u.avatar = '/images/avatars/santosh-kumar.png';
-          }
+          const u = { ...CURRENT_USER, ...parsed.currentUser };
+          u.name = 'Hari Gupta';
+          u.company = 'EventSphere';
+          u.designation = 'CEO';
+          u.mobile = '+91 98765 43210';
+          u.email = 'hari@eventsphere.com';
+          u.avatar = '/images/avatars/hari-gupta.png';
+          u.registrationId = '#5023';
           if (!u.privacy || (u.privacy.preset as any) === 'Private') {
             u.privacy = {
               preset: 'Connections Only',
@@ -255,9 +247,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
         const initialMap = new Map(INITIAL_ATTENDEES.map((a: Person) => [a.id, a]));
         if (parsed.attendees) {
-          const existingIds = new Set(parsed.attendees.map((a: Person) => a.id));
+          const validAttendees = parsed.attendees.filter(
+            (a: Person) => a.role !== 'speaker' || initialMap.has(a.id)
+          );
+          const existingIds = new Set(validAttendees.map((a: Person) => a.id));
           const missingSpeakers = INITIAL_ATTENDEES.filter((a) => !existingIds.has(a.id));
-          const allAttendees = [...parsed.attendees, ...missingSpeakers];
+          const allAttendees = [...validAttendees, ...missingSpeakers];
           const sanitized = allAttendees.map((a: Person) => {
             let item = { ...a };
             const seed = initialMap.get(item.id);

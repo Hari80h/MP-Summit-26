@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../../lib/store';
-import { CURRENT_USER } from '../../lib/mockData';
+import { CURRENT_USER, INITIAL_ATTENDEES } from '../../lib/mockData';
 import { ShieldCheck, CheckCircle2, AlertCircle, ArrowRight, Loader2, Lock } from 'lucide-react';
 
 interface AccessScreenProps {
@@ -69,7 +69,11 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
     }
 
     if (detectedRole === 'delegate') {
-      setCurrentUser(CURRENT_USER);
+      const matched = INITIAL_ATTENDEES.find((a) => {
+        const aNum = (a.mobile || '').replace(/\D/g, '');
+        return aNum.endsWith(num) || (num.length >= 8 && aNum.includes(num));
+      });
+      setCurrentUser(matched || CURRENT_USER);
     }
 
     setTimeout(() => {
@@ -170,7 +174,7 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
                     setMobile(e.target.value);
                     if (status === 'error') setStatus('idle');
                   }}
-                  placeholder="e.g. 9713722841"
+                  placeholder="e.g. 9876543210"
                   disabled={status === 'verifying' || status === 'confirmed'}
                   className="w-full px-3 py-2 rounded-lg bg-white border border-[#DEDCD7] text-[13px] font-medium text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32] focus:border-transparent transition-all shadow-sm"
                   autoComplete="tel"
@@ -184,14 +188,14 @@ export const AccessScreen: React.FC<AccessScreenProps> = ({ onSuccess }) => {
               <div className="flex flex-wrap gap-1.5">
                 <button
                   type="button"
-                  onClick={() => handleQuickSelect('9713722841')}
+                  onClick={() => handleQuickSelect('9876543210')}
                   className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
-                    mobile === '9713722841'
+                    mobile === '9876543210'
                       ? 'bg-[#B51F32] text-white border-[#B51F32] font-semibold shadow-sm'
                       : 'bg-white text-[#333333] border-[#DEDCD7] hover:border-[#B51F32] font-medium'
                   }`}
                 >
-                  Delegate - Santosh Kumar (9713722841)
+                  Delegate - Hari Gupta (9876543210)
                 </button>
                 <button
                   type="button"
