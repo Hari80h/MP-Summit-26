@@ -8,9 +8,12 @@ export const DelegateBottomNav: React.FC = () => {
   const {
     activeDelegateTab,
     setActiveDelegateTab,
+    selectedSessionId,
     setSelectedSessionId,
     setViewSavedCompaniesOnly,
     setScheduleSubTab,
+    sessionBackTab,
+    setSessionBackTab,
   } = useStore();
 
   const navItems = [
@@ -24,9 +27,10 @@ export const DelegateBottomNav: React.FC = () => {
     <nav className="flex-shrink-0 w-full z-40 bg-[#FFFFFF] border-t border-[#DEDCD7] pb-safe px-2 pt-1 shadow-md select-none">
       <div className="flex items-center justify-around max-w-md mx-auto relative">
         {navItems.map((item) => {
-          const isActive =
-            activeDelegateTab === item.id ||
-            (item.id === 'home' &&
+          const isHomeActive =
+            item.id === 'home' &&
+            (activeDelegateTab === 'home' ||
+              (activeDelegateTab === 'schedule' && selectedSessionId !== null && sessionBackTab === 'home') ||
               [
                 'speakers',
                 'polls',
@@ -35,8 +39,21 @@ export const DelegateBottomNav: React.FC = () => {
                 'ai_recommendations',
                 'support',
                 'people',
-              ].includes(activeDelegateTab)) ||
-            (item.id === 'companies' && activeDelegateTab === 'company_detail');
+              ].includes(activeDelegateTab));
+
+          const isScheduleActive =
+            item.id === 'schedule' &&
+            activeDelegateTab === 'schedule' &&
+            !(selectedSessionId !== null && sessionBackTab === 'home');
+
+          const isCompaniesActive =
+            item.id === 'companies' &&
+            (activeDelegateTab === 'companies' || activeDelegateTab === 'company_detail');
+
+          const isProfileActive =
+            item.id === 'profile' && activeDelegateTab === 'profile';
+
+          const isActive = isHomeActive || isScheduleActive || isCompaniesActive || isProfileActive;
           const Icon = item.icon;
 
           return (
@@ -46,6 +63,10 @@ export const DelegateBottomNav: React.FC = () => {
                 if (item.id === 'schedule') {
                   setSelectedSessionId(null);
                   setScheduleSubTab('all');
+                  setSessionBackTab('schedule');
+                }
+                if (item.id === 'home') {
+                  setSelectedSessionId(null);
                 }
                 if (item.id === 'companies') {
                   setViewSavedCompaniesOnly(false);

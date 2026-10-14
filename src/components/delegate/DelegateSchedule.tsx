@@ -78,6 +78,9 @@ export const DelegateSchedule: React.FC = () => {
     currentUser,
     scheduleSubTab,
     setScheduleSubTab,
+    setActiveDelegateTab,
+    sessionBackTab,
+    setSessionBackTab,
   } = useStore();
 
   const activeTab = scheduleSubTab;
@@ -220,9 +223,16 @@ export const DelegateSchedule: React.FC = () => {
             <button
               onClick={() => {
                 setSelectedSessionId(null);
+                if (sessionBackTab === 'home') {
+                  setActiveDelegateTab('home');
+                } else if (sessionBackTab === 'profile') {
+                  setActiveDelegateTab('profile');
+                } else if (sessionBackTab === 'ai_recommendations') {
+                  setActiveDelegateTab('ai_recommendations');
+                }
               }}
               className="w-10 h-10 rounded-full bg-black/45 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-all shadow-md"
-              aria-label="Back to schedule"
+              aria-label="Back"
             >
               <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
             </button>
@@ -550,7 +560,10 @@ export const DelegateSchedule: React.FC = () => {
                     ) : (
                       /* Crisp White Session Box */
                       <div
-                        onClick={() => setSelectedSessionId(session.id)}
+                        onClick={() => {
+                          setSessionBackTab('schedule');
+                          setSelectedSessionId(session.id);
+                        }}
                         className="bg-white rounded-[16px] border border-[#E2E8F0] hover:border-[#CBD5E1] p-3 sm:p-3.5 shadow-xs hover:shadow-md transition-all cursor-pointer relative"
                       >
                         {/* Top row: Track tag & Bookmark icon */}

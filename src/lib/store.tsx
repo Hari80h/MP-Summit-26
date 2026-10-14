@@ -83,6 +83,8 @@ interface StoreContextType {
   setSelectedProductId: (id: string | null) => void;
   selectedSessionId: string | null;
   setSelectedSessionId: (id: string | null) => void;
+  sessionBackTab: 'home' | 'schedule' | 'profile' | 'ai_recommendations';
+  setSessionBackTab: (tab: 'home' | 'schedule' | 'profile' | 'ai_recommendations') => void;
   selectedCompanyId: string | null;
   setSelectedCompanyId: (id: string | null) => void;
 
@@ -168,6 +170,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [selectedPersonId, setSelectedPersonId] = useState<string | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [sessionBackTab, setSessionBackTab] = useState<'home' | 'schedule' | 'profile' | 'ai_recommendations'>('schedule');
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [savedCompanyIds, setSavedCompanyIds] = useState<string[]>([]);
   const [savedPeopleIds, setSavedPeopleIds] = useState<string[]>([]);
@@ -960,6 +963,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSelectedProductId,
     selectedSessionId,
     setSelectedSessionId,
+    sessionBackTab,
+    setSessionBackTab,
     selectedCompanyId,
     setSelectedCompanyId,
     event,
@@ -1029,6 +1034,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     selectedPersonId,
     selectedProductId,
     selectedSessionId,
+    sessionBackTab,
     selectedCompanyId,
     event,
     currentUser,

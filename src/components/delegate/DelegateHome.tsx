@@ -72,6 +72,7 @@ export const DelegateHome: React.FC = () => {
     disconnectFrom,
     setActiveDelegateTab,
     setSelectedSessionId,
+    setSessionBackTab,
     setSelectedPersonId,
     setSelectedCompanyId,
     sessions,
@@ -448,6 +449,7 @@ export const DelegateHome: React.FC = () => {
           <button
             onClick={() => {
               setSelectedSessionId(null);
+              setSessionBackTab('schedule');
               setActiveDelegateTab('schedule');
             }}
             className="text-[12px] font-semibold text-[#DC2626] flex items-center gap-0.5 hover:underline"
@@ -460,6 +462,7 @@ export const DelegateHome: React.FC = () => {
         {/* Up next Card */}
         <div
           onClick={() => {
+            setSessionBackTab('home');
             setSelectedSessionId(featuredSession.id);
             setActiveDelegateTab('schedule');
           }}
@@ -505,6 +508,7 @@ export const DelegateHome: React.FC = () => {
           <button
             onClick={(e) => {
               e.stopPropagation();
+              setSessionBackTab('home');
               setSelectedSessionId(featuredSession.id);
               setActiveDelegateTab('schedule');
             }}

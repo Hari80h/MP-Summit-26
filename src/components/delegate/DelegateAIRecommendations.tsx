@@ -15,6 +15,7 @@ export const DelegateAIRecommendations: React.FC = () => {
     setActiveDelegateTab,
     sessions,
     setSelectedSessionId,
+    setSessionBackTab,
     toggleBookmarkSession
   } = useStore();
 
@@ -119,7 +120,11 @@ export const DelegateAIRecommendations: React.FC = () => {
             {recommendedSessions.map((session) => (
               <div
                 key={session.id}
-                onClick={() => setSelectedSessionId(session.id)}
+                onClick={() => {
+                  setSessionBackTab('ai_recommendations');
+                  setSelectedSessionId(session.id);
+                  setActiveDelegateTab('schedule');
+                }}
                 className="p-2 bg-white rounded-[12px] shadow-sm relative overflow-hidden flex flex-col gap-1 cursor-pointer hover:shadow-md transition-shadow border border-[#F3F4F6] flex-shrink-0 w-[260px]"
               >
                 {/* Red strip */}
