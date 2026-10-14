@@ -45,7 +45,7 @@ export const DelegateAIRecommendations: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-white pb-20 overflow-y-auto">
+    <div className="flex-1 min-h-0 h-full bg-white pb-4 overflow-y-auto">
       {/* Header */}
       <div className="p-3 bg-white sticky top-0 z-10">
         <div className="flex items-center gap-2 mb-2 mt-2">

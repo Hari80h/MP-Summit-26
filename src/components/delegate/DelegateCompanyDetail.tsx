@@ -85,7 +85,7 @@ Generated via EventSphere Official App (MPSS26)
         </button>
       </div>
 
-      <div className="px-4 pb-16 space-y-3">
+      <div className="px-4 pb-4 space-y-3">
         {/* Main Card */}
         <div className="bg-white rounded-[14px] border border-[#DEDCD7] p-3 shadow-sm">
           <div className="flex justify-between items-start mb-2">

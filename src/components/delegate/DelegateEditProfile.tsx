@@ -102,7 +102,7 @@ export const DelegateEditProfile: React.FC = () => {
         </button>
       </div>
 
-      <div className="p-3 pb-24 overflow-y-auto space-y-3">
+      <div className="p-3 pb-4 overflow-y-auto space-y-3">
         
         {/* Compact Profile Completion */}
         <div className="bg-white py-2 px-3 rounded-[12px] border border-[#E5E7EB] shadow-xs">

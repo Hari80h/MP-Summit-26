@@ -207,7 +207,7 @@ export const DelegateSchedule: React.FC = () => {
     const sessionSpeakers = resolveSessionSpeakers(activeSession);
 
     return (
-      <div ref={scrollRef} className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto pb-16">
+      <div ref={scrollRef} className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto pb-4">
         {/* Stage Hero Image Section */}
         <div
           className="relative h-[210px] w-full bg-cover bg-center overflow-hidden flex flex-col justify-between p-3 select-none"

@@ -119,7 +119,7 @@ export default function App() {
           {role === 'delegate' ? (
               /* Delegate Experience */
               <div className="flex-1 flex flex-col h-full overflow-hidden">
-                <div className="flex-1 flex flex-col overflow-y-auto overscroll-contain no-scrollbar">
+                <div className="flex-1 flex flex-col min-h-0 h-full overflow-hidden">
                   {activeDelegateTab === 'home' && <DelegateHome />}
                   {activeDelegateTab === 'people' && <DelegatePeople />}
                   {(activeDelegateTab === 'focus' || activeDelegateTab === 'scan') && <DelegateFocus />}

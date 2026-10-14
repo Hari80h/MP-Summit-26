@@ -36,7 +36,7 @@ export const DelegateProfile: React.FC<DelegateProfileProps> = () => {
   const profileCompletion = calculateProfileCompletion(currentUser); 
 
   return (
-    <div className="flex-1 bg-[#F8F7F4] select-none overflow-y-auto px-3 pt-1.5 pb-20 space-y-2">
+    <div className="flex-1 min-h-0 h-full bg-[#F8F7F4] select-none overflow-y-auto px-3 pt-1.5 pb-4 space-y-2">
       {/* Header matching directory & schedule typography */}
       <div className="pt-2 pb-1">
         <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · DELEGATE</p>

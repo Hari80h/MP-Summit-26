@@ -34,7 +34,7 @@ export const DelegateSponsors: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-4 pb-16 space-y-3">
+      <div className="px-4 pb-4 space-y-3">
         {/* Title Sponsor */}
         <section>
           <h2 className="text-[12px] font-bold text-[#B51F32] uppercase tracking-wider mb-2 text-center">Title Sponsor</h2>

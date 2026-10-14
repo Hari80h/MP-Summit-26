@@ -90,7 +90,7 @@ export const DelegatePolls: React.FC = () => {
       </div>
 
       {/* Main Content Area - Reduced Padding to fit fully on mobile view */}
-      <div className="flex-1 overflow-y-auto px-3.5 py-2.5 pb-16">
+      <div className="flex-1 overflow-y-auto px-3.5 py-2.5 pb-3">
         <div className="max-w-md mx-auto">
           {/* Poll Card - Reduced padding & compact typography */}
           <div className="bg-white rounded-2xl p-3.5 sm:p-4.5 border border-slate-200/90 shadow-xs">

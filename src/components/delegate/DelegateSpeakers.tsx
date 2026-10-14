@@ -51,9 +51,9 @@ export const DelegateSpeakers: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#F8F7F4] flex flex-col h-full overflow-hidden">
+    <div className="flex-1 min-h-0 bg-[#F8F7F4] flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="pt-4 pb-3 px-4 bg-[#F8F7F4] flex-shrink-0 sticky top-0 z-10">
+      <div className="pt-4 pb-3 px-4 bg-[#F8F7F4] flex-shrink-0 z-10">
         <div className="flex items-center gap-3 mb-3.5">
           <button 
             onClick={() => setActiveDelegateTab('home')}
@@ -78,7 +78,7 @@ export const DelegateSpeakers: React.FC = () => {
       </div>
 
       {/* Grid of 2 Columns */}
-      <div className="flex-1 overflow-y-auto px-4 pb-24 no-scrollbar">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4 no-scrollbar">
         <div className="flex items-center justify-between mt-3 mb-2.5 px-0.5">
           <p className="text-[13.5px] font-bold text-[#1F2937]">
             {filteredSpeakers.length === speakers.length
@@ -90,7 +90,7 @@ export const DelegateSpeakers: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 pb-8">
+        <div className="grid grid-cols-2 gap-3">
           {filteredSpeakers.map((speaker) => {
             const connected = isConnected(speaker.id);
             const pending = isPending(speaker.id);

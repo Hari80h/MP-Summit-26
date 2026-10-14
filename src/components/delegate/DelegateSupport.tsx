@@ -32,7 +32,7 @@ export const DelegateSupport: React.FC = () => {
       </div>
 
       {/* Content: Helpdesk Hotlines only */}
-      <div className="flex-1 overflow-y-auto px-3 py-3 pb-24 space-y-3">
+      <div className="flex-1 overflow-y-auto px-3 py-3 pb-3 space-y-3">
         {/* Helpdesk Hotlines Card */}
         <div className="bg-white p-4 rounded-[16px] border border-[#DEDCD7] shadow-xs space-y-3.5">
           <div className="flex items-center justify-between">

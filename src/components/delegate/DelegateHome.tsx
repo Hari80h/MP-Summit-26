@@ -211,7 +211,7 @@ export const DelegateHome: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 px-3 pt-2 pb-3 space-y-3 bg-[#F8F7F4] overflow-y-auto select-none">
+    <div className="flex-1 min-h-0 h-full px-3 pt-2 pb-3 space-y-3 bg-[#F8F7F4] overflow-y-auto select-none">
       {/* Top Greeting & Attendee Identity Header */}
       <div className="pt-2 pb-1">
         <div className="flex items-center justify-between">
@@ -261,15 +261,15 @@ export const DelegateHome: React.FC = () => {
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${activeSlide * 100}%)` }}
         >
-          {/* Slide 1: BTS26 Live Event Card */}
-          <div className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#222226] to-[#2E2E33]">
+          {/* Slide 1: BTS26 Live Event Card (Dark Theme matching Slide 3) */}
+          <div className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[148px] bg-gradient-to-br from-[#18181B] via-[#161C28] to-[#0F172A] select-none flex flex-col justify-between">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10.5px] font-bold text-white bg-[#27272A] px-2 py-0.5 rounded-md">
+              <span className="text-[10px] font-bold tracking-wider text-slate-300 bg-white/10 px-2 py-0.5 rounded-md border border-white/10">
                 {event.id}
               </span>
-              <div className="flex items-center gap-1.5 bg-[#E5E7EB] text-[#1F2937] px-2.5 py-0.5 rounded-full shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#6B7280]" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-1.5 text-[9.5px] font-bold text-[#38BDF8] bg-[#0284C7]/20 border border-[#38BDF8]/40 px-2.5 py-0.5 rounded-full shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
+                <span className="tracking-wider">
                   UPCOMING
                 </span>
               </div>
@@ -279,44 +279,110 @@ export const DelegateHome: React.FC = () => {
               {event.name}
             </h2>
 
-            <div className="mt-1.5 text-[11.5px] text-[#A1A1AA] space-y-1">
+            <div className="mt-1.5 text-[11.5px] text-[#94A3B8] space-y-1">
               <div className="flex items-center gap-1.5 truncate">
-                <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-[#9CA3AF]" />
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-[#38BDF8]" />
                 <span className="truncate">
                   {event.venue.includes(event.city) ? event.venue : `${event.venue}, ${event.city}`}
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-[#9CA3AF]" />
+                <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-[#38BDF8]" />
                 <span>{event.dates}</span>
               </div>
             </div>
 
             <div className="mt-2.5 flex items-center gap-1.5 text-[11px] whitespace-nowrap overflow-x-auto no-scrollbar pb-0.5 pr-14">
-              <span className="bg-[#27272A] text-[#E5E7EB] px-2 py-0.5 rounded-md shrink-0">
-                <strong>{event.totalRegistered || attendees.length}</strong> attendees
+              <span className="bg-[#1E293B]/70 border border-slate-700/60 text-slate-300 px-2 py-0.5 rounded-md shrink-0">
+                <strong className="text-white font-semibold">{event.totalRegistered || attendees.length}</strong> attendees
               </span>
-              <span className="bg-[#27272A] text-[#E5E7EB] px-2 py-0.5 rounded-md shrink-0">
-                <strong>40+</strong> speakers
+              <span className="bg-[#1E293B]/70 border border-slate-700/60 text-slate-300 px-2 py-0.5 rounded-md shrink-0">
+                <strong className="text-white font-semibold">40+</strong> speakers
               </span>
-              <span className="bg-[#27272A] text-[#E5E7EB] px-2 py-0.5 rounded-md shrink-0">
-                <strong>50+</strong> exhibitors
+              <span className="bg-[#1E293B]/70 border border-slate-700/60 text-slate-300 px-2 py-0.5 rounded-md shrink-0">
+                <strong className="text-white font-semibold">50+</strong> exhibitors
               </span>
             </div>
           </div>
 
-          {/* Slide 2: MPSS26 Official Leadership Poster (Dark Blue Theme) */}
-          <div className="w-full flex-shrink-0 relative min-h-[136px] bg-[#020817] flex items-center justify-center overflow-hidden">
-            <img
-              src="/images/banners/mpss26-summit-darkblue.png"
-              alt="Madhya Pradesh Semiconductor Summit 2026 - Building the Semiconductor Ecosystem of Madhya Pradesh"
-              className="w-full h-full min-h-[136px] max-h-[180px] object-contain select-none pointer-events-none"
-            />
+          {/* Slide 2: MPSS26 Official Leadership Poster (Native Theme matching Slide 3) */}
+          <div className="w-full flex-shrink-0 p-3 sm:p-3.5 relative min-h-[148px] bg-gradient-to-br from-[#18181B] via-[#161C28] to-[#0F172A] select-none flex flex-col justify-between overflow-hidden">
+            {/* Ambient Background Glows */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.08)_0%,transparent_70%)] pointer-events-none" />
+            <div className="absolute -top-10 -left-10 w-28 h-28 bg-[#38BDF8]/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute -bottom-10 -right-10 w-28 h-28 bg-[#FBBF24]/10 rounded-full blur-2xl pointer-events-none" />
+
+            {/* Top Row: Badges matching Slide 3 */}
+            <div className="relative z-10 flex items-center justify-between mb-0.5">
+              <span className="text-[10px] font-bold tracking-wider text-slate-300 bg-white/10 px-2 py-0.5 rounded-md border border-white/10">
+                MPSS 2026
+              </span>
+              <div className="flex items-center gap-1 text-[9.5px] font-bold text-[#38BDF8] bg-[#0284C7]/20 border border-[#38BDF8]/40 px-2.5 py-0.5 rounded-full shadow-sm">
+                <span>LEADERSHIP VISION</span>
+              </div>
+            </div>
+
+            {/* Main Content: Left Leader, Center Summit Branding & Tagline, Right Leader - 100% Mathematically Symmetric & Centered */}
+            <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-1 my-auto px-2 sm:px-3">
+              {/* Left Leader: Narendra Modi */}
+              <div className="flex flex-col items-center justify-center text-center">
+                <div className="relative w-[56px] sm:w-[64px] h-[70px] sm:h-[76px] flex items-end justify-center overflow-hidden">
+                  <img
+                    src="/images/banners/modi-cutout.png?v=7"
+                    alt="Narendra Modi"
+                    className="max-h-full max-w-full object-contain drop-shadow-md select-none pointer-events-none"
+                  />
+                </div>
+                <p className="text-[8.5px] sm:text-[9.5px] font-bold text-white leading-tight whitespace-nowrap mt-1 text-center">
+                  Narendra Modi
+                </p>
+                <p className="text-[6px] sm:text-[6.5px] text-[#94A3B8] leading-[1.15] mt-0.5 text-center max-w-[68px] sm:max-w-[76px]">
+                  Hon&apos;ble Prime Minister, India
+                </p>
+              </div>
+
+              {/* Center: Summit Title & Tagline - Single Line "MADHYA PRADESH", Zero Dead Space */}
+              <div className="flex flex-col items-center justify-center text-center px-1">
+                <h2 className="text-[15px] sm:text-[16.5px] font-black tracking-wide text-white uppercase whitespace-nowrap leading-none drop-shadow-sm">
+                  MADHYA PRADESH
+                </h2>
+                <h1 className="text-[12.5px] sm:text-[14px] font-black text-[#38BDF8] tracking-tight uppercase whitespace-nowrap leading-tight my-1 drop-shadow-md">
+                  SEMICONDUCTOR SUMMIT
+                </h1>
+                <span className="text-[11px] sm:text-[12px] font-black text-white tracking-[0.22em] leading-none mb-1 drop-shadow-sm">
+                  2026
+                </span>
+
+                {/* Slogan Pill matching Slide 3 sector pill style */}
+                <div className="bg-[#1E293B]/85 border border-slate-700/70 rounded-md px-2 py-0.5 shadow-sm max-w-[165px] sm:max-w-[185px]">
+                  <p className="text-[6.8px] sm:text-[7.5px] font-semibold text-[#FBBF24] leading-tight text-center">
+                    Building the Semiconductor Ecosystem of Madhya Pradesh
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Leader: Dr. Mohan Yadav */}
+              <div className="flex flex-col items-center justify-center text-center">
+                <div className="relative w-[56px] sm:w-[64px] h-[70px] sm:h-[76px] flex items-end justify-center overflow-hidden">
+                  <img
+                    src="/images/banners/yadav-cutout.png?v=7"
+                    alt="Dr. Mohan Yadav"
+                    className="max-h-full max-w-full object-contain drop-shadow-md select-none pointer-events-none"
+                  />
+                </div>
+                <p className="text-[8.5px] sm:text-[9.5px] font-bold text-white leading-tight whitespace-nowrap mt-1 text-center">
+                  Dr. Mohan Yadav
+                </p>
+                <p className="text-[6px] sm:text-[6.5px] text-[#94A3B8] leading-[1.15] mt-0.5 text-center max-w-[68px] sm:max-w-[76px]">
+                  Hon&apos;ble Chief Minister, MP
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Slide 3: Exhibition & Showcase (Dark Theme - Top 4 Sectors Compact) */}
           <div 
-            className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[136px] bg-gradient-to-br from-[#18181B] via-[#161C28] to-[#0F172A] select-none"
+            className="w-full flex-shrink-0 p-3.5 pb-3.5 relative min-h-[148px] bg-gradient-to-br from-[#18181B] via-[#161C28] to-[#0F172A] select-none flex flex-col justify-between"
           >
             {/* Header row with badge */}
             <div className="flex items-center justify-between mb-1.5">
