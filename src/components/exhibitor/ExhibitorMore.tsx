@@ -22,7 +22,7 @@ import {
   Layers
 } from 'lucide-react';
 
-export const ExhibitorMore: React.FC = () => {
+export const ExhibitorMore: React.FC = React.memo(() => {
   const { showToast, setHasAccessConfirmed } = useStore();
 
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -384,4 +384,6 @@ export const ExhibitorMore: React.FC = () => {
       )}
     </div>
   );
-};
+});
+
+ExhibitorMore.displayName = 'ExhibitorMore';

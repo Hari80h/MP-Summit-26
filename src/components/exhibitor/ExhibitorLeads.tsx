@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useStore } from '../../lib/store';
 import { Search, Download, Filter, User, Building, Mail, Phone, Calendar, ChevronRight, X, Edit3, CheckCircle2, UserPlus } from 'lucide-react';
 import { Lead, LeadStatus } from '../../types';
 
-export const ExhibitorLeads: React.FC = () => {
+export const ExhibitorLeads: React.FC = React.memo(() => {
   const { leads, updateLeadStatus, showToast, setActiveExhibitorTab } = useStore();
   const [selectedStatusTab, setSelectedStatusTab] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,19 +13,40 @@ export const ExhibitorLeads: React.FC = () => {
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [editNotesText, setEditNotesText] = useState('');
 
-  // Filter leads
-  const filteredLeads = leads.filter((lead) => {
-    const matchesSearch =
-      searchQuery === '' ||
-      lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.interests.some((i) => i.toLowerCase().includes(searchQuery.toLowerCase()));
+  // Status counts precomputed in a single pass
+  const statusCounts = useMemo(() => {
+    let newCount = 0;
+    let interestedCount = 0;
+    let followUpCount = 0;
+    for (const l of leads) {
+      if (l.status === 'New') newCount++;
+      else if (l.status === 'Interested') interestedCount++;
+      else if (l.status === 'Follow-up') followUpCount++;
+    }
+    return {
+      all: leads.length,
+      new: newCount,
+      interested: interestedCount,
+      followUp: followUpCount,
+    };
+  }, [leads]);
 
-    if (!matchesSearch) return false;
-    if (selectedStatusTab === 'All') return true;
-    return lead.status === selectedStatusTab;
-  });
+  // Filter leads
+  const filteredLeads = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    return leads.filter((lead) => {
+      if (q) {
+        const matches =
+          lead.name.toLowerCase().includes(q) ||
+          lead.company.toLowerCase().includes(q) ||
+          lead.designation.toLowerCase().includes(q) ||
+          lead.interests.some((i) => i.toLowerCase().includes(q));
+        if (!matches) return false;
+      }
+      if (selectedStatusTab === 'All') return true;
+      return lead.status === selectedStatusTab;
+    });
+  }, [leads, searchQuery, selectedStatusTab]);
 
   const handleExportCSV = () => {
     const headers = ['Name', 'Company', 'Designation', 'Email', 'Mobile', 'Status', 'Interests', 'Captured At', 'Notes'];
@@ -124,10 +145,10 @@ export const ExhibitorLeads: React.FC = () => {
       <div className="overflow-x-auto hide-scrollbar -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex items-center gap-1.5 p-1 bg-[#EFEEEA] rounded-xl border border-[#DEDCD7] w-max min-w-full">
           {[
-            { id: 'All', label: `All (${leads.length})` },
-            { id: 'New', label: `New (${leads.filter((l) => l.status === 'New').length})` },
-            { id: 'Interested', label: `Interested (${leads.filter((l) => l.status === 'Interested').length})` },
-            { id: 'Follow-up', label: `Follow-up (${leads.filter((l) => l.status === 'Follow-up').length})` },
+            { id: 'All', label: `All (${statusCounts.all})` },
+            { id: 'New', label: `New (${statusCounts.new})` },
+            { id: 'Interested', label: `Interested (${statusCounts.interested})` },
+            { id: 'Follow-up', label: `Follow-up (${statusCounts.followUp})` },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -325,4 +346,6 @@ export const ExhibitorLeads: React.FC = () => {
       )}
     </div>
   );
-};
+});
+
+ExhibitorLeads.displayName = 'ExhibitorLeads';

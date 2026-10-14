@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useStore } from '../../lib/store';
 import {
   Package,
@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { Product } from '../../types';
 
-export const ExhibitorProducts: React.FC = () => {
+export const ExhibitorProducts: React.FC = React.memo(() => {
   const {
     products,
     selectedProductId,
@@ -61,11 +61,15 @@ export const ExhibitorProducts: React.FC = () => {
 
   // Active exhibitor company is Truechip Solutions (Booth A-02)
   const exhibitorCompany = 'Truechip Solutions';
-  const companyProducts = products.filter(
-    (p) => p.company.toLowerCase().includes('truechip')
+  const companyProducts = useMemo(
+    () => products.filter((p) => p.company.toLowerCase().includes('truechip')),
+    [products]
   );
 
-  const activeProduct = companyProducts.find((p) => p.id === selectedProductId);
+  const activeProduct = useMemo(
+    () => companyProducts.find((p) => p.id === selectedProductId),
+    [companyProducts, selectedProductId]
+  );
 
   const handleOpenEdit = (prod: Product) => {
     setEditingProduct(prod);
@@ -1083,4 +1087,6 @@ export const ExhibitorProducts: React.FC = () => {
       )}
     </div>
   );
-};
+});
+
+ExhibitorProducts.displayName = 'ExhibitorProducts';

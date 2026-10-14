@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import {
   EventMetadata,
   Person,
@@ -56,8 +56,8 @@ interface StoreContextType {
   toggleSaveCompany: (id: string) => void;
   activeExhibitorTab: 'home' | 'leads' | 'scan' | 'products' | 'more';
   setActiveExhibitorTab: (tab: 'home' | 'leads' | 'scan' | 'products' | 'more') => void;
-  activeOrganizerTab: 'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'analytics' | 'reports' | 'settings';
-  setActiveOrganizerTab: (tab: 'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'analytics' | 'reports' | 'settings') => void;
+  activeOrganizerTab: 'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'reports' | 'settings';
+  setActiveOrganizerTab: (tab: 'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'reports' | 'settings') => void;
 
   // View frame mode for Delegate/Exhibitor (centered 430px frame vs full)
   viewMode: 'frame' | 'responsive';
@@ -148,12 +148,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [viewSavedCompaniesOnly, setViewSavedCompaniesOnly] = useState<boolean>(false);
   const [scheduleSubTab, setScheduleSubTab] = useState<'all' | 'saved'>('all');
   const [activeExhibitorTab, setActiveExhibitorTab] = useState<'home' | 'leads' | 'scan' | 'products' | 'more'>('home');
-  const [activeOrganizerTab, setActiveOrganizerTab] = useState<'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'analytics' | 'reports' | 'settings'>('overview');
+  const [activeOrganizerTab, setActiveOrganizerTab] = useState<'overview' | 'attendees' | 'exhibitors' | 'sessions' | 'reports' | 'settings'>('overview');
   const [viewMode, setViewMode] = useState<'frame' | 'responsive'>('frame');
 
-  const toggleSaveCompany = (id: string) => {
+  const toggleSaveCompany = useCallback((id: string) => {
     setSavedCompanyIds(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]);
-  };
+  }, []);
 
   // Connectivity
   const [isOnline, setIsOnline] = useState<boolean>(true);
@@ -171,13 +171,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [savedCompanyIds, setSavedCompanyIds] = useState<string[]>([]);
   const [savedPeopleIds, setSavedPeopleIds] = useState<string[]>([]);
-  const toggleSavePerson = (id: string) => {
+  const toggleSavePerson = useCallback((id: string) => {
     setSavedPeopleIds((prev) => {
       const isSaved = prev.includes(id);
       if (isSaved) return prev.filter((pId) => pId !== id);
       return [...prev, id];
     });
-  };
+  }, []);
 
 
   // Entities
@@ -197,13 +197,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [toast, setToast] = useState<ToastMessage | null>(null);
 
   // Show Toast Helper
-  const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
+  const showToast = useCallback((message: string, type: 'success' | 'info' | 'error' = 'success') => {
     const id = Date.now().toString();
     setToast({ id, message, type });
     setTimeout(() => {
       setToast((prev) => (prev?.id === id ? null : prev));
     }, 2800);
-  };
+  }, []);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -378,13 +378,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   ]);
 
   // Set role with tab preservation
-  const setRole = (newRole: DemoRole) => {
+  const setRole = useCallback((newRole: DemoRole) => {
     setRoleState(newRole);
     showToast(`Switched to ${newRole === 'delegate' ? 'Delegate (Santosh Kumar)' : newRole === 'exhibitor' ? 'Exhibitor (Truechip Booth A-02)' : 'Organizer Console'} view`, 'info');
-  };
+  }, [showToast]);
 
   // Connectivity toggle
-  const toggleConnectivity = () => {
+  const toggleConnectivity = useCallback(() => {
     if (isOnline) {
       setIsOnline(false);
       showToast('Switched to Offline Mode · Sync pending for new actions', 'info');
@@ -403,25 +403,25 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         showToast('Synced ✓ All data up to date', 'success');
       }, 1200);
     }
-  };
+  }, [isOnline, showToast]);
 
   // Trigger Access Flow
-  const triggerAccessFlow = () => {
+  const triggerAccessFlow = useCallback(() => {
     setHasAccessConfirmed(false);
     setActiveDelegateTab('home');
-  };
+  }, []);
 
   // Update privacy
-  const updateCurrentUser = (data: Partial<Person>) => {
+  const updateCurrentUser = useCallback((data: Partial<Person>) => {
     setCurrentUser((prev) => {
       const updatedUser = { ...prev, ...data };
       setAttendees((att) => att.map((a) => (a.id === prev.id ? updatedUser : a)));
       return updatedUser;
     });
     showToast('Profile updated ✓', 'success');
-  };
+  }, [showToast]);
 
-  const updateCurrentUserPrivacy = (newPrivacy: Partial<PrivacyConsent>) => {
+  const updateCurrentUserPrivacy = useCallback((newPrivacy: Partial<PrivacyConsent>) => {
     setCurrentUser((prev) => {
       const updatedPrivacy = { ...prev.privacy, ...newPrivacy };
       // Also update in attendees list
@@ -434,18 +434,18 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       };
     });
     showToast('Privacy preferences updated ✓', 'success');
-  };
+  }, [showToast]);
 
   // Record a QR scan
-  const recordScan = () => {
+  const recordScan = useCallback(() => {
     setEvent((prev) => ({
       ...prev,
       totalScans: prev.totalScans + 1,
     }));
-  };
+  }, []);
 
   // Connect with person (Delegate)
-  const connectWith = (personId: string, source: 'direct' | 'qr_scan' | 'recommended' = 'direct') => {
+  const connectWith = useCallback((personId: string, source: 'direct' | 'qr_scan' | 'recommended' = 'direct') => {
     const existing = connections.find((c) => c.personId === personId);
     const targetPerson = attendees.find((a) => a.id === personId);
     if (!targetPerson) return { success: false, alreadyConnected: false };
@@ -482,10 +482,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     showToast(`Sent connection request to ${targetPerson.name} ✓`, 'success');
     return { success: true, alreadyConnected: false };
-  };
+  }, [connections, attendees, isOnline, showToast]);
 
   // Disconnect from person
-  const disconnectFrom = (personId: string) => {
+  const disconnectFrom = useCallback((personId: string) => {
     const existing = connections.find((c) => c.personId === personId);
     if (!existing) return;
 
@@ -500,27 +500,26 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       ...prev,
       totalConnections: Math.max(0, prev.totalConnections - 1),
     }));
-  };
+  }, [connections, attendees, showToast]);
 
-  const acceptConnectionRequest = (personId: string) => {
+  const acceptConnectionRequest = useCallback((personId: string) => {
     setConnections(prev => prev.map(c => 
       c.personId === personId && c.type === 'received' && c.status === 'pending'
         ? { ...c, status: 'connected', connectedAt: 'Just now' }
         : c
     ));
     showToast('Connection request accepted', 'success');
-  };
+  }, [showToast]);
 
-  const ignoreConnectionRequest = (personId: string) => {
+  const ignoreConnectionRequest = useCallback((personId: string) => {
     setConnections(prev => prev.filter(c => !(c.personId === personId && c.type === 'received' && c.status === 'pending')));
-  };
+  }, []);
 
   // Save Lead (Exhibitor)
-  const saveLead = (leadData: Omit<Lead, 'id' | 'capturedAt'>) => {
-    const existingIndex = leads.findIndex((l) => l.personId === leadData.personId);
-
-    if (existingIndex >= 0) {
-      setLeads((prev) => {
+  const saveLead = useCallback((leadData: Omit<Lead, 'id' | 'capturedAt'>) => {
+    setLeads((prev) => {
+      const existingIndex = prev.findIndex((l) => l.personId === leadData.personId);
+      if (existingIndex >= 0) {
         const copy = [...prev];
         const existing = copy[existingIndex];
         const updatedLead: Lead = {
@@ -533,32 +532,31 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         };
         copy.splice(existingIndex, 1);
         return [updatedLead, ...copy];
-      });
-    } else {
-      const newLead: Lead = {
-        ...leadData,
-        id: `lead-${Date.now()}`,
-        capturedAt: 'Just now',
-        syncStatus: isOnline ? 'synced' : 'pending',
-      };
+      } else {
+        const newLead: Lead = {
+          ...leadData,
+          id: `lead-${Date.now()}`,
+          capturedAt: 'Just now',
+          syncStatus: isOnline ? 'synced' : 'pending',
+        };
+        return [newLead, ...prev];
+      }
+    });
 
-      setLeads((prev) => [newLead, ...prev]);
+    // Update Truechip stats
+    setExhibitors((prev) =>
+      prev.map((ex) =>
+        ex.company.toLowerCase().includes('truechip')
+          ? { ...ex, leads: ex.leads + 1 }
+          : ex
+      )
+    );
 
-      // Update Truechip stats
-      setExhibitors((prev) =>
-        prev.map((ex) =>
-          ex.company.toLowerCase().includes('truechip')
-            ? { ...ex, leads: ex.leads + 1 }
-            : ex
-        )
-      );
-
-      // Update event metrics
-      setEvent((prev) => ({
-        ...prev,
-        totalScans: prev.totalScans + 1,
-      }));
-    }
+    // Update event metrics
+    setEvent((prev) => ({
+      ...prev,
+      totalScans: prev.totalScans + 1,
+    }));
 
     if (!isOnline) {
       setSyncPendingCount((c) => c + 1);
@@ -566,10 +564,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } else {
       showToast(`Lead saved for ${leadData.name} as "${leadData.status}" ✓`, 'success');
     }
-  };
+  }, [isOnline, showToast]);
 
   // Update Lead Status
-  const updateLeadStatus = (leadId: string, status: LeadStatus, notes?: string) => {
+  const updateLeadStatus = useCallback((leadId: string, status: LeadStatus, notes?: string) => {
     setLeads((prev) =>
       prev.map((l) =>
         l.id === leadId
@@ -578,10 +576,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       )
     );
     showToast(`Lead updated to ${status} ✓`, 'success');
-  };
+  }, [showToast]);
 
   // Enquire product
-  const enquireProduct = (productId: string) => {
+  const enquireProduct = useCallback((productId: string) => {
     const product = products.find((p) => p.id === productId);
     if (!product) return;
 
@@ -630,10 +628,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
 
     showToast(`Enquiry submitted for ${product.name} ✓`, 'success');
-  };
+  }, [products, interestedVisitors, currentUser, showToast]);
 
   // Save/Bookmark Product
-  const toggleSaveProduct = (productId: string) => {
+  const toggleSaveProduct = useCallback((productId: string) => {
     setProducts((prev) =>
       prev.map((p) => {
         if (p.id === productId) {
@@ -644,34 +642,34 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return p;
       })
     );
-  };
+  }, [showToast]);
 
   // Update product (Exhibitor)
-  const updateProduct = (productId: string, data: Partial<Product>) => {
+  const updateProduct = useCallback((productId: string, data: Partial<Product>) => {
     setProducts((prev) =>
       prev.map((p) => (p.id === productId ? { ...p, ...data } : p))
     );
     showToast('Product updated successfully ✓', 'success');
-  };
+  }, [showToast]);
 
   // Delete product (Exhibitor)
-  const deleteProduct = (productId: string) => {
+  const deleteProduct = useCallback((productId: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== productId));
     showToast('Product removed from showcase ✓', 'info');
-  };
+  }, [showToast]);
 
   // Add product (Exhibitor)
-  const addProduct = (productData: Omit<Product, 'id'>) => {
+  const addProduct = useCallback((productData: Omit<Product, 'id'>) => {
     const newProduct: Product = {
       ...productData,
       id: `prod-truechip-${Date.now()}`,
     };
     setProducts((prev) => [newProduct, ...prev]);
     showToast('New product added to showcase ✓', 'success');
-  };
+  }, [showToast]);
 
   // Submit Q&A Question
-  const submitQuestion = (sessionId: string, text: string, isAnonymous: boolean) => {
+  const submitQuestion = useCallback((sessionId: string, text: string, isAnonymous: boolean) => {
     if (!text.trim()) return;
 
     const newQuestion: Question = {
@@ -697,10 +695,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
 
     showToast('Question submitted ✓', 'success');
-  };
+  }, [currentUser, showToast]);
 
   // Upvote Question
-  const upvoteQuestion = (questionId: string) => {
+  const upvoteQuestion = useCallback((questionId: string) => {
     const q = questions.find((item) => item.id === questionId);
     if (!q) return { success: false };
 
@@ -734,18 +732,18 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       showToast('Question upvoted ✓', 'success');
       return { success: true };
     }
-  };
+  }, [questions, currentUser.id, showToast]);
 
   // Update question status (Moderator action)
-  const updateQuestionStatus = (questionId: string, status: QuestionStatus) => {
+  const updateQuestionStatus = useCallback((questionId: string, status: QuestionStatus) => {
     setQuestions((prev) =>
       prev.map((q) => (q.id === questionId ? { ...q, status } : q))
     );
     showToast(`Question marked as ${status} ✓`, 'info');
-  };
+  }, [showToast]);
 
   // Vote in Poll
-  const votePoll = (optionId: string) => {
+  const votePoll = useCallback((optionId: string) => {
     if (poll.voterIds.includes(currentUser.id)) {
       return { success: false, message: 'You have already voted.' };
     }
@@ -761,19 +759,19 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     showToast('Poll vote recorded ✓', 'success');
     return { success: true, message: 'Vote submitted ✓' };
-  };
+  }, [poll.voterIds, currentUser.id, showToast]);
 
   // Toggle Poll Status (Open / Closed)
-  const togglePollStatus = () => {
+  const togglePollStatus = useCallback(() => {
     setPoll((prev) => {
       const nextStatus = prev.status === 'open' ? 'closed' : 'open';
       showToast(`Poll is now ${nextStatus.toUpperCase()}`, 'info');
       return { ...prev, status: nextStatus };
     });
-  };
+  }, [showToast]);
 
   // Reset Poll to Initial State (for delegates / testing)
-  const resetPollVote = () => {
+  const resetPollVote = useCallback(() => {
     setPoll(INITIAL_POLL);
     if (typeof window !== 'undefined') {
       try {
@@ -783,10 +781,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     }
     showToast('Poll reset to initial state ✓', 'info');
-  };
+  }, [showToast]);
 
   // Toggle check-in (Organizer)
-  const toggleCheckIn = (personId: string) => {
+  const toggleCheckIn = useCallback((personId: string) => {
     setAttendees((prev) =>
       prev.map((p) => {
         if (p.id === personId) {
@@ -816,10 +814,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
 
     showToast('Check-in status updated ✓', 'success');
-  };
+  }, [attendees, isOnline, showToast]);
 
   // Add Walk-in Attendee (Organizer)
-  const addWalkInAttendee = (data: {
+  const addWalkInAttendee = useCallback((data: {
     name: string;
     email: string;
     mobile: string;
@@ -859,19 +857,19 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }));
 
     showToast(`Walk-in attendee ${data.name} checked in ✓`, 'success');
-  };
+  }, [showToast]);
 
   // Import mock CSV attendees
-  const importAttendeesMock = (count: number) => {
+  const importAttendeesMock = useCallback((count: number) => {
     setEvent((prev) => ({
       ...prev,
       totalRegistered: prev.totalRegistered + count,
     }));
     showToast(`Successfully imported ${count} registrations from CSV ✓`, 'success');
-  };
+  }, [showToast]);
 
   // Toggle bookmark session
-  const toggleBookmarkSession = (sessionId: string) => {
+  const toggleBookmarkSession = useCallback((sessionId: string) => {
     setSessions((prev) =>
       prev.map((s) => {
         if (s.id === sessionId) {
@@ -882,18 +880,18 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return s;
       })
     );
-  };
+  }, [showToast]);
 
   // Update session
-  const updateSession = (sessionId: string, data: Partial<Session>) => {
+  const updateSession = useCallback((sessionId: string, data: Partial<Session>) => {
     setSessions((prev) =>
       prev.map((s) => (s.id === sessionId ? { ...s, ...data } : s))
     );
     showToast('Session updated successfully ✓', 'success');
-  };
+  }, [showToast]);
 
   // Create session
-  const createSession = (sessionData: Omit<Session, 'id' | 'attendanceCount' | 'questionsCount'>) => {
+  const createSession = useCallback((sessionData: Omit<Session, 'id' | 'attendanceCount' | 'questionsCount'>) => {
     const newSession: Session = {
       ...sessionData,
       id: `sess-${Date.now()}`,
@@ -902,16 +900,16 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
     setSessions((prev) => [newSession, ...prev]);
     showToast('Session created successfully ✓', 'success');
-  };
+  }, [showToast]);
 
   // Delete session
-  const deleteSession = (sessionId: string) => {
+  const deleteSession = useCallback((sessionId: string) => {
     setSessions((prev) => prev.filter((s) => s.id !== sessionId));
     showToast('Session deleted', 'info');
-  };
+  }, [showToast]);
 
   // Reset all data
-  const resetAllData = () => {
+  const resetAllData = useCallback(() => {
     setEvent(INITIAL_EVENT);
     setCurrentUser(CURRENT_USER);
     setAttendees(INITIAL_ATTENDEES);
@@ -929,14 +927,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSyncPendingCount(0);
     localStorage.removeItem(STORAGE_KEY);
     showToast('Demo data reset to initial state ✓', 'info');
-  };
+  }, [showToast]);
 
-  return (
-    <StoreContext.Provider
-      value={{
-        role,
-        setRole,
-        activeDelegateTab,
+  const value = useMemo<StoreContextType>(() => ({
+    role,
+    setRole,
+    activeDelegateTab,
     viewSavedPeopleOnly,
     setViewSavedPeopleOnly,
     viewSavedCompaniesOnly,
@@ -947,75 +943,143 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     savedPeopleIds,
     toggleSavePerson,
     toggleSaveCompany,
-        setActiveDelegateTab,
-        activeExhibitorTab,
-        setActiveExhibitorTab,
-        activeOrganizerTab,
-        setActiveOrganizerTab,
-        viewMode,
-        setViewMode,
-        isOnline,
-        setIsOnline,
-        toggleConnectivity,
-        isSyncing,
-        syncPendingCount,
-        lastSyncedTime,
-        hasAccessConfirmed,
-        setHasAccessConfirmed,
-        triggerAccessFlow,
-        selectedPersonId,
-        setSelectedPersonId,
-        selectedProductId,
-        setSelectedProductId,
-        selectedSessionId,
-        setSelectedSessionId,
-        selectedCompanyId,
-        setSelectedCompanyId,
-        event,
-        currentUser,
-        setCurrentUser,
-        updateCurrentUser,
-        updateCurrentUserPrivacy,
-        attendees,
-        setAttendees,
-        connections,
-        leads,
-        products,
-        sessions,
-        questions,
-        poll,
-        exhibitors,
-        interestedVisitors,
-        connectWith,
-        disconnectFrom,
-        acceptConnectionRequest,
-        ignoreConnectionRequest,
-        saveLead,
-        updateLeadStatus,
-        enquireProduct,
-        toggleSaveProduct,
-        updateProduct,
-        deleteProduct,
-        addProduct,
-        submitQuestion,
-        upvoteQuestion,
-        updateQuestionStatus,
-        votePoll,
-        togglePollStatus,
-        resetPollVote,
-        toggleCheckIn,
-        addWalkInAttendee,
-        importAttendeesMock,
-        toggleBookmarkSession,
-        updateSession,
-        createSession,
-        deleteSession,
-        recordScan,
-        resetAllData,
-        toast,
-        showToast,
-      }}
-    >
+    setActiveDelegateTab,
+    activeExhibitorTab,
+    setActiveExhibitorTab,
+    activeOrganizerTab,
+    setActiveOrganizerTab,
+    viewMode,
+    setViewMode,
+    isOnline,
+    setIsOnline,
+    toggleConnectivity,
+    isSyncing,
+    syncPendingCount,
+    lastSyncedTime,
+    hasAccessConfirmed,
+    setHasAccessConfirmed,
+    triggerAccessFlow,
+    selectedPersonId,
+    setSelectedPersonId,
+    selectedProductId,
+    setSelectedProductId,
+    selectedSessionId,
+    setSelectedSessionId,
+    selectedCompanyId,
+    setSelectedCompanyId,
+    event,
+    currentUser,
+    setCurrentUser,
+    updateCurrentUser,
+    updateCurrentUserPrivacy,
+    attendees,
+    setAttendees,
+    connections,
+    leads,
+    products,
+    sessions,
+    questions,
+    poll,
+    exhibitors,
+    interestedVisitors,
+    connectWith,
+    disconnectFrom,
+    acceptConnectionRequest,
+    ignoreConnectionRequest,
+    saveLead,
+    updateLeadStatus,
+    enquireProduct,
+    toggleSaveProduct,
+    updateProduct,
+    deleteProduct,
+    addProduct,
+    submitQuestion,
+    upvoteQuestion,
+    updateQuestionStatus,
+    votePoll,
+    togglePollStatus,
+    resetPollVote,
+    toggleCheckIn,
+    addWalkInAttendee,
+    importAttendeesMock,
+    toggleBookmarkSession,
+    updateSession,
+    createSession,
+    deleteSession,
+    recordScan,
+    resetAllData,
+    toast,
+    showToast,
+  }), [
+    role,
+    setRole,
+    activeDelegateTab,
+    viewSavedPeopleOnly,
+    viewSavedCompaniesOnly,
+    scheduleSubTab,
+    savedCompanyIds,
+    savedPeopleIds,
+    toggleSavePerson,
+    toggleSaveCompany,
+    activeExhibitorTab,
+    activeOrganizerTab,
+    viewMode,
+    isOnline,
+    toggleConnectivity,
+    isSyncing,
+    syncPendingCount,
+    lastSyncedTime,
+    hasAccessConfirmed,
+    triggerAccessFlow,
+    selectedPersonId,
+    selectedProductId,
+    selectedSessionId,
+    selectedCompanyId,
+    event,
+    currentUser,
+    updateCurrentUser,
+    updateCurrentUserPrivacy,
+    attendees,
+    connections,
+    leads,
+    products,
+    sessions,
+    questions,
+    poll,
+    exhibitors,
+    interestedVisitors,
+    connectWith,
+    disconnectFrom,
+    acceptConnectionRequest,
+    ignoreConnectionRequest,
+    saveLead,
+    updateLeadStatus,
+    enquireProduct,
+    toggleSaveProduct,
+    updateProduct,
+    deleteProduct,
+    addProduct,
+    submitQuestion,
+    upvoteQuestion,
+    updateQuestionStatus,
+    votePoll,
+    togglePollStatus,
+    resetPollVote,
+    toggleCheckIn,
+    addWalkInAttendee,
+    importAttendeesMock,
+    toggleBookmarkSession,
+    updateSession,
+    createSession,
+    deleteSession,
+    recordScan,
+    resetAllData,
+    toast,
+    showToast,
+  ]);
+
+  return (
+    <StoreContext.Provider value={value}>
       {children}
     </StoreContext.Provider>
   );

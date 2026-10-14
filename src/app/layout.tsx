@@ -18,7 +18,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover',
-  themeColor: '#B51F32',
+  themeColor: '#3563F6',
 };
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
-      <body className="h-[100dvh] antialiased selection:bg-[#B51F32] selection:text-white">
+      <body className="h-[100dvh] antialiased selection:bg-[#3563F6]/20 selection:text-inherit">
         <StoreProvider>
           {children}
         </StoreProvider>

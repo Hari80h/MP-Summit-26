@@ -1,35 +1,44 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useStore } from '../../lib/store';
 import { UserPlus, Package, ChevronRight, Users } from 'lucide-react';
 
-export const ExhibitorHome: React.FC = () => {
+export const ExhibitorHome: React.FC = React.memo(() => {
   const {
     leads,
     products,
     exhibitors,
     setActiveExhibitorTab,
-    currentUser,
   } = useStore();
 
-  const truechipProducts = products.filter((p) => p.company.toLowerCase().includes('truechip'));
+  const truechipProducts = useMemo(
+    () => products.filter((p) => p.company.toLowerCase().includes('truechip')),
+    [products]
+  );
 
-  const truechip = exhibitors.find((e) => e.company.toLowerCase().includes('truechip')) || {
-    visits: 760,
-    leads: leads.length || 290,
-    enquiries: 140,
-    teamSize: 14,
-  };
+  const truechip = useMemo(
+    () => exhibitors.find((e) => e.company.toLowerCase().includes('truechip')) || {
+      visits: 760,
+      leads: leads.length || 290,
+      enquiries: 140,
+      teamSize: 14,
+    },
+    [exhibitors, leads.length]
+  );
 
-  const getGreetingIST = () => {
-    const options = { timeZone: 'Asia/Kolkata', hour: 'numeric', hour12: false } as const;
-    const formatter = new Intl.DateTimeFormat('en-US', options);
-    const hour = parseInt(formatter.format(new Date()), 10);
-    if (hour < 12) return 'Good morning,';
-    if (hour < 17) return 'Good afternoon,';
-    return 'Good evening,';
-  };
+  const greeting = useMemo(() => {
+    try {
+      const options = { timeZone: 'Asia/Kolkata', hour: 'numeric', hour12: false } as const;
+      const formatter = new Intl.DateTimeFormat('en-US', options);
+      const hour = parseInt(formatter.format(new Date()), 10);
+      if (hour < 12) return 'Good morning,';
+      if (hour < 17) return 'Good afternoon,';
+      return 'Good evening,';
+    } catch {
+      return 'Welcome,';
+    }
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col min-h-full bg-[#F6F4F0] select-none pb-24">
@@ -41,7 +50,7 @@ export const ExhibitorHome: React.FC = () => {
           
           <div className="flex flex-col relative z-10">
             <span className="text-[9.5px] uppercase tracking-widest font-extrabold text-[#737373] mb-1">
-              {getGreetingIST()}
+              {greeting}
             </span>
             <h1 className="text-[21px] font-serif font-medium text-[#181818] leading-none mb-1">
               Truechip Team
@@ -154,4 +163,6 @@ export const ExhibitorHome: React.FC = () => {
       </div>
     </div>
   );
-};
+});
+
+ExhibitorHome.displayName = 'ExhibitorHome';
