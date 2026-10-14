@@ -38,109 +38,88 @@ export const OrganizerExhibitors: React.FC = () => {
   };
 
   const handleExportCSV = () => {
-    const headers = ['Company', 'Booth', 'Category', 'Leads', 'Enquiries', 'Team Size', 'Status'];
+    const headers = ['Company', 'Booth', 'Category'];
     const rows = exhibitors.map((e) => [
       `"${e.company}"`,
       `"${e.booth}"`,
       `"${e.category}"`,
-      e.leads,
-      e.enquiries,
-      e.teamSize,
-      `"${e.status}"`,
     ]);
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `eventsphere-mpss26-exhibitor-metrics.csv`);
+    link.setAttribute('download', `eventsphere-mpss26-exhibitor-directory.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    showToast('Exhibitor metrics exported successfully ✓', 'success');
+    showToast('Exhibitor directory exported successfully ✓', 'success');
   };
 
   return (
-    <div className="space-y-3 select-text max-w-6xl">
-      <div className="flex flex-wrap items-center justify-between gap-2.5">
-        <div className="pt-2 pb-1 px-1 flex justify-between items-start">
+    <div className="space-y-6 select-text max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <p className="text-[10.5px] uppercase tracking-[0.15em] text-[#6B6B6B] font-semibold mb-0.5">MPSS26 · ORGANIZER</p>
-          <h1 className="text-[32px] font-serif font-medium text-[#181818] tracking-tight leading-none">Exhibitors</h1>
+          <span className="text-xs font-semibold text-[#64748B] tracking-wider uppercase">
+            MPSS26 · INDORE · EXHIBITOR DIRECTORY
+          </span>
+          <h1 className="text-[28px] sm:text-[30px] font-semibold text-[#172033] tracking-tight mt-1">
+            Exhibitors
+          </h1>
+          <p className="text-sm text-[#64748B] mt-1">
+            Confirmed exhibition booth locations and sponsor directory
+          </p>
         </div>
-        
-      </div>
 
         <button
           onClick={handleExportCSV}
-          className="px-3 py-2 bg-[#7A1B2D] hover:bg-[#631624] text-white font-semibold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+          className="h-9 px-4 bg-[#3563F6] hover:bg-[#2554E5] active:bg-[#1D46CA] text-white text-[13px] font-medium rounded-lg shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
         >
-          <Download className="w-3.5 h-3.5" />
-          <span>Export Metrics</span>
+          <Download className="w-4 h-4" />
+          <span>Export Directory</span>
         </button>
       </div>
 
-      {/* Exhibitors Table */}
-      <div className="bg-white rounded-[14px] border border-[#DEDCD7] shadow-xs overflow-hidden">
-        <div className="py-2 px-3 border-b border-[#DEDCD7] flex items-center justify-between">
-          <span className="text-xs font-bold text-[#181818]">Sponsor Booth Performance</span>
-          <span className="text-[11px] text-[#6B6B6B]">Live metrics updated automatically</span>
+      {/* Exhibitors Table Card */}
+      <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-2xs overflow-hidden">
+        <div className="py-3.5 px-6 border-b border-[#E2E8F0] flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-[#172033]">Sponsor & Exhibitor Directory</h2>
+            <p className="text-xs text-[#64748B] mt-0.5">Confirmed booth locations across exhibition halls</p>
+          </div>
+          <span className="text-xs font-medium text-[#64748B]">{exhibitors.length} Total Exhibitors</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-[#DEDCD7] text-[#6B6B6B] font-semibold text-[11px] uppercase tracking-wider bg-[#F6F4F0]/60">
-                <th className="py-1.5 px-3">Company</th>
-                <th className="py-1.5 px-3">Booth #</th>
-                <th className="py-1.5 px-3">Leads Captured</th>
-                <th className="py-1.5 px-3">Enquiries</th>
-                <th className="py-1.5 px-3">Team</th>
-                <th className="py-1.5 px-3">Status</th>
+              <tr className="border-b border-[#E2E8F0] text-[#64748B] font-semibold text-[11px] uppercase tracking-wider bg-[#F8FAFC]">
+                <th className="py-3 px-6">Company</th>
+                <th className="py-3 px-6 text-right">Booth</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#DEDCD7]/60">
+            <tbody className="divide-y divide-[#E2E8F0]">
               {paginatedExhibitors.map((ex) => (
                 <tr
                   key={ex.id}
-                  className={`hover:bg-[#F6F4F0] transition-colors ${
-                    ex.company === 'Microsoft' ? 'bg-red-50/20' : ''
-                  }`}
+                  className="hover:bg-[#F8FAFC] transition-colors"
                 >
-                  <td className="py-1.5 px-3">
-                    <div className="leading-tight">
-                      <div className="flex items-center gap-1.5 leading-tight">
-                        <strong className="text-xs font-bold text-[#181818]">{ex.company}</strong>
+                  <td className="py-3.5 px-6">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-xs sm:text-sm text-[#172033]">{ex.company}</span>
                         {ex.company === 'Microsoft' && (
-                          <span className="text-[9px] bg-red-100 text-[#B51F32] font-bold px-1.5 py-0.5 rounded leading-none">
-                            Sales Demo Booth
+                          <span className="text-[10px] bg-blue-50 text-[#3563F6] border border-blue-200/60 font-medium px-1.5 py-0.5 rounded leading-none">
+                            Featured Sponsor
                           </span>
                         )}
                       </div>
-                      <span className="text-[10px] text-[#6B6B6B] block leading-tight mt-0.5">{ex.category}</span>
+                      <span className="text-xs text-[#64748B] block mt-0.5">{ex.category}</span>
                     </div>
                   </td>
 
-                  <td className="py-1.5 px-3 font-mono font-bold text-[#181818]">
+                  <td className="py-3.5 px-6 text-right font-mono text-xs font-semibold text-[#172033]">
                     {ex.booth}
-                  </td>
-
-                  <td className="py-1.5 px-3 font-mono font-bold text-[#7A1B2D]">
-                    {ex.leads}
-                  </td>
-
-                  <td className="py-1.5 px-3 font-mono text-[#2F7D58]">
-                    {ex.enquiries}
-                  </td>
-
-                  <td className="py-1.5 px-3 text-[#6B6B6B]">
-                    {ex.teamSize} reps
-                  </td>
-
-                  <td className="py-1.5 px-3">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF5F0] text-[#2F7D58] border border-[#2F7D58]/30">
-                      {ex.status}
-                    </span>
                   </td>
                 </tr>
               ))}
@@ -149,7 +128,7 @@ export const OrganizerExhibitors: React.FC = () => {
         </div>
 
         {/* Table Footer / Pagination */}
-        <div className="py-2.5 px-4 border-t border-[#DEDCD7] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#6B6B6B]">
+        <div className="py-3 px-6 border-t border-[#E2E8F0] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#64748B] bg-[#F8FAFC]">
           <div>
             Showing {exhibitors.length === 0 ? 0 : startIndex + 1}
             {paginatedExhibitors.length > 1 ? `–${startIndex + paginatedExhibitors.length}` : ''} of{' '}
@@ -161,7 +140,7 @@ export const OrganizerExhibitors: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center hover:text-[#181818] hover:bg-[#F6F4F0] cursor-pointer text-[#6B6B6B] transition-colors outline-none focus:outline-none"
+                className="w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer text-[#64748B] transition-colors outline-none focus:outline-none"
                 title="Previous page"
               >
                 ←
@@ -180,7 +159,7 @@ export const OrganizerExhibitors: React.FC = () => {
                         isLeftDots ? Math.max(1, p - 5) : Math.min(totalPages, p + 5)
                       )
                     }
-                    className="w-7 h-7 rounded-lg text-xs flex items-center justify-center text-[#6B6B6B] hover:text-[#181818] hover:bg-[#F6F4F0] cursor-pointer transition-colors outline-none focus:outline-none"
+                    className="w-7 h-7 rounded-md text-xs flex items-center justify-center text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer transition-colors outline-none focus:outline-none"
                     title={isLeftDots ? 'Jump back 5 pages' : 'Jump ahead 5 pages'}
                   >
                     ...
@@ -196,10 +175,10 @@ export const OrganizerExhibitors: React.FC = () => {
                   type="button"
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
-                  className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center transition-all outline-none focus:outline-none ${
+                  className={`w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center transition-all outline-none focus:outline-none ${
                     isActive
-                      ? 'bg-[#7A1B2D] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] cursor-default'
-                      : 'text-[#6B6B6B] hover:text-[#181818] hover:bg-[#F6F4F0] cursor-pointer'
+                      ? 'bg-[#3563F6] text-white shadow-2xs cursor-default'
+                      : 'text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer'
                   }`}
                 >
                   {pageNum}
@@ -211,7 +190,7 @@ export const OrganizerExhibitors: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center hover:text-[#181818] hover:bg-[#F6F4F0] cursor-pointer text-[#6B6B6B] transition-colors outline-none focus:outline-none"
+                className="w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer text-[#64748B] transition-colors outline-none focus:outline-none"
                 title="Next page"
               >
                 →

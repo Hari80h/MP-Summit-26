@@ -146,21 +146,11 @@ export default function App() {
             /* Exhibitor (Truechip Solutions) Experience */
             <div className="flex-1 flex flex-col h-full overflow-hidden">
               <div className="flex-1 flex flex-col overflow-y-auto overscroll-contain no-scrollbar">
-                <div className={activeExhibitorTab === 'home' ? 'contents' : 'hidden'}>
-                  <ExhibitorHome />
-                </div>
-                <div className={activeExhibitorTab === 'leads' ? 'contents' : 'hidden'}>
-                  <ExhibitorLeads />
-                </div>
-                <div className={activeExhibitorTab === 'scan' ? 'contents' : 'hidden'}>
-                  <ExhibitorScan />
-                </div>
-                <div className={activeExhibitorTab === 'products' ? 'contents' : 'hidden'}>
-                  <ExhibitorProducts />
-                </div>
-                <div className={activeExhibitorTab === 'more' ? 'contents' : 'hidden'}>
-                  <ExhibitorMore />
-                </div>
+                {activeExhibitorTab === 'home' && <ExhibitorHome />}
+                {activeExhibitorTab === 'leads' && <ExhibitorLeads />}
+                {activeExhibitorTab === 'scan' && <ExhibitorScan />}
+                {activeExhibitorTab === 'products' && <ExhibitorProducts />}
+                {activeExhibitorTab === 'more' && <ExhibitorMore />}
               </div>
               <ExhibitorBottomNav />
             </div>

@@ -167,20 +167,20 @@ export const OrganizerSessions: React.FC = () => {
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="text-xs uppercase tracking-widest font-semibold text-[#8C8983] block">
-            MPSS26 · SUMMIT SCHEDULE
+          <span className="text-xs font-semibold text-[#64748B] tracking-wider uppercase">
+            MPSS26 · INDORE · SUMMIT SCHEDULE
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] tracking-tight mt-1">
+          <h1 className="text-[28px] sm:text-[30px] font-semibold text-[#172033] tracking-tight mt-1">
             Sessions & Agenda
           </h1>
-          <p className="text-xs sm:text-sm text-[#5E5B54] mt-1.5">
-            Click on any session box to edit its title, speakers, timing, room, and details.
+          <p className="text-sm text-[#64748B] mt-1">
+            Click on any session card to edit its title, speakers, timing, room, and details.
           </p>
         </div>
 
         <button
           onClick={handleOpenCreate}
-          className="px-5 py-2.5 bg-[#7A1B2D] hover:bg-[#631624] text-white text-sm font-semibold rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-all flex items-center gap-2 self-start sm:self-auto cursor-pointer"
+          className="h-9 px-4 bg-[#3563F6] hover:bg-[#2554E5] active:bg-[#1D46CA] text-white text-[13px] font-medium rounded-lg shadow-2xs transition-colors flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create Session</span>
@@ -191,30 +191,30 @@ export const OrganizerSessions: React.FC = () => {
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         {/* Search */}
         <div className="relative w-full md:w-80 flex-shrink-0">
-          <Search className="w-4 h-4 text-[#8C8983] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search session, speaker, room, track..."
-            className="w-full h-10 pl-9 pr-3 rounded-xl bg-white border border-[#E8E4DA] text-xs text-[#1A1A1A] placeholder:text-[#8C8983] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D] shadow-xs"
+            className="w-full h-9 pl-9 pr-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6] shadow-2xs"
           />
         </div>
 
         {/* Day Pills & Track Filter */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
           {/* Day filters */}
-          <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-[#E8E4DA] shadow-xs">
+          <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-[#E2E8F0] shadow-2xs">
             {(['all', 1, 2, 3] as const).map((dayVal) => {
               const isActive = selectedDay === dayVal;
               return (
                 <button
                   key={dayVal}
                   onClick={() => setSelectedDay(dayVal)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#7A1B2D] text-white shadow-xs'
-                      : 'text-[#5E5B54] hover:text-[#1A1A1A] hover:bg-[#F2EFE9]'
+                      ? 'bg-[#14233B] text-white shadow-2xs'
+                      : 'text-[#64748B] hover:text-[#172033] hover:bg-[#F8FAFC]'
                   }`}
                 >
                   {dayVal === 'all' ? 'All Days' : `Day ${dayVal}`}
@@ -227,7 +227,7 @@ export const OrganizerSessions: React.FC = () => {
           <select
             value={selectedTrack}
             onChange={(e) => setSelectedTrack(e.target.value)}
-            className="h-10 px-3 rounded-xl bg-white border border-[#E8E4DA] text-xs font-semibold text-[#5E5B54] hover:text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D] shadow-xs cursor-pointer"
+            className="h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs font-medium text-[#64748B] hover:text-[#172033] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6] shadow-2xs cursor-pointer"
           >
             <option value="all">All Tracks</option>
             {allTracks.map((tr) => (
@@ -241,10 +241,10 @@ export const OrganizerSessions: React.FC = () => {
 
       {/* Symmetrical Grid of Session Boxes */}
       {filteredSessions.length === 0 ? (
-        <div className="p-12 text-center bg-white rounded-2xl border border-[#E8E4DA] shadow-xs">
-          <Calendar className="w-10 h-10 text-[#8C8983] mx-auto mb-3 opacity-60" />
-          <h3 className="text-base font-bold text-[#1A1A1A]">No sessions match your search</h3>
-          <p className="text-xs text-[#8C8983] mt-1">Try resetting the filters or add a new session.</p>
+        <div className="p-12 text-center bg-white rounded-xl border border-[#E2E8F0] shadow-2xs">
+          <Calendar className="w-10 h-10 text-[#94A3B8] mx-auto mb-3 opacity-60" />
+          <h3 className="text-sm font-semibold text-[#172033]">No sessions match your search</h3>
+          <p className="text-xs text-[#64748B] mt-1">Try resetting the filters or add a new session.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -263,29 +263,29 @@ export const OrganizerSessions: React.FC = () => {
               <div
                 key={session.id}
                 onClick={() => handleOpenEdit(session)}
-                className="group relative bg-white rounded-2xl p-5 border border-[#E8E4DA] shadow-xs hover:border-[#7A1B2D] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between"
+                className="group relative bg-white rounded-xl p-5 border border-[#E2E8F0] shadow-2xs hover:border-[#3563F6]/50 hover:shadow-xs transition-all duration-150 cursor-pointer flex flex-col justify-between"
               >
                 {/* Card Top: Badges */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-xs font-semibold text-[#5E5B54] bg-[#F2EFE9] px-2.5 py-1 rounded-lg">
+                      <span className="font-mono text-xs font-medium text-[#64748B] bg-[#F1F5F9] px-2 py-0.5 rounded-md">
                         Day {session.day} · {session.timeRange}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1.5">
                       {isLive ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#16A34A] bg-[#DCFCE7] px-2 py-0.5 rounded-full border border-[#86EFAC]">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#16A34A] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
                           LIVE
                         </span>
                       ) : isCompleted ? (
-                        <span className="text-[11px] font-medium text-[#8C8983] bg-[#EFECE4] px-2 py-0.5 rounded-full">
+                        <span className="text-[11px] font-medium text-[#64748B] bg-slate-100 border border-slate-200/60 px-2 py-0.5 rounded-md">
                           Done
                         </span>
                       ) : (
-                        <span className="text-[11px] font-medium text-[#5E5B54] bg-[#EFECE4] px-2 py-0.5 rounded-full">
+                        <span className="text-[11px] font-medium text-[#3563F6] bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-md">
                           Upcoming
                         </span>
                       )}
@@ -294,41 +294,41 @@ export const OrganizerSessions: React.FC = () => {
 
                   {/* Room & Track Tags */}
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#8C8983]">
-                      <MapPin className="w-3 h-3" />
+                    <span className="inline-flex items-center gap-1 text-xs text-[#64748B]">
+                      <MapPin className="w-3.5 h-3.5 text-[#94A3B8]" />
                       {session.room}
                     </span>
-                    <span className="text-[#DDD8CE]">·</span>
-                    <span className="text-[11px] font-semibold text-[#7A1B2D] bg-[#FDF2F4] px-2 py-0.5 rounded-md border border-[#F8D7DA]">
+                    <span className="text-[#CBD5E1]">·</span>
+                    <span className="text-[11px] font-medium text-[#3563F6] bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200/60">
                       {session.track}
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-base font-bold text-[#1A1A1A] leading-snug group-hover:text-[#7A1B2D] transition-colors line-clamp-2">
+                  <h3 className="text-base font-semibold text-[#172033] leading-snug group-hover:text-[#3563F6] transition-colors line-clamp-2">
                     {session.title}
                   </h3>
 
                   {/* Description snippet */}
                   {session.description && (
-                    <p className="text-xs text-[#5E5B54] line-clamp-2 mt-2 leading-relaxed">
+                    <p className="text-xs text-[#64748B] line-clamp-2 mt-2 leading-relaxed">
                       {session.description}
                     </p>
                   )}
                 </div>
 
                 {/* Card Middle & Bottom: Speaker & Footer */}
-                <div className="mt-4 pt-4 border-t border-[#EFECE4] space-y-3">
+                <div className="mt-4 pt-4 border-t border-[#E2E8F0] space-y-3">
                   {/* Speaker Info */}
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-[#7A1B2D]/10 text-[#7A1B2D] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-[#EEF2F6] text-[#3563F6] font-semibold text-xs flex items-center justify-center flex-shrink-0">
                       {initials}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-bold text-[#1A1A1A] truncate">
+                      <p className="text-xs font-semibold text-[#172033] truncate">
                         {session.speakerName || 'Speaker TBA'}
                       </p>
-                      <p className="text-[11px] text-[#8C8983] truncate">
+                      <p className="text-[11px] text-[#64748B] truncate">
                         {session.speakerDesignation ? `${session.speakerDesignation} · ` : ''}
                         {session.speakerCompany}
                       </p>
@@ -336,21 +336,21 @@ export const OrganizerSessions: React.FC = () => {
                   </div>
 
                   {/* Footer Metrics + Edit Pill */}
-                  <div className="flex items-center justify-between text-xs text-[#8C8983] pt-1">
+                  <div className="flex items-center justify-between text-xs text-[#64748B] pt-1">
                     <div className="flex items-center gap-3">
                       <span className="inline-flex items-center gap-1 text-[11px] font-medium">
-                        <MessageSquare className="w-3 h-3" />
+                        <MessageSquare className="w-3.5 h-3.5 text-[#94A3B8]" />
                         {qCount} Q&A
                       </span>
                       {session.attendanceCount > 0 && (
                         <span className="inline-flex items-center gap-1 text-[11px] font-medium">
-                          <Users className="w-3 h-3" />
+                          <Users className="w-3.5 h-3.5 text-[#94A3B8]" />
                           {session.attendanceCount}
                         </span>
                       )}
                     </div>
 
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#7A1B2D] group-hover:underline">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-[#3563F6] group-hover:underline">
                       <Edit3 className="w-3.5 h-3.5" />
                       <span>Edit</span>
                     </span>
@@ -364,15 +364,15 @@ export const OrganizerSessions: React.FC = () => {
 
       {/* Edit / Create Session Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in overflow-y-auto">
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#DEDCD7] my-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-2xs p-4 animate-in fade-in overflow-y-auto">
+          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-xl border border-[#E2E8F0] my-auto">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-[#EFECE4]">
+            <div className="flex items-center justify-between pb-4 border-b border-[#E2E8F0]">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A1B2D]">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
                   {modalMode === 'edit' ? 'Session Editor' : 'New Session'}
                 </span>
-                <h2 className="text-xl font-bold text-[#1A1A1A] mt-0.5">
+                <h2 className="text-base font-semibold text-[#172033] mt-0.5">
                   {modalMode === 'edit' ? 'Edit Session Details' : 'Create New Session'}
                 </h2>
               </div>
@@ -380,7 +380,7 @@ export const OrganizerSessions: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-xl text-[#8C8983] hover:text-[#1A1A1A] hover:bg-[#F2EFE9] transition-colors"
+                className="p-1.5 rounded-lg text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -390,7 +390,7 @@ export const OrganizerSessions: React.FC = () => {
             <form onSubmit={handleSave} className="space-y-4 pt-4 text-xs">
               {/* Title */}
               <div>
-                <label className="block text-xs font-bold text-[#1A1A1A] mb-1">
+                <label className="block text-xs font-medium text-[#172033] mb-1">
                   Session Title *
                 </label>
                 <input
@@ -399,18 +399,18 @@ export const OrganizerSessions: React.FC = () => {
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   placeholder="e.g. Keynote on Semiconductor Roadmap"
-                  className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                  className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                 />
               </div>
 
               {/* Day, Time, Room, Track */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-[#1A1A1A] mb-1">Day</label>
+                  <label className="block text-xs font-medium text-[#172033] mb-1">Day</label>
                   <select
                     value={formDay}
                     onChange={(e) => setFormDay(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   >
                     <option value={1}>Day 1</option>
                     <option value={2}>Day 2</option>
@@ -419,52 +419,52 @@ export const OrganizerSessions: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#1A1A1A] mb-1">Time Range</label>
+                  <label className="block text-xs font-medium text-[#172033] mb-1">Time Range</label>
                   <input
                     type="text"
                     value={formTimeRange}
                     onChange={(e) => setFormTimeRange(e.target.value)}
                     placeholder="e.g. 09:30–10:30"
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#1A1A1A] mb-1">Room / Hall</label>
+                  <label className="block text-xs font-medium text-[#172033] mb-1">Room / Hall</label>
                   <input
                     type="text"
                     value={formRoom}
                     onChange={(e) => setFormRoom(e.target.value)}
                     placeholder="e.g. Main Auditorium, Hall B"
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#1A1A1A] mb-1">Track / Category</label>
+                  <label className="block text-xs font-medium text-[#172033] mb-1">Track / Category</label>
                   <input
                     type="text"
                     value={formTrack}
                     onChange={(e) => setFormTrack(e.target.value)}
                     placeholder="e.g. Keynote, Technical, Panel, Workshop"
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   />
                 </div>
               </div>
 
               {/* Status */}
               <div>
-                <label className="block text-xs font-bold text-[#1A1A1A] mb-1">Session Status</label>
+                <label className="block text-xs font-medium text-[#172033] mb-1">Session Status</label>
                 <div className="flex gap-2">
                   {(['upcoming', 'live', 'completed'] as const).map((st) => (
                     <button
                       type="button"
                       key={st}
                       onClick={() => setFormStatus(st)}
-                      className={`flex-1 py-2 rounded-xl border text-xs font-bold capitalize transition-all ${
+                      className={`flex-1 py-1.5 rounded-lg border text-xs font-medium capitalize transition-all cursor-pointer ${
                         formStatus === st
-                          ? 'bg-[#7A1B2D] text-white border-[#7A1B2D] shadow-xs'
-                          : 'bg-white text-[#5E5B54] border-[#E8E4DA] hover:bg-[#F2EFE9]'
+                          ? 'bg-[#14233B] text-white border-[#14233B] shadow-2xs'
+                          : 'bg-white text-[#64748B] border-[#E2E8F0] hover:bg-[#F8FAFC]'
                       }`}
                     >
                       {st}
@@ -474,13 +474,13 @@ export const OrganizerSessions: React.FC = () => {
               </div>
 
               {/* Speaker Information */}
-              <div className="pt-2 border-t border-[#EFECE4]">
-                <h4 className="text-xs font-bold text-[#1A1A1A] mb-2 uppercase tracking-wide">
+              <div className="pt-2 border-t border-[#E2E8F0]">
+                <h4 className="text-xs font-semibold text-[#172033] mb-2 uppercase tracking-wide">
                   Speaker Details
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-[11px] font-semibold text-[#5E5B54] mb-1">
+                    <label className="block text-[11px] font-medium text-[#64748B] mb-1">
                       Speaker Name
                     </label>
                     <input
@@ -488,12 +488,12 @@ export const OrganizerSessions: React.FC = () => {
                       value={formSpeakerName}
                       onChange={(e) => setFormSpeakerName(e.target.value)}
                       placeholder="e.g. Dr. Manish Hooda"
-                      className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                      className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-[#5E5B54] mb-1">
+                    <label className="block text-[11px] font-medium text-[#64748B] mb-1">
                       Designation
                     </label>
                     <input
@@ -501,12 +501,12 @@ export const OrganizerSessions: React.FC = () => {
                       value={formSpeakerDesignation}
                       onChange={(e) => setFormSpeakerDesignation(e.target.value)}
                       placeholder="e.g. Director (Technology)"
-                      className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                      className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-[#5E5B54] mb-1">
+                    <label className="block text-[11px] font-medium text-[#64748B] mb-1">
                       Company / Organization
                     </label>
                     <input
@@ -514,7 +514,7 @@ export const OrganizerSessions: React.FC = () => {
                       value={formSpeakerCompany}
                       onChange={(e) => setFormSpeakerCompany(e.target.value)}
                       placeholder="e.g. India Semiconductor Mission"
-                      className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                      className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                     />
                   </div>
                 </div>
@@ -522,7 +522,7 @@ export const OrganizerSessions: React.FC = () => {
 
               {/* Description */}
               <div>
-                <label className="block text-xs font-bold text-[#1A1A1A] mb-1">
+                <label className="block text-xs font-medium text-[#172033] mb-1">
                   Description & Overview
                 </label>
                 <textarea
@@ -530,13 +530,13 @@ export const OrganizerSessions: React.FC = () => {
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
                   placeholder="Summary of what this session covers..."
-                  className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                  className="w-full p-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                 />
               </div>
 
               {/* Key Takeaways */}
               <div>
-                <label className="block text-xs font-bold text-[#1A1A1A] mb-1">
+                <label className="block text-xs font-medium text-[#172033] mb-1">
                   Key Takeaways (one per line)
                 </label>
                 <textarea
@@ -544,17 +544,17 @@ export const OrganizerSessions: React.FC = () => {
                   value={formTakeaways}
                   onChange={(e) => setFormTakeaways(e.target.value)}
                   placeholder="Takeaway 1&#10;Takeaway 2"
-                  className="w-full px-3 py-2 rounded-xl bg-white border border-[#E8E4DA] text-xs font-medium text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#7A1B2D]"
+                  className="w-full p-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                 />
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-4 border-t border-[#EFECE4] flex items-center justify-between gap-3">
+              <div className="pt-4 border-t border-[#E2E8F0] flex items-center justify-between gap-3">
                 {modalMode === 'edit' ? (
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                    className="px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" />
                     <span>Delete</span>
@@ -567,14 +567,14 @@ export const OrganizerSessions: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 bg-white hover:bg-[#F2EFE9] text-[#1A1A1A] text-xs font-semibold rounded-xl border border-[#DDD8CE] transition-colors cursor-pointer"
+                    className="h-9 px-4 bg-white hover:bg-[#F8FAFC] text-[#172033] text-xs font-medium rounded-lg border border-[#E2E8F0] transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
 
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-[#7A1B2D] hover:bg-[#631624] text-white text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
+                    className="h-9 px-4 bg-[#3563F6] hover:bg-[#2554E5] active:bg-[#1D46CA] text-white text-xs font-medium rounded-lg shadow-2xs transition-colors cursor-pointer"
                   >
                     {modalMode === 'edit' ? 'Save Changes' : 'Create Session'}
                   </button>

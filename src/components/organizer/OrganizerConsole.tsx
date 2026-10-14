@@ -1,25 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../../lib/store';
 import {
   LayoutDashboard,
   Users,
-  Building,
+  Building2,
   Calendar,
-  BarChart3,
   FileText,
   Settings,
-  ShieldCheck,
-  ChevronRight,
-  ExternalLink,
-  LogOut
+  LogOut,
+  Menu,
+  X,
 } from 'lucide-react';
 import { OrganizerOverview } from './OrganizerOverview';
 import { OrganizerAttendees } from './OrganizerAttendees';
 import { OrganizerExhibitors } from './OrganizerExhibitors';
 import { OrganizerSessions } from './OrganizerSessions';
-import { OrganizerAnalytics } from './OrganizerAnalytics';
 import { OrganizerReports } from './OrganizerReports';
 import { OrganizerSettings } from './OrganizerSettings';
 
@@ -31,51 +28,78 @@ export const OrganizerConsole: React.FC = () => {
     setHasAccessConfirmed,
   } = useStore();
 
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
   const sidebarItems = [
     { id: 'overview' as const, label: 'Overview', icon: LayoutDashboard },
     { id: 'attendees' as const, label: 'Attendees', icon: Users, badge: event.totalRegistered.toLocaleString() },
-    { id: 'exhibitors' as const, label: 'Exhibitors', icon: Building, badge: event.totalExhibitors.toString() },
+    { id: 'exhibitors' as const, label: 'Exhibitors', icon: Building2, badge: event.totalExhibitors.toString() },
     { id: 'sessions' as const, label: 'Sessions', icon: Calendar },
-    { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'reports' as const, label: 'Reports', icon: FileText },
     { id: 'settings' as const, label: 'Settings', icon: Settings },
   ];
 
   return (
-    <div className="h-screen w-full bg-[#FAF7F2] flex flex-col md:flex-row overflow-hidden">
-      {/* Sidebar Navigation */}
-      <aside className="no-print w-full md:w-72 h-full bg-[#4A0E1B] text-white flex flex-col justify-between p-5 flex-shrink-0 border-r border-[#B51F32]/30 shadow-[4px_0_25px_rgba(181,31,50,0.16)] z-20">
-        <div className="space-y-5">
-          {/* Console Header & Brand */}
-          <div className="pt-1">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-[#C87D55] text-white flex items-center justify-center font-serif text-2xl font-bold shadow-sm flex-shrink-0">
-                E
-              </div>
-              <div className="min-w-0">
-                <h2 className="text-base sm:text-[17px] font-extrabold tracking-wider uppercase text-white leading-tight">
-                  EventSphere
-                </h2>
-                <p className="text-xs text-white/60 font-medium tracking-normal mt-0.5">
-                  Organizer Console
-                </p>
-              </div>
-            </div>
+    <div className="flex-1 h-full min-h-0 w-full bg-[#F4F6FA] flex flex-col md:flex-row overflow-hidden">
+      {/* Mobile Top Header (Small screens only) */}
+      <div className="md:hidden no-print bg-[#14233B] text-white px-4 py-3 border-b border-[#1E293B] flex items-center justify-between shrink-0 z-30">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-7 h-7 rounded-lg bg-[#3563F6] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+            E
+          </div>
+          <div className="min-w-0">
+            <span className="text-[14px] font-semibold text-white truncate block leading-tight">
+              EventSphere
+            </span>
+            <span className="text-[11px] text-[#94A3B8] truncate block">
+              {event.name}
+            </span>
+          </div>
+        </div>
+        <button
+          onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+          className="p-1.5 rounded-lg text-[#94A3B8] hover:text-white hover:bg-white/10 transition-colors"
+          aria-label="Toggle navigation"
+        >
+          {isMobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
 
-            {/* Event pill badge / box */}
-            <div className="mt-4 p-3 bg-gradient-to-b from-[#0F1B35] to-[#0A1224] rounded-xl border border-[#1E3560]/70 shadow-[0_4px_16px_rgba(10,24,56,0.35)]">
-              <p className="text-xs font-semibold text-white truncate">
-                {event.name}
+      {/* Sidebar Navigation */}
+      <aside
+        className={`no-print ${
+          isMobileNavOpen ? 'flex' : 'hidden'
+        } md:flex w-full md:w-[260px] h-full bg-[#14233B] text-white flex-col justify-between flex-shrink-0 border-r border-[#1E293B] z-20 overflow-y-auto`}
+      >
+        <div className="p-5 space-y-5">
+          {/* Brand & Console Identity */}
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#3563F6] text-white flex items-center justify-center font-bold text-sm shadow-xs shrink-0">
+              E
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[15px] font-semibold text-white tracking-tight leading-tight">
+                EventSphere
+              </h2>
+              <p className="text-[11px] text-[#94A3B8] font-normal mt-0.5">
+                Organizer Console
               </p>
-              <div className="flex items-center gap-1.5 mt-1 text-[10px] text-blue-200/70 font-mono">
-                <span>{event.id} · LIVE</span>
-                <span className="w-2 h-2 rounded-full bg-[#22C55E] inline-block animate-pulse" />
-              </div>
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="space-y-1.5 pt-1">
+          {/* Clean Event Selector / Status Box */}
+          <div className="p-3 bg-[#0F1B2D] rounded-lg border border-[#1E2E4A]">
+            <p className="text-[13px] font-medium text-white truncate" title={event.name}>
+              {event.name}
+            </p>
+            <div className="flex items-center gap-2 mt-1.5 text-[11px] text-[#94A3B8]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] shrink-0" />
+              <span>{event.id} · LIVE</span>
+            </div>
+          </div>
+
+          {/* Navigation Items */}
+          <nav className="space-y-1 pt-1">
             {sidebarItems.map((item) => {
               const isActive = activeOrganizerTab === item.id;
               const Icon = item.icon;
@@ -83,22 +107,25 @@ export const OrganizerConsole: React.FC = () => {
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveOrganizerTab(item.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                  onClick={() => {
+                    setActiveOrganizerTab(item.id);
+                    setIsMobileNavOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 h-9 rounded-lg text-[13px] font-medium transition-colors cursor-pointer ${
                     isActive
-                      ? 'bg-[#FAF7F2] text-[#111113] font-bold shadow-xs'
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                      ? 'bg-[#1E304F] text-white'
+                      : 'text-[#94A3B8] hover:text-white hover:bg-white/5'
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Icon className="w-4 h-4" />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#3563F6]' : 'text-[#64748B]'}`} />
                     <span>{item.label}</span>
                   </div>
 
                   {item.badge && (
                     <span
-                      className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
-                        isActive ? 'bg-[#E3DFD5] text-[#111113]' : 'bg-white/15 text-white/90'
+                      className={`text-[11px] px-2 py-0.5 rounded-full font-normal ${
+                        isActive ? 'bg-[#3563F6]/20 text-blue-200' : 'bg-[#1E293B] text-[#94A3B8]'
                       }`}
                     >
                       {item.badge}
@@ -110,25 +137,24 @@ export const OrganizerConsole: React.FC = () => {
           </nav>
         </div>
 
-        {/* Bottom Logout */}
-        <div className="pt-4 pb-3 border-t border-white/10">
+        {/* Anchored Logout Section */}
+        <div className="p-4 border-t border-[#1E2E4A] mt-auto">
           <button
             onClick={() => setHasAccessConfirmed(false)}
-            className="w-full py-2.5 px-3 bg-[#17171A] hover:bg-red-950/40 border border-[#B51F32]/40 rounded-xl text-xs font-semibold text-red-300 hover:text-red-200 transition-colors flex items-center justify-center gap-2 shadow-[0_2px_10px_rgba(181,31,50,0.15)] cursor-pointer"
+            className="w-full h-9 px-3 text-[#94A3B8] hover:text-white hover:bg-[#1E293B] rounded-lg text-[13px] font-medium transition-colors flex items-center gap-2.5 cursor-pointer"
           >
-            <LogOut className="w-3.5 h-3.5" />
+            <LogOut className="w-4 h-4 text-[#64748B]" />
             <span>Log out</span>
           </button>
         </div>
       </aside>
 
       {/* Main Console Content Body */}
-      <main className="flex-1 h-full overflow-y-auto p-4 lg:p-8">
+      <main className="flex-1 h-full min-h-0 overflow-y-auto bg-[#F4F6FA] p-6 lg:p-8">
         {activeOrganizerTab === 'overview' && <OrganizerOverview />}
         {activeOrganizerTab === 'attendees' && <OrganizerAttendees />}
         {activeOrganizerTab === 'exhibitors' && <OrganizerExhibitors />}
         {activeOrganizerTab === 'sessions' && <OrganizerSessions />}
-        {activeOrganizerTab === 'analytics' && <OrganizerAnalytics />}
         {activeOrganizerTab === 'reports' && <OrganizerReports />}
         {activeOrganizerTab === 'settings' && <OrganizerSettings />}
       </main>

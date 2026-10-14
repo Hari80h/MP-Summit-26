@@ -9,16 +9,15 @@ import {
   X,
   UserPlus
 } from 'lucide-react';
-import { Person, LeadStatus } from '../../types';
+import { Person, Lead, LeadStatus } from '../../types';
 
-export const ExhibitorScan: React.FC = () => {
+export const ExhibitorScan: React.FC = React.memo(() => {
   const {
     attendees,
     currentUser,
     leads,
     saveLead,
     setActiveExhibitorTab,
-    showToast,
   } = useStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,6 +25,15 @@ export const ExhibitorScan: React.FC = () => {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<LeadStatus>('Interested');
   const [notes, setNotes] = useState('');
+
+  // Fast O(1) lead lookup map
+  const leadMap = useMemo(() => {
+    const map = new Map<string, Lead>();
+    for (const l of leads) {
+      map.set(l.personId, l);
+    }
+    return map;
+  }, [leads]);
 
   // Combine attendees (delegates, speakers, VIPs, guests)
   const allCandidates: Person[] = useMemo(() => [
@@ -54,7 +62,7 @@ export const ExhibitorScan: React.FC = () => {
 
   const handleSelectPerson = (person: Person) => {
     setSelectedPerson(person);
-    const existing = leads.find((l) => l.personId === person.id);
+    const existing = leadMap.get(person.id);
     if (existing) {
       setSelectedStatus(existing.status);
       setNotes(existing.notes || '');
@@ -71,7 +79,7 @@ export const ExhibitorScan: React.FC = () => {
     const mobileToUse = selectedPerson.privacy?.sharePhone !== false ? selectedPerson.mobile : '+91 98765 00000';
     const linkedinToUse = selectedPerson.privacy?.shareLinkedIn !== false ? (selectedPerson.linkedin || '') : '';
 
-    const existingLead = leads.find((l) => l.personId === selectedPerson.id);
+    const existingLead = leadMap.get(selectedPerson.id);
 
     saveLead({
       personId: selectedPerson.id,
@@ -89,8 +97,6 @@ export const ExhibitorScan: React.FC = () => {
       boothId: 'Hall 1 · A-02',
       productsViewed: existingLead?.productsViewed || [],
     });
-
-    showToast(`Lead saved for ${selectedPerson.name}`, 'success');
 
     // Reset selection and navigate to Leads tab
     setSelectedPerson(null);
@@ -190,7 +196,7 @@ export const ExhibitorScan: React.FC = () => {
                 </div>
               ) : (
                 filteredCandidates.map((person) => {
-                  const existingLead = leads.find((l) => l.personId === person.id);
+                  const existingLead = leadMap.get(person.id);
 
                   return (
                     <div
@@ -369,4 +375,6 @@ export const ExhibitorScan: React.FC = () => {
       </div>
     </div>
   );
-};
+});
+
+ExhibitorScan.displayName = 'ExhibitorScan';

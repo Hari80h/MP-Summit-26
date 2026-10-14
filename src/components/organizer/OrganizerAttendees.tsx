@@ -177,10 +177,10 @@ export const OrganizerAttendees: React.FC = () => {
       {/* Header & Actions */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="text-xs uppercase tracking-widest font-semibold text-[#8C8983] block">
+          <span className="text-[12px] uppercase tracking-wider font-semibold text-[#64748B] block">
             {event.id} · {totalRecords.toLocaleString()} RECORDS
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] tracking-tight mt-1">
+          <h1 className="text-[28px] sm:text-[30px] font-semibold text-[#172033] tracking-tight leading-tight mt-1">
             Attendees
           </h1>
         </div>
@@ -191,21 +191,21 @@ export const OrganizerAttendees: React.FC = () => {
               setMappingStep('upload');
               setShowImportModal(true);
             }}
-            className="px-4 py-2 bg-white hover:bg-[#F2EFE9] text-[#1A1A1A] text-sm font-medium rounded-xl border border-[#DDD8CE] shadow-xs transition-colors"
+            className="h-9 px-3.5 bg-white hover:bg-[#F8FAFC] text-[#172033] text-[13px] font-medium rounded-lg border border-[#E2E8F0] shadow-2xs transition-colors cursor-pointer"
           >
             Import CSV
           </button>
 
           <button
             onClick={() => setShowWalkInModal(true)}
-            className="px-4 py-2 bg-white hover:bg-[#F2EFE9] text-[#1A1A1A] text-sm font-medium rounded-xl border border-[#DDD8CE] shadow-xs transition-colors"
+            className="h-9 px-3.5 bg-white hover:bg-[#F8FAFC] text-[#172033] text-[13px] font-medium rounded-lg border border-[#E2E8F0] shadow-2xs transition-colors cursor-pointer"
           >
             + Walk-in
           </button>
 
           <button
             onClick={handleExportCSV}
-            className="px-4 py-2 bg-[#7A1B2D] hover:bg-[#631624] text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors flex items-center gap-1.5"
+            className="h-9 px-4 bg-[#3563F6] hover:bg-[#2554E5] active:bg-[#1D46CA] text-white text-[13px] font-medium rounded-lg shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <Download className="w-4 h-4 text-white" />
             <span>Export</span>
@@ -217,13 +217,13 @@ export const OrganizerAttendees: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         {/* Search Input */}
         <div className="relative w-full sm:w-80 flex-shrink-0">
-          <Search className="w-4 h-4 text-[#8C8983] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search name, company, ID..."
-            className="w-full h-10 pl-9 pr-3 rounded-xl bg-white border border-[#E8E4DA] text-xs text-[#1A1A1A] placeholder:text-[#8C8983] focus:outline-none focus:ring-1 focus:ring-[#B51F32]/40 shadow-xs"
+            className="w-full h-9 pl-9 pr-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6] shadow-2xs"
           />
         </div>
 
@@ -235,10 +235,10 @@ export const OrganizerAttendees: React.FC = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3.5 py-2 rounded-lg text-xs whitespace-nowrap transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all font-medium cursor-pointer ${
                   isActive
-                    ? 'bg-[#7A1B2D] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] font-semibold'
-                    : 'bg-white text-[#5E5B54] hover:text-[#1A1A1A] border border-[#E8E4DA] font-medium'
+                    ? 'bg-[#14233B] text-white shadow-2xs'
+                    : 'bg-white text-[#64748B] hover:text-[#172033] hover:bg-[#F8FAFC] border border-[#E2E8F0]'
                 }`}
               >
                 {tab}
@@ -249,19 +249,19 @@ export const OrganizerAttendees: React.FC = () => {
       </div>
 
       {/* Attendees Table Card */}
-      <div className="bg-white rounded-2xl border border-[#E8E4DA] shadow-xs overflow-hidden">
+      <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-[#EFECE4] text-[#8C8983] font-bold text-[10.5px] uppercase tracking-wider">
-                <th className="py-2.5 px-5 font-bold">NAME</th>
-                <th className="py-2.5 px-5 font-bold">COMPANY</th>
-                <th className="py-2.5 px-5 font-bold">DESIGNATION</th>
-                <th className="py-2.5 px-5 font-bold">TYPE</th>
-                <th className="py-2.5 px-5 font-bold text-right">REG ID</th>
+              <tr className="border-b border-[#E2E8F0] text-[#64748B] font-semibold text-[11px] uppercase tracking-wider bg-[#F8FAFC]">
+                <th className="py-2.5 px-5 font-semibold">Name</th>
+                <th className="py-2.5 px-5 font-semibold">Company</th>
+                <th className="py-2.5 px-5 font-semibold">Designation</th>
+                <th className="py-2.5 px-5 font-semibold">Type</th>
+                <th className="py-2.5 px-5 font-semibold text-right">Reg ID</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#F4F1EA]">
+            <tbody className="divide-y divide-[#E2E8F0]">
               {paginatedAttendees.map((person) => {
                 const initials = person.name.split(' ').map((n) => n[0]).join('').slice(0, 2);
                 const typeLabel =
@@ -277,39 +277,47 @@ export const OrganizerAttendees: React.FC = () => {
                   <tr
                     key={person.id}
                     onClick={() => setSelectedPerson(person)}
-                    className="hover:bg-[#FAF7F2] transition-colors cursor-pointer"
+                    className="hover:bg-[#F8FAFC] transition-colors cursor-pointer"
                   >
                     {/* NAME */}
-                    <td className="py-2 px-5">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[#E5DFD3] text-[#554D41] flex items-center justify-center font-medium text-[10px] flex-shrink-0">
+                    <td className="py-2.5 px-5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-6 h-6 rounded-full bg-[#EEF2F6] text-[#475569] flex items-center justify-center font-semibold text-[10px] flex-shrink-0">
                           {initials}
                         </div>
-                        <span className="font-normal text-xs sm:text-sm text-[#1A1A1A]">
+                        <span className="font-medium text-xs sm:text-sm text-[#172033]">
                           {person.name}
                         </span>
                       </div>
                     </td>
 
                     {/* COMPANY */}
-                    <td className="py-2 px-5 text-xs sm:text-sm text-[#5E5B54]">
+                    <td className="py-2.5 px-5 text-xs sm:text-sm text-[#64748B]">
                       {person.company}
                     </td>
 
                     {/* DESIGNATION */}
-                    <td className="py-2 px-5 text-xs sm:text-sm text-[#5E5B54]">
+                    <td className="py-2.5 px-5 text-xs sm:text-sm text-[#64748B]">
                       {person.designation}
                     </td>
 
                     {/* TYPE */}
-                    <td className="py-2 px-5">
-                      <span className="inline-block bg-[#EFECE4] text-[#5E5B54] text-[11px] font-medium px-2 py-0.5 rounded-md">
+                    <td className="py-2.5 px-5">
+                      <span className={`inline-block text-[11px] font-medium px-2 py-0.5 rounded-md ${
+                        typeLabel === 'VIP'
+                          ? 'bg-amber-50 text-amber-700 border border-amber-200/60'
+                          : typeLabel === 'Speaker'
+                          ? 'bg-purple-50 text-purple-700 border border-purple-200/60'
+                          : typeLabel === 'Exhibitor'
+                          ? 'bg-blue-50 text-[#3563F6] border border-blue-200/60'
+                          : 'bg-slate-100 text-[#475569] border border-slate-200/60'
+                      }`}>
                         {typeLabel}
                       </span>
                     </td>
 
                     {/* REG ID */}
-                    <td className="py-2 px-5 text-right font-mono text-xs text-[#8C8983]">
+                    <td className="py-2.5 px-5 text-right font-mono text-xs text-[#64748B]">
                       {getFormattedRegId(person)}
                     </td>
                   </tr>
@@ -320,7 +328,7 @@ export const OrganizerAttendees: React.FC = () => {
         </div>
 
         {/* Table Footer / Pagination */}
-        <div className="py-2.5 px-5 border-t border-[#EFECE4] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#8C8983]">
+        <div className="py-2.5 px-5 border-t border-[#E2E8F0] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#64748B] bg-[#F8FAFC]">
           <div>
             Showing {filteredAttendees.length === 0 ? 0 : startIndex + 1}
             {paginatedAttendees.length > 1 ? `–${startIndex + paginatedAttendees.length}` : ''} of{' '}
@@ -332,7 +340,7 @@ export const OrganizerAttendees: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer text-[#8C8983] transition-colors outline-none focus:outline-none"
+                className="w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer text-[#64748B] transition-colors outline-none focus:outline-none"
                 title="Previous page"
               >
                 ←
@@ -351,7 +359,7 @@ export const OrganizerAttendees: React.FC = () => {
                         isLeftDots ? Math.max(1, p - 5) : Math.min(totalPages, p + 5)
                       )
                     }
-                    className="w-7 h-7 rounded-lg text-xs flex items-center justify-center text-[#8C8983] hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer transition-colors outline-none focus:outline-none"
+                    className="w-7 h-7 rounded-md text-xs flex items-center justify-center text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer transition-colors outline-none focus:outline-none"
                     title={isLeftDots ? 'Jump back 5 pages' : 'Jump ahead 5 pages'}
                   >
                     ...
@@ -367,10 +375,10 @@ export const OrganizerAttendees: React.FC = () => {
                   type="button"
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
-                  className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center transition-all outline-none focus:outline-none ${
+                  className={`w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center transition-all outline-none focus:outline-none ${
                     isActive
-                      ? 'bg-[#7A1B2D] text-white border border-[#B51F32]/40 shadow-[0_2px_8px_rgba(181,31,50,0.18)] cursor-default'
-                      : 'text-[#8C8983] hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer'
+                      ? 'bg-[#3563F6] text-white shadow-2xs cursor-default'
+                      : 'text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer'
                   }`}
                 >
                   {pageNum}
@@ -382,7 +390,7 @@ export const OrganizerAttendees: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center hover:text-[#1A1A1A] hover:bg-[#EFECE4] cursor-pointer text-[#8C8983] transition-colors outline-none focus:outline-none"
+                className="w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer text-[#64748B] transition-colors outline-none focus:outline-none"
                 title="Next page"
               >
                 →
@@ -394,63 +402,63 @@ export const OrganizerAttendees: React.FC = () => {
 
       {/* Attendee Detail Modal */}
       {selectedPerson && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 space-y-3 shadow-xl border border-[#DEDCD7]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-2xs p-4 animate-in fade-in">
+          <div className="bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-5 space-y-4 shadow-xl border border-[#E2E8F0]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
                   Attendee Profile & Engagement Record
                 </span>
-                <h2 className="text-base font-bold text-[#181818]">{selectedPerson.name}</h2>
+                <h2 className="text-base font-semibold text-[#172033] mt-0.5">{selectedPerson.name}</h2>
               </div>
               <button
                 onClick={() => setSelectedPerson(null)}
-                className="p-1 rounded-lg text-[#6B6B6B] hover:text-[#181818]"
+                className="p-1 rounded-md text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Registration Details */}
-            <div className="bg-[#F6F4F0] p-3 rounded-xl border border-[#DEDCD7] space-y-2 text-xs">
+            <div className="bg-[#F8FAFC] p-3.5 rounded-lg border border-[#E2E8F0] space-y-2.5 text-xs">
               <div className="flex justify-between items-center">
-                <span className="text-[#6B6B6B]">Registration ID:</span>
-                <strong className="font-mono text-[#181818]">{getFormattedRegId(selectedPerson)}</strong>
+                <span className="text-[#64748B]">Registration ID:</span>
+                <strong className="font-mono text-[#172033] font-semibold">{getFormattedRegId(selectedPerson)}</strong>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#6B6B6B]">Ticket Tier:</span>
-                <span className="font-semibold text-[#181818]">{selectedPerson.ticketType}</span>
+                <span className="text-[#64748B]">Ticket Tier:</span>
+                <span className="font-medium text-[#172033]">{selectedPerson.ticketType}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#6B6B6B]">Company & Role:</span>
-                <span className="text-[#181818]">{selectedPerson.designation} · {selectedPerson.company}</span>
+                <span className="text-[#64748B]">Company & Role:</span>
+                <span className="text-[#172033]">{selectedPerson.designation} · {selectedPerson.company}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#6B6B6B]">Email:</span>
-                <span className="text-[#181818] font-mono">{selectedPerson.email}</span>
+                <span className="text-[#64748B]">Email:</span>
+                <span className="text-[#172033] font-mono">{selectedPerson.email}</span>
               </div>
             </div>
 
             {/* Engagement metrics */}
-            <div className="grid grid-cols-3 gap-2 text-center text-xs">
-              <div className="p-2.5 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7]">
-                <span className="text-[10px] text-[#6B6B6B] block">Sessions</span>
-                <strong className="text-[12px] font-mono text-[#181818]">4 Bookmarked</strong>
+            <div className="grid grid-cols-3 gap-2.5 text-center text-xs">
+              <div className="p-3 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
+                <span className="text-[11px] text-[#64748B] block">Sessions</span>
+                <strong className="text-[13px] font-mono text-[#172033] font-semibold">4 Bookmarked</strong>
               </div>
-              <div className="p-2.5 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7]">
-                <span className="text-[10px] text-[#6B6B6B] block">Connections</span>
-                <strong className="text-[12px] font-mono text-[#181818]">8 Made</strong>
+              <div className="p-3 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
+                <span className="text-[11px] text-[#64748B] block">Connections</span>
+                <strong className="text-[13px] font-mono text-[#172033] font-semibold">8 Made</strong>
               </div>
-              <div className="p-2.5 bg-[#EFEEEA] rounded-lg border border-[#DEDCD7]">
-                <span className="text-[10px] text-[#6B6B6B] block">QR Scans</span>
-                <strong className="text-[12px] font-mono text-[#181818]">14 Badge Scans</strong>
+              <div className="p-3 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
+                <span className="text-[11px] text-[#64748B] block">QR Scans</span>
+                <strong className="text-[13px] font-mono text-[#172033] font-semibold">14 Scanned</strong>
               </div>
             </div>
 
             <div className="pt-2">
               <button
                 onClick={() => setSelectedPerson(null)}
-                className="w-full py-2.5 px-3 bg-[#7A1B2D] hover:bg-[#631624] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs"
+                className="w-full py-2 px-3 bg-[#14233B] hover:bg-[#1E304F] text-white font-medium text-xs rounded-lg transition-colors shadow-2xs cursor-pointer"
               >
                 Close
               </button>
@@ -461,36 +469,36 @@ export const OrganizerAttendees: React.FC = () => {
 
       {/* CSV Import Modal with Column Mapping */}
       {showImportModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-md p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-2xs p-4 animate-in fade-in">
+          <div className="bg-white rounded-xl w-full max-w-md p-5 space-y-4 shadow-xl border border-[#E2E8F0]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
               <div>
-                <h3 className="text-[13px] font-bold text-[#181818]">Import External Registrations</h3>
-                <p className="text-xs text-[#6B6B6B]">Map CSV columns to EventSphere attendee schema</p>
+                <h3 className="text-sm font-semibold text-[#172033]">Import External Registrations</h3>
+                <p className="text-xs text-[#64748B] mt-0.5">Map CSV columns to EventSphere attendee schema</p>
               </div>
               <button
                 onClick={() => setShowImportModal(false)}
-                className="p-1 text-[#6B6B6B] hover:text-[#181818]"
+                className="p-1 rounded-md text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {mappingStep === 'upload' && (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div
                   onClick={() => setMappingStep('mapping')}
-                  className="border-2 border-dashed border-[#DEDCD7] hover:border-[#B51F32] rounded-[14px] p-3 text-center cursor-pointer transition-colors bg-[#F6F4F0]"
+                  className="border-2 border-dashed border-[#E2E8F0] hover:border-[#3563F6] rounded-xl p-5 text-center cursor-pointer transition-colors bg-[#F8FAFC]"
                 >
-                  <FileSpreadsheet className="w-8 h-8 text-[#B51F32] mx-auto mb-2" />
-                  <p className="text-xs font-bold text-[#181818]">Click to select CSV File</p>
-                  <p className="text-[11px] text-[#6B6B6B] mt-1">
-                    Simulating: <strong className="text-[#181818]">mpss26_external_registrations_batch2.csv</strong> (120 rows)
+                  <FileSpreadsheet className="w-8 h-8 text-[#3563F6] mx-auto mb-2" />
+                  <p className="text-xs font-semibold text-[#172033]">Click to select CSV File</p>
+                  <p className="text-[11px] text-[#64748B] mt-1">
+                    Simulating: <strong className="text-[#172033]">mpss26_external_registrations_batch2.csv</strong> (120 rows)
                   </p>
                 </div>
                 <button
                   onClick={() => setMappingStep('mapping')}
-                  className="w-full py-2.5 bg-[#B51F32] text-white text-xs font-bold rounded-lg shadow-xs hover:bg-[#9C1A2B]"
+                  className="w-full py-2 bg-[#3563F6] hover:bg-[#2554E5] text-white text-xs font-medium rounded-lg shadow-2xs transition-colors cursor-pointer"
                 >
                   Proceed to Column Mapping
                 </button>
@@ -499,39 +507,39 @@ export const OrganizerAttendees: React.FC = () => {
 
             {mappingStep === 'mapping' && (
               <div className="space-y-3 text-xs">
-                <p className="text-[#6B6B6B]">
+                <p className="text-[#64748B]">
                   Verify CSV column mapping for 120 attendee records:
                 </p>
 
-                <div className="space-y-2 bg-[#F6F4F0] p-2 rounded-lg border border-[#DEDCD7]">
+                <div className="space-y-2 bg-[#F8FAFC] p-3 rounded-lg border border-[#E2E8F0]">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#6B6B6B]">Full Name:</span>
-                    <span className="font-mono font-bold text-[#181818]">CSV Col: "Full_Name"</span>
+                    <span className="text-[#64748B]">Full Name:</span>
+                    <span className="font-mono font-semibold text-[#172033]">CSV Col: "Full_Name"</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[#6B6B6B]">Email Address:</span>
-                    <span className="font-mono font-bold text-[#181818]">CSV Col: "Email"</span>
+                    <span className="text-[#64748B]">Email Address:</span>
+                    <span className="font-mono font-semibold text-[#172033]">CSV Col: "Email"</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[#6B6B6B]">Organization:</span>
-                    <span className="font-mono font-bold text-[#181818]">CSV Col: "Company"</span>
+                    <span className="text-[#64748B]">Organization:</span>
+                    <span className="font-mono font-semibold text-[#172033]">CSV Col: "Company"</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[#6B6B6B]">Ticket Tier:</span>
-                    <span className="font-mono font-bold text-[#181818]">CSV Col: "Pass_Category"</span>
+                    <span className="text-[#64748B]">Ticket Tier:</span>
+                    <span className="font-mono font-semibold text-[#172033]">CSV Col: "Pass_Category"</span>
                   </div>
                 </div>
 
                 <div className="pt-2 flex items-center gap-2">
                   <button
                     onClick={() => setMappingStep('upload')}
-                    className="py-2.5 px-3 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg"
+                    className="py-2 px-3 bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#172033] font-medium text-xs rounded-lg transition-colors cursor-pointer"
                   >
                     Back
                   </button>
                   <button
                     onClick={handleConfirmImport}
-                    className="flex-1 py-2.5 bg-[#2F7D58] hover:bg-[#256346] text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center justify-center gap-1.5"
+                    className="flex-1 py-2 bg-[#16A34A] hover:bg-[#15803D] text-white text-xs font-medium rounded-lg shadow-2xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Check className="w-4 h-4" />
                     <span>Confirm & Import 120 Records</span>
@@ -545,16 +553,16 @@ export const OrganizerAttendees: React.FC = () => {
 
       {/* Add Walk-in Attendee Modal */}
       {showWalkInModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-3 animate-in fade-in">
-          <div className="bg-white rounded-[14px] w-full max-w-md p-3 space-y-2 shadow-xl border border-[#DEDCD7]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DEDCD7]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-2xs p-4 animate-in fade-in">
+          <div className="bg-white rounded-xl w-full max-w-md p-5 space-y-4 shadow-xl border border-[#E2E8F0]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
               <div>
-                <h3 className="text-[13px] font-bold text-[#181818]">Add On-site Walk-in Attendee</h3>
-                <p className="text-xs text-[#6B6B6B]">Instantly issues digital pass and marks checked-in</p>
+                <h3 className="text-sm font-semibold text-[#172033]">Add On-site Walk-in Attendee</h3>
+                <p className="text-xs text-[#64748B] mt-0.5">Instantly issues digital pass and marks checked-in</p>
               </div>
               <button
                 onClick={() => setShowWalkInModal(false)}
-                className="p-1 text-[#6B6B6B] hover:text-[#181818]"
+                className="p-1 rounded-md text-[#64748B] hover:text-[#172033] hover:bg-[#F1F5F9] cursor-pointer transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -562,60 +570,60 @@ export const OrganizerAttendees: React.FC = () => {
 
             <form onSubmit={handleWalkInSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block font-semibold text-[#181818] mb-1">Full Name</label>
+                <label className="block font-medium text-[#172033] mb-1">Full Name</label>
                 <input
                   type="text"
                   value={walkInName}
                   onChange={(e) => setWalkInName(e.target.value)}
                   placeholder="e.g. Maya Patel"
                   required
-                  className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32]"
+                  className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-[#181818] mb-1">Email</label>
+                  <label className="block font-medium text-[#172033] mb-1">Email</label>
                   <input
                     type="email"
                     value={walkInEmail}
                     onChange={(e) => setWalkInEmail(e.target.value)}
                     placeholder="maya@example.com"
                     required
-                    className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-[#181818] mb-1">Mobile</label>
+                  <label className="block font-medium text-[#172033] mb-1">Mobile</label>
                   <input
                     type="tel"
                     value={walkInMobile}
                     onChange={(e) => setWalkInMobile(e.target.value)}
                     placeholder="+91 9800000000"
-                    className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-[#181818] mb-1">Company</label>
+                  <label className="block font-medium text-[#172033] mb-1">Company</label>
                   <input
                     type="text"
                     value={walkInCompany}
                     onChange={(e) => setWalkInCompany(e.target.value)}
                     placeholder="Zomato"
-                    className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-[#181818] mb-1">Designation</label>
+                  <label className="block font-medium text-[#172033] mb-1">Designation</label>
                   <input
                     type="text"
                     value={walkInDesignation}
                     onChange={(e) => setWalkInDesignation(e.target.value)}
                     placeholder="Engineering Manager"
-                    className="w-full p-2.5 rounded-lg bg-[#F6F4F0] border border-[#DEDCD7] text-xs text-[#181818] focus:outline-none focus:ring-2 focus:ring-[#B51F32]"
+                    className="w-full h-9 px-3 rounded-lg bg-white border border-[#E2E8F0] text-xs text-[#172033] placeholder:text-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#3563F6] focus:border-[#3563F6]"
                   />
                 </div>
               </div>
@@ -624,13 +632,13 @@ export const OrganizerAttendees: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowWalkInModal(false)}
-                  className="py-2.5 px-3 bg-white border border-[#DEDCD7] text-[#181818] font-semibold text-xs rounded-lg"
+                  className="py-2 px-3 bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#172033] font-medium text-xs rounded-lg transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="py-2.5 px-3 bg-[#B51F32] hover:bg-[#9C1A2B] text-white text-xs font-bold rounded-lg shadow-xs transition-colors"
+                  className="py-2 px-4 bg-[#3563F6] hover:bg-[#2554E5] active:bg-[#1D46CA] text-white text-xs font-medium rounded-lg shadow-2xs transition-colors cursor-pointer"
                 >
                   Register & Check In
                 </button>

@@ -4,222 +4,218 @@ import React from 'react';
 import { useStore } from '../../lib/store';
 import {
   Users,
-  CheckCircle2,
   Building2,
   Mic,
-  QrCode,
-  Share2,
   Download
 } from 'lucide-react';
 
 export const OrganizerOverview: React.FC = () => {
   const {
     event,
-    exhibitors,
     setActiveOrganizerTab,
   } = useStore();
 
   const registered = event.totalRegistered || 2438;
-  const checkedIn = event.totalCheckedIn || 1120;
   const exhibitorsCount = event.totalExhibitors || 51;
-  const speakersCount = event.totalSpeakers || 42;
-  const scansCount = event.totalScans || 6212;
-  const connectionsCount = event.totalConnections || 3281;
-  const checkInRate = registered > 0 ? Math.round((checkedIn / registered) * 100) : 46;
+  const speakersCount = event.totalSpeakers || 40;
 
-  // Top exhibitors data matching mockup
-  const leadExhibitors = [
-    { name: 'Microsoft', booth: 'B-14', leads: 248, max: 280 },
-    { name: 'Google Cloud', booth: 'B-02', leads: 186, max: 280 },
-    { name: 'AWS', booth: 'B-09', leads: 164, max: 280 },
-    { name: 'TCS', booth: 'B-21', leads: 142, max: 280 },
-    { name: 'Infosys', booth: 'B-30', leads: 96, max: 280 },
+  // 3 Core KPI metrics
+  const kpis = [
+    {
+      label: 'Registered',
+      value: registered.toLocaleString(),
+      icon: Users,
+    },
+    {
+      label: 'Exhibitors',
+      value: exhibitorsCount.toString(),
+      icon: Building2,
+    },
+    {
+      label: 'Speakers',
+      value: speakersCount.toString(),
+      icon: Mic,
+    },
   ];
 
+  // Top exhibitors data matching specification
+  const leadExhibitors = [
+    { name: 'Microsoft', booth: 'Booth B-14', leads: 248 },
+    { name: 'Google Cloud', booth: 'Booth B-02', leads: 186 },
+    { name: 'AWS', booth: 'Booth B-09', leads: 164 },
+    { name: 'TCS', booth: 'Booth B-21', leads: 142 },
+    { name: 'Infosys', booth: 'Booth B-30', leads: 96 },
+  ];
+  const maxLeads = 280;
+
   return (
-    <div className="space-y-6 select-text max-w-7xl mx-auto">
-      {/* Header Banner */}
+    <div className="space-y-6 select-text max-w-[1360px] mx-auto w-full">
+      {/* Event Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="text-xs uppercase tracking-widest font-semibold text-[#8C8983] block select-text">
+          <span className="text-[12px] uppercase tracking-wider font-semibold text-[#64748B] block">
             {event.id} · {event.city.toUpperCase()} · DAY 1 OF 3
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif text-[#1A1A1A] tracking-tight mt-1 select-text">
+          <h1 className="text-[28px] sm:text-[30px] font-semibold text-[#172033] tracking-tight leading-tight mt-1">
             {event.name}
           </h1>
-          <div className="flex items-center gap-2 mt-2 text-xs sm:text-sm text-[#5E5B54] select-text">
-            <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
-            <span className="font-medium select-text">
+          <div className="flex items-center gap-2 mt-1.5 text-[13px] text-[#64748B]">
+            <span className="w-2 h-2 rounded-full bg-[#16A34A] shrink-0" />
+            <span className="font-medium">
               LIVE · {registered.toLocaleString()} registered delegates & participants
             </span>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-end">
           <button
             onClick={() => setActiveOrganizerTab('reports')}
-            className="px-4 py-2 bg-white hover:bg-[#F2EFE9] text-[#1A1A1A] text-sm font-medium rounded-xl border border-[#DDD8CE] shadow-xs transition-colors flex items-center gap-2"
+            className="h-9 px-3.5 bg-white hover:bg-[#F8FAFC] active:bg-[#F1F5F9] text-[#172033] text-[13px] font-medium rounded-lg border border-[#E2E8F0] shadow-2xs transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <Download className="w-4 h-4 text-[#1A1A1A]" />
+            <Download className="w-4 h-4 text-[#64748B]" />
             <span>Export</span>
           </button>
           <button
             onClick={() => setActiveOrganizerTab('reports')}
-            className="px-5 py-2 bg-[#7A1B2D] hover:bg-[#631624] text-white text-sm font-medium rounded-xl border border-[#B51F32]/40 shadow-[0_2px_10px_rgba(181,31,50,0.18)] transition-colors"
+            className="h-9 px-4 bg-[#3563F6] hover:bg-[#2554E5] active:bg-[#1D46CA] text-white text-[13px] font-medium rounded-lg shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            Event Report
+            <span>Event Report</span>
           </button>
         </div>
       </div>
 
-      {/* 6 Core Metrics Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {/* Registered */}
-        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
-          <Users className="w-4 h-4 text-[#8C8983]" />
-          <div>
-            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
-              {registered.toLocaleString()}
-            </p>
-            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Registered</p>
-          </div>
-        </div>
-
-        {/* Exhibitors */}
-        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
-          <Building2 className="w-4 h-4 text-[#8C8983]" />
-          <div>
-            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
-              {exhibitorsCount}
-            </p>
-            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Exhibitors</p>
-          </div>
-        </div>
-
-        {/* Speakers */}
-        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
-          <Mic className="w-4 h-4 text-[#8C8983]" />
-          <div>
-            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
-              {speakersCount}
-            </p>
-            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Speakers</p>
-          </div>
-        </div>
-
-        {/* QR scans */}
-        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
-          <QrCode className="w-4 h-4 text-[#8C8983]" />
-          <div>
-            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
-              {scansCount.toLocaleString()}
-            </p>
-            <p className="text-xs text-[#8C8983] mt-1.5 select-text">QR scans</p>
-          </div>
-        </div>
-
-        {/* Connections */}
-        <div className="bg-white rounded-2xl p-4 border border-[#E8E4DA] shadow-xs flex flex-col justify-between h-[105px] select-text">
-          <Share2 className="w-4 h-4 text-[#8C8983]" />
-          <div>
-            <p className="text-2xl font-semibold text-[#1A1A1A] tracking-tight leading-none select-text">
-              {connectionsCount.toLocaleString()}
-            </p>
-            <p className="text-xs text-[#8C8983] mt-1.5 select-text">Connections</p>
-          </div>
-        </div>
+      {/* 3 Symmetrical KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="bg-white rounded-xl p-5 border border-[#E2E8F0] shadow-2xs flex flex-col justify-between h-[104px]"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[13px] font-medium text-[#64748B]">{kpi.label}</span>
+                <Icon className="w-4 h-4 text-[#94A3B8]" />
+              </div>
+              <div>
+                <span className="text-[26px] font-semibold text-[#172033] tracking-tight leading-none tabular-nums">
+                  {kpi.value}
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Main Grid: Top Exhibitors & Today's Programme — Equal Split */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
-        {/* Top exhibitors by leads */}
-        <div className="bg-white rounded-2xl p-6 border border-[#E8E4DA] shadow-xs">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-base font-bold text-[#1A1A1A]">Top exhibitors by leads</h2>
+      {/* Main Dashboard Content Grid: 58% Left vs 42% Right */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        {/* Left Column: Top Exhibitors by Leads (58% width) */}
+        <div className="lg:col-span-7 bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-2xs flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-4 border-b border-[#F1F5F9] mb-1">
+            <h2 className="text-[17px] font-semibold text-[#172033]">Top Exhibitors by Leads</h2>
             <button
               onClick={() => setActiveOrganizerTab('exhibitors')}
-              className="text-xs font-semibold text-[#C84A3B] hover:underline"
+              className="text-[13px] font-medium text-[#3563F6] hover:text-[#2554E5] hover:underline transition-colors cursor-pointer"
             >
-              All exhibitors
+              View all exhibitors
             </button>
           </div>
 
-          <div className="space-y-4">
+          <div className="divide-y divide-[#F1F5F9] flex-1 flex flex-col justify-between">
             {leadExhibitors.map((ex) => {
-              const percentage = Math.round((ex.leads / ex.max) * 100);
+              const percentage = Math.round((ex.leads / maxLeads) * 100);
 
               return (
-                <div key={ex.name} className="flex items-center gap-4 text-xs">
-                  <div className="w-24 sm:w-28 flex-shrink-0">
-                    <p className="font-bold text-[#1A1A1A] truncate">{ex.name}</p>
-                    <p className="text-[11px] text-[#8C8983] font-mono">{ex.booth}</p>
+                <div key={ex.name} className="py-3.5 first:pt-3 last:pb-2 flex items-center gap-4 text-xs">
+                  {/* Exhibitor Name & Booth */}
+                  <div className="w-36 sm:w-44 shrink-0 min-w-0">
+                    <p className="text-[14px] font-medium text-[#172033] truncate">{ex.name}</p>
+                    <p className="text-[12px] text-[#64748B] font-normal mt-0.5">{ex.booth}</p>
                   </div>
 
-                  <div className="flex-1 bg-[#EFECE4] h-2.5 rounded-full overflow-hidden">
+                  {/* Normalized Progress Bar */}
+                  <div className="flex-1 bg-[#F1F5F9] h-2 rounded-full overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-[#7A1B2D] to-[#B51F32] h-full rounded-full transition-all duration-500"
+                      className="bg-[#3563F6] h-full rounded-full transition-all duration-300"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
 
-                  <span className="w-10 text-right font-bold text-[#1A1A1A] font-mono text-sm flex-shrink-0">
-                    {ex.leads}
-                  </span>
+                  {/* Right-aligned Lead Count */}
+                  <div className="w-16 text-right shrink-0">
+                    <span className="text-[14px] font-medium text-[#172033] tabular-nums">
+                      {ex.leads}
+                    </span>
+                    <span className="text-[12px] text-[#64748B] font-normal ml-1">leads</span>
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Right Column: Today's Programme */}
-        <div className="space-y-4">
+        {/* Right Column: Today's Programme (42% width) */}
+        <div className="lg:col-span-5 bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-2xs flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-4 border-b border-[#F1F5F9] mb-1">
+            <h2 className="text-[17px] font-semibold text-[#172033]">Today&apos;s Programme</h2>
+            <button
+              onClick={() => setActiveOrganizerTab('sessions')}
+              className="text-[13px] font-medium text-[#3563F6] hover:text-[#2554E5] hover:underline transition-colors cursor-pointer"
+            >
+              View schedule
+            </button>
+          </div>
 
-          {/* Today's programme */}
-          <div className="bg-white rounded-2xl p-6 border border-[#E8E4DA] shadow-xs">
-            <h3 className="text-base font-bold text-[#1A1A1A] mb-4">
-              Today&apos;s programme
-            </h3>
-
-            <div className="space-y-4">
-              {/* Item 1 */}
-              <div className="flex items-start gap-3 text-xs">
-                <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
-                  09:30
-                </span>
-                <div>
-                  <p className="text-sm font-bold text-[#1A1A1A]">Opening Keynote</p>
-                  <p className="text-xs text-[#8C8983] mt-0.5">
-                    Main Hall · 842 attending ·{' '}
-                    <span className="text-[#16A34A] font-semibold">LIVE</span>
-                  </p>
-                </div>
+          <div className="divide-y divide-[#F1F5F9] flex-1 flex flex-col justify-between">
+            {/* 09:30 — Opening Keynote */}
+            <div className="py-4 first:pt-3 flex items-start gap-4">
+              <div className="w-14 text-[13px] font-medium text-[#64748B] tabular-nums pt-0.5 shrink-0">
+                09:30
               </div>
-
-              {/* Item 2 */}
-              <div className="flex items-start gap-3 text-xs">
-                <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
-                  10:45
-                </span>
-                <div>
-                  <p className="text-sm font-bold text-[#1A1A1A]">
-                    Production RAG at Scale
-                  </p>
-                  <p className="text-xs text-[#8C8983] mt-0.5">Hall B · 412 saved</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-[14px] font-semibold text-[#172033] truncate">
+                    Opening Keynote
+                  </h3>
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#DCFCE7] text-[#16A34A] shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
+                    LIVE
+                  </span>
                 </div>
+                <p className="text-[12px] text-[#64748B] mt-1">
+                  Main Hall · 842 attending
+                </p>
               </div>
+            </div>
 
-              {/* Item 3 */}
-              <div className="flex items-start gap-3 text-xs">
-                <span className="text-xs font-mono font-medium text-[#8C8983] w-12 pt-0.5 flex-shrink-0">
-                  12:00
-                </span>
-                <div>
-                  <p className="text-sm font-bold text-[#1A1A1A]">
-                    Design Systems for AI
-                  </p>
-                  <p className="text-xs text-[#8C8983] mt-0.5">Hall C · 268 saved</p>
-                </div>
+            {/* 10:45 — Production RAG at Scale */}
+            <div className="py-4 flex items-start gap-4">
+              <div className="w-14 text-[13px] font-medium text-[#64748B] tabular-nums pt-0.5 shrink-0">
+                10:45
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-[14px] font-semibold text-[#172033] truncate">
+                  Production RAG at Scale
+                </h3>
+                <p className="text-[12px] text-[#64748B] mt-1">
+                  Hall B · 412 saved
+                </p>
+              </div>
+            </div>
+
+            {/* 12:00 — Design Systems for AI */}
+            <div className="py-4 last:pb-2 flex items-start gap-4">
+              <div className="w-14 text-[13px] font-medium text-[#64748B] tabular-nums pt-0.5 shrink-0">
+                12:00
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-[14px] font-semibold text-[#172033] truncate">
+                  Design Systems for AI
+                </h3>
+                <p className="text-[12px] text-[#64748B] mt-1">
+                  Hall C · 268 saved
+                </p>
               </div>
             </div>
           </div>

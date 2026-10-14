@@ -4,8 +4,8 @@ import React from 'react';
 import { useStore } from '../../lib/store';
 import { LayoutDashboard, Users, Package, MoreHorizontal } from 'lucide-react';
 
-export const ExhibitorBottomNav: React.FC = () => {
-  const { activeExhibitorTab, setActiveExhibitorTab, leads } = useStore();
+export const ExhibitorBottomNav: React.FC = React.memo(() => {
+  const { activeExhibitorTab, setActiveExhibitorTab } = useStore();
 
   const navItems = [
     { id: 'home' as const, label: 'Home', icon: LayoutDashboard },
@@ -48,4 +48,6 @@ export const ExhibitorBottomNav: React.FC = () => {
       </div>
     </nav>
   );
-};
+});
+
+ExhibitorBottomNav.displayName = 'ExhibitorBottomNav';
